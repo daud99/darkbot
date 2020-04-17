@@ -1,0 +1,124 @@
+@font-face {
+    font-family: 'Gagarin';
+    src:url('webfonts_Gagarin/Gagarin.ttf.woff') format('woff'),
+        url('webfonts_Gagarin/Gagarin.ttf.svg#Gagarin') format('svg'),
+        url('webfonts_Gagarin/Gagarin.ttf.eot'),
+        url('webfonts_Gagarin/Gagarin.ttf.eot?#iefix') format('embedded-opentype'); 
+        font-weight: normal;
+        font-style: normal;
+}
+#bottom-navbar {
+    background-color: black;
+    color: #F4F4F4;
+    padding-left: 90px;
+    padding-right: 90px;
+}
+/*#header-outer[data-lhe="animated_underline"] header#top nav >ul >li>a:after {
+    
+    -ms-transition: -webkit-transform .3s ease-out,border-color .3s ease-out;
+    -webkit-transition: -webkit-transform .3s ease-out,border-color .3s ease-out;
+    transition: transform .3s ease-out,border-color .3s ease-out;
+    position: absolute;
+    display: block;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    -ms-transform: scaleX(0);
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    border-top: 2px solid yellow;
+    content: '';
+    padding-bottom: inherit;
+    
+}
+.nav-item {
+    position: relative;
+}
+#header-outer[data-lhe="animated_underline"] a:after {
+    -ms-transition: -webkit-transform 0.2s;
+    -webkit-transition: -webkit-transform 0.2s;
+    transition: transform 0.2s;
+    position: absolute;
+    display: block;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    -ms-transform: scaleX(0);
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    border-top: 2px solid yellow;
+    content: '';
+    padding-bottom: inherit;
+}
+#bottom-navbar a:hover {
+    -ms-transform: scaleX(1);
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+}*/
+@media only screen and (min-width: 992px)/* pehlay 690 tha*/
+{
+    #bottom-navbar {
+        padding: 5px 90px!important;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 32px;
+        z-index: 1020;
+    }
+    #bottom-navbar .nav-link {
+        color:#F4F4F4;
+        font-family: Open Sans;
+        font-size: 22px;
+        line-height: 19.6px;
+        font-weight: 300;
+    }
+    .navbar-expand-lg .navbar-nav {
+        padding: 0px 150px;
+    }
+    #demo-btn {
+        background-color: #27CFC3;
+        color:#F4F4F4;
+        font-family: Open Sans;
+        font-weight: 300;
+        padding: 10px;
+    }
+    #bottom-navbar .nav-link:hover {
+        color: #f9783b;
+    }
+    #bottom-navbar .btn {
+        border-radius: 0;
+    }
+}
+@media only screen and (max-width: 992px)/* pehlay 690 tha*/
+{
+    #bottom-navbar div {
+        background-color: #1C1C1C;
+        padding: 10px 5px;  
+    } 
+    #bottom-navbar {
+        padding: 0px 0px; 
+        position: -webkit-sticky;
+        position: sticky;
+        top: 89px;
+        z-index: 1020;
+        
+    }
+    #bottom-navbar .nav-link {
+        border-bottom: 1px dotted rgba(255,255,255,0.2);
+        color: rgba(255,255,255,0.6);
+        font-size: 12px;
+        display: block;
+        position: relative;
+        padding: 16px 0 !important;
+    }
+}
+
+#brand {
+    font-family: 'Gagarin';
+    font-size: 50px;
+    color: white;
+}
+
+a.nav-link  {
+    padding-left: 10px!important;
+    padding-right: 10px!important;
+}

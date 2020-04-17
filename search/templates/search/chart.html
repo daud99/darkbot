@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
+     <script src="{% static 'js/plugins/chartjs.min.js' %}"></script>
+</head>
+<body>
+
+<div class="container">
+    {{ name1 }}
+    {{ name2 }}
+    {{ name3 }}
+    <input type="hidden" value="{{ name1 }}" id="chartname1">
+    <input type="hidden" value="{{ name2 }}" id="chartname2">
+    <input type="hidden" value="{{ name3 }}" id="chartname3">
+    <input type="hidden" value="{{ fileid }}" id="fileid">
+    <div class="row">
+        <div class="col-4 offset-4">
+            <link rel="stylesheet" href="{% static "css/pdf.css" %}">
+        </div>
+    </div>
+
+        <canvas id="histogram-chart"></canvas>
+        <canvas id="pie-chart"></canvas>
+        <canvas id="doughnut-chart"></canvas>
+
+</div>
+
+
+
+ <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            var fileid = $('#fileid').val();
+
+            ;
+            $.post({url: '{% url "api_trace:reportdoughnut" %}', data: {"fileid":fileid, "csrfmiddlewaretoken":'{{csrf_token}}'}}, function(data) {
+            var options = {
+                bezierCurve : false,
+                animation: {
+                            onComplete: downloaddoughnut
+                          } /// calls function done() {} at end
+                };
+            var ctx = document.getElementById('doughnut-chart');
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                        datasets: [{
+                            data: data.data,
+                            backgroundColor: [
+                                "red","purple","orange","green","blue"
+                            ]
+                        }],
+
+                        // These labels appear in the legend and in the tooltips when hovering different arcs
+                        labels: data.labels
+                    },
+                options: options
+            });
+
+
+                    });
+            $.post({url: '{% url "api_trace:reportpie" %}', data: {"fileid":fileid, "csrfmiddlewaretoken":'{{csrf_token}}'}}, function(data) {
+            var options = {
+                bezierCurve : false,
+                animation: {
+                            onComplete: downloadpie
+                          } /// calls function done() {} at end
+                };
+            var ctx = document.getElementById('pie-chart');
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                        datasets: [{
+                            data: data.data,
+                            backgroundColor: [
+                                "red","purple","orange","green","blue"
+                            ]
+                        }],
+
+                        // These labels appear in the legend and in the tooltips when hovering different arcs
+                        labels: data.labels
+                    },
+                options: options
+            });
+
+
+                    });
+
+
+            $.post({url: '{% url "api_trace:reporthistogram" %}', data: {"fileid":fileid, "csrfmiddlewaretoken":'{{csrf_token}}'}},function(data) {
+            var options = {
+                bezierCurve : false,
+                animation: {
+                            onComplete: downloadhisto
+                          } /// calls function done() {} at end
+                };
+            var ctx = document.getElementById('histogram-chart');
+            var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: data.labels,
+                                datasets: [{
+                                    label: "Total Overview",
+                                    data: data.data,
+                                    backgroundColor: [
+                                        "red",
+                                        "purple",
+                                        "#F7A01D",
+                                        "#19BF99",
+                                    ],
+                                    borderColor: [
+
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(255, 206, 86, 1)',
+
+                                    ],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: options
+                        });
+
+
+                    });
+
+            function downloadhisto() {
+                var name = $('#chartname1').val();
+             {#alert('downloading');#}
+                 var canvas1 = $("#histogram-chart").get(0);
+                    {#var canvas2 = $("#agentSearchDoughnut").get(0);#}
+                    {#var canvas3 = $("#histogramChart").get(0);#}
+                    {#var canvas4 = $("#polarChart").get(0);#}
+                    var line = canvas1.toDataURL('image/png');
+                    {#var circle = canvas2.toDataURL('image/png');#}
+                    {#var histogram = canvas3.toDataURL('image/png');#}
+                    {#var polar = canvas4.toDataURL('image/png');#}
+
+
+                  $.ajax({
+                        url : '{% url "download" %}',
+                        type : "post", // http method
+                        data : { "line" : line,
+                            "name": name,
+                        {#"circle" : circle,#}
+                        {#"histogram" : histogram,#}
+                        {#"polar" : polar,#}
+
+                        'csrfmiddlewaretoken': '{{csrf_token}}'
+
+
+                }, // data sent with the post request
+            // handle a successful response
+            success : function(data) {
+                            {#alert("downloaded");#}
+            },
+    });
+            }
+function downloadpie(id,name) {
+
+    var name = $('#chartname2').val();
+    {#alert('downloading');#}
+    var canvas1 = $('#pie-chart').get(0);
+    var line = canvas1.toDataURL('image/png');
+    $.ajax({
+            url : '{% url "download" %}',
+            type : "post", // http method
+            data : { "line" : line,
+                     "name": name,
+                    'csrfmiddlewaretoken': '{{csrf_token}}'
+                   }, // data sent with the post request
+        // handle a successful response
+            success : function(data) {
+                            {#alert("downloaded");#}
+            },
+                });
+}
+function downloaddoughnut(id,name) {
+
+    var name = $('#chartname3').val();
+    {#alert('downloading');#}
+    var canvas1 = $('#doughnut-chart').get(0);
+    var line = canvas1.toDataURL('image/png');
+    $.ajax({
+            url : '{% url "download" %}',
+            type : "post", // http method
+            data : { "line" : line,
+                     "name": name,
+                    'csrfmiddlewaretoken': '{{csrf_token}}'
+                   }, // data sent with the post request
+        // handle a successful response
+            success : function(data) {
+                            {#alert("downloaded");#}
+            },
+                });
+}
+
+        });
+ </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+{% extends 'adminpanel/base.html' %}
+{% load static %}
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="container" id="makemewhite">
+                <div class="text-center mb-4">
+                    <h1><strong>Subscription Requests</strong></h1>
+                </div>
+                {% if requests_list %}
+                <table class="table">
+                    <thead id="headoftable">
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th>Email</th>
+                        <th>IP Address</th>
+                        <th>COMPANY</th>
+                        <th>Subscription Plan</th>
+                        <th>STATUS</th>
+                        <th>ACTION</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for request in requests_list %}
+                    <tr>
+                        <td class="text-center">{{forloop.counter}}</td>
+                        <td>{{request.email}}</td>
+                        <td>{{request.ip_address}}</td>
+                        <td>{{request.company}}</td>
+                        <td>{{ request.subscription_plan }}</td>
+                        <td>{{request.status}}</td>
+                        <td class="td-actions">
+                            <a href="{{request.id}}" class="btn btn-success">Accept</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    <p class="blockquote blockquote-primary" id="makemeblack">
+                      <strong>"There are no subscription requests yet!."</strong>
+                      <br>
+                      <br>
+                      <small>
+                        - Darkbot
+                      </small>
+                    </p>
+                {% endif %}
+            </div>
+            <!--            <div class="container-fluid">-->
+            <!--                <div class="text-center">-->
+            <!--                    <h1><strong>Subscription Request List</strong></h1>-->
+            <!--                </div>-->
+            <!--            </div>-->
+            <!--            <div class="container-fluid">-->
+            <!--                <table class="table">-->
+            <!--                    <thead>-->
+            <!--                    <tr>-->
+            <!--                        <th scope="col">S-NO</th>-->
+            <!--                        <th scope="col">COMPANY</th>-->
+            <!--                        <th scope="col">SUBSCRIPTION PLAN</th>-->
+            <!--                        <th scope="col">IP Address</th>-->
+            <!--                        <th scope="col">COMPANY</th>-->
+            <!--                        <th scope="col">STATUS</th>-->
+            <!--                        <th scope="col">ACTION</th>-->
+            <!--                    </tr>-->
+            <!--                    </thead>-->
+            <!--                    <tbody>-->
+            <!--                    {% for request in requests_list %}-->
+            <!--                    <tr>-->
+            <!--                        <th scope="row">{{forloop.counter}}</th>-->
+            <!--                        <td>{{request.company}}</td>-->
+            <!--                        {% if request.subscription_plan == 'a' %}-->
+            <!--                        <td>Advance</td>-->
+            <!--                        {% endif %}-->
+            <!--                        {% if request.subscription_plan == 'b' %}-->
+            <!--                        <td>Basic</td>-->
+            <!--                        {% endif %}-->
+            <!--                        {% if request.subscription_plan == 'p' %}-->
+            <!--                        <td>Pro</td>-->
+            <!--                        {% endif %}-->
+            <!--                        <td>{{request.ip_address}}</td>-->
+            <!--                        <td>{{request.status}}</td>-->
+            <!--                        <td>-->
+            <!--                            <button class="btn btn-success form-control"><a href="{{request.id}}">Accept</a></button>-->
+            <!--                        </td>-->
+            <!--                    </tr>-->
+            <!--                    {% endfor %}-->
+            <!--                    </tbody>-->
+            <!--                </table>-->
+            <!--            </div>-->
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+
+
+@media only screen and (min-width: 600px) {
+  html{
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+ body {
+    background: url('../img/bg.jpg') no-repeat center center fixed;
+    background-repeat: repeat-y;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+ }
+
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background-color: black;
+  color: white;
+  padding: 15px;
+}
+
+ }
+
+
+@media only screen and (max-width: 600px) {
+
+#login-container {
+  margin-top: 20px;
+}
+ }
+
+.list-group-item {
+  color: red;
+}

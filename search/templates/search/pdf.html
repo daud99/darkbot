@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="blankpage">
+
+    </div>
+    <div class="wrapper">
+        <div class="main-header">
+            <div class="heading-bolder">Dark Web Monitoring</div>
+            <div class="date">
+                <div class="datetag datebox">
+                    Start Date
+                </div>
+                <div class="datebox">
+                    {{ starttime }}
+                </div>
+                <br>
+                <div class="datetag datebox">
+                    End Date
+                </div>
+                <div class="datebox">
+                    {{ endtime }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container">
+{#    <section>#}
+{#        <div class="heading-histogram">#}
+{#            Total Overview#}
+{#        </div>#}
+{#        <div class="img1-container">#}
+{#            <img class="img1" src="{% static chart1 %}">#}
+{#        </div>#}
+{#    </section>#}
+{#    <section>#}
+{#        <div class="heading-histogram">#}
+{#            Passwords Founds#}
+{#        </div>#}
+{#        <div class="img1-container">#}
+{#            <img class="img1" src="{% static chart2 %}">#}
+{#        </div>#}
+{#    </section>#}
+{#    <section>#}
+{#        <div class="heading-histogram">#}
+{#            Severity Distribution#}
+{#        </div>#}
+{#        <div class="img1-container">#}
+{#            <img class="img1" src="{% static chart3 %}">#}
+{#        </div>#}
+{#    </section>#}
+    {% if leakedpasswords %}
+    <section>
+        <div class="heading heading-passwords">
+            CURRENT EXPOSURE OF LEAKED PASSWORDS
+        </div>
+        <table class="leaked-passwords__table">
+            <thead>
+                <tr>
+                    <th>
+                        Emails
+                    </th>
+                    <th>
+                        Passwords
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for each in leakedpasswords %}
+
+            <tr>
+                <td>
+                    {{ each.email }}
+                </td>
+                <td>
+                    {{ each.password }}
+                </td>
+            </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    {% endif %}
+
+    {% if breaches %}
+    <section>
+        <div class="heading heading-breaches">
+            CURRENT EXPOSURE OF BREACHES
+        </div>
+        <div class="breaches-table">
+         <table>
+            {% for breach in breaches %}
+                {% set rowloop = loop %}
+                {% for key,val in emailforbreaches.items() %}
+                    {% if key == rowloop.index %}
+                        <div class="heading-breach-email">
+                            Breaches for  {{ val }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+           <div>
+                <strong class="breach-company">
+                    {{ rowloop.index }}. {{breach.company}}
+                </strong>
+            </div>
+            <div>
+                <div>
+                   {{ breach.description }}
+                </div>
+                <div>
+                    <div>
+                        <strong>Compromised Data</strong>
+                    </div>
+                </div>
+                <div class="compromise-items">
+                    {{ breach.compromised_data }}
+                </div>
+            </div>
+             <div class="breach-body"></div>
+            {% endfor %}
+        </table>
+        </div>
+    </section>
+    {% endif %}
+
+
+    {% if pastes %}
+        <section>
+            <div class="heading heading-pastes">
+                CURRENT EXPOSURE OF PASTES
+            </div>
+            <table class="pastes__table">
+            <thead>
+                <tr>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Pastes
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for each in pastes%}
+            <tr>
+                <td>
+                    {{ each.0 }}
+                </td>
+                <td>
+                    {{ each.1 }}
+                </td>
+            </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </section>
+    {% endif %}
+
+
+    {% if indexemails %}
+        <section>
+            <div class="heading heading-indexemails">
+                CURRENT EXPOSURE OF EMAILS ON DARKFORUMS
+            </div>
+        </section>
+
+            <div class="body-indexemails">
+                {% for each in indexemails %}
+               <div class="body-repeat-indexemails">
+                <div>
+                    <strong>
+                        {{ forloop.counter }}. {{ each.email }}
+                    </strong>
+                </div>
+                    <div>
+                    {{ each.channel_name }}
+                    </div>
+                    <div>
+                    {{ each.channel_url }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+    {% endif %}
+
+
+
+
+
+ </div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+{% extends 'adminpanel/base.html' %}
+{% load static %}
+{% block content %}
+<div class="content">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="searchhidecontent">
+                <div class="container mt-5">
+                    <div class="text-center">
+                        <h1><strong>DARKBOT REAL TIME MONITORING</strong></h1>
+                    </div>
+
+                    <div class="mt-5">
+                        <div id="feedback" class="alert alert-danger alert-with-icon">
+                            <button type="button" aria-hidden="true" class="close" data-dismiss="alert"
+                                    aria-label="Close">
+                                <i class="tim-icons icon-simple-remove"></i>
+                            </button>
+                            <span data-notify="icon" class="tim-icons icon-alert-circle-exc"></span>
+                            <span><b> ERROR! - </b> Please select the desired options properly.</span>
+                        </div>
+                        <div id="i"></div>
+                    </div>
+                </div>
+                <div>
+                   <div class="sub-heading__monitoring">
+                       EMAIL MONITORING
+                   </div>
+                  <section class="mt-5">
+                          <div class="container">
+                              <form method="POST" action="/adminpanel/email/monitoring">
+                              <div class="row mt-5">
+                                  <div class="offset-md-4 col-md-4 mb-2">
+                                      {% csrf_token %}
+                                      <input type="submit" name="on" value="Turn On Email Monitoring" class="form-control btn-success"
+                                      {%  if on %}
+                                          disabled
+                                      {% endif %}>
+                                  </div>
+                                  </div>
+                                  </form>
+                                  <form method="POST" action="/adminpanel/email/monitoring">
+                                      <div class="row">
+                                  <div class="offset-md-4 col-md-4 mt-2">
+                                      {% csrf_token %}
+                                      <input type="submit" name="off" value="Turn Off Email Monitoring" class="form-control btn-success"
+                                      {%  if not on %}
+                                          disabled
+                                      {% endif %}
+                                      >
+                                  </div>
+                                      </div>
+                                  </form>
+                          </div>
+                  </section>
+
+                    <div class="sub-heading__monitoring mt-2">
+                        DOMAIN MONITORING
+                    </div>
+                    <section class="mt-5">
+                          <div class="container">
+                              <form method="POST" action="/adminpanel/domain/monitoring">
+                              <div class="row mt-5">
+                                  <div class="offset-md-4 col-md-4 mb-2">
+                                      {% csrf_token %}
+                                      <input type="submit" name="on" value="Turn On Domain Monitoring" class="form-control btn-success"
+                                      {%  if on1 %}
+                                          disabled
+                                      {% endif %}>
+                                  </div>
+                                  </div>
+                                  </form>
+                                  <form method="POST" action="/adminpanel/domain/monitoring">
+                                      <div class="row">
+                                  <div class="offset-md-4 col-md-4 mt-2">
+                                      {% csrf_token %}
+                                      <input type="submit" name="off" value="Turn Off Domain Monitoring" class="form-control btn-success"
+                                      {%  if not on1 %}
+                                          disabled
+                                      {% endif %}
+                                      >
+                                  </div>
+                                      </div>
+                                  </form>
+                          </div>
+                  </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

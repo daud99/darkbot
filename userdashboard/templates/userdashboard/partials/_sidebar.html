@@ -1,0 +1,49 @@
+{% load static %}
+<div class="sidebar">
+      <!--
+        Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red"
+    -->
+      <div class="sidebar-wrapper">
+        <div class="logo">
+          <a href="javascript:void(0)" class="simple-text logo-mini">
+            UD
+          </a>
+          <a href="{% url 'userdashboard:index' %}" target="_blank" class="simple-text logo-normal" id="brandit">
+{#          <a href="#" target="_blank" class="simple-text logo-normal" id="brandit">#}
+            DARKBOT
+          </a>
+        </div>
+        <ul class="nav">
+          <li
+                  {% if "/userdashboard/" == request.path %}
+                  class="active"
+                  {% endif %}
+          >
+            <a href="{% url 'userdashboard:index' %}">
+              <i class="tim-icons icon-chart-pie-36"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li
+                  {% if "/search/" == request.path %}
+                  class="active"
+                  {% endif %}
+          >
+            <a href="{% url 'search:searchi' %}">
+              <i class="tim-icons icon-zoom-split"></i>
+              <p>Search</p>
+            </a>
+          </li>
+          <li
+                  {% if "/userdashboard/profile/" == request.path %}
+                  class="active"
+                  {% endif %}
+          >
+            <a href="{% url 'userdashboard:profile' %}">
+              <i class="tim-icons icon-single-02"></i>
+              <p>User Profile</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>

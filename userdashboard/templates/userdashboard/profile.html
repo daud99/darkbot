@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+{% extends 'userdashboard/base.html' %}
+{% load static %}
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="content">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="title">Edit Profile</h5>
+                            </div>
+                            <div class="card-body">
+                                <form action="{% url 'userdashboard:profile' %}" method="POST">
+                                    <div class="row">
+                                        {% if not user.is_superuser %}
+                                        <div class="col-md-5 pr-md-1">
+                                            <div class="form-group">
+                                                <label>Company</label>
+                                                <input type="text" class="form-control"
+                                                       placeholder="Company" name="company" value="{{user.company}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3 px-md-1">
+                                            <div class="form-group">
+                                                <label>IP ADDRESS</label>
+                                                <input type="text" class="form-control" placeholder="Username"
+                                                       value="{{user.ip_address}}" disabled="">
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        <div class="col-md-4 ml-1">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Email address</label>
+                                                <input type="email" name="email" class="form-control" disabled="" value="{{user.email}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 pr-md-1">
+                                            <div class="form-group">
+                                                <label>First Name</label>
+                                                <input type="text" class="form-control" name='firstname' placeholder="Company"
+                                                       value="{{user.first_name}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 pl-md-1">
+                                            <div class="form-group">
+                                                <label>Last Name</label>
+                                                <input type="text" class="form-control" name="lastname" placeholder="Last Name"
+                                                       value="{{user.last_name}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if not user.is_superuser %}
+                                    <div class="row">
+                                        <div class="col-md-4 pr-md-1">
+                                            <div class="form-group">
+                                                <label>Subscription Plan</label>
+                                                <input type="text" class="form-control" disabled="" placeholder="City" value="{{user.subscription_plan}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 px-md-1">
+                                            <div class="form-group">
+                                                <label>Status</label>
+                                                <input type="text" class="form-control" disabled="" placeholder="Country"
+                                                       value="{{user.status}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 pl-md-1">
+                                            <div class="form-group">
+                                                <label>Number of queries remaining</label>
+                                                <input type="number" class="form-control" disabled="" value="{{user.number_of_queries}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-fill btn-primary">Save Changes</button>
+                                    </div>
+                                    {% csrf_token %}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-user">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <div class="author">
+                                        <div class="block block-one"></div>
+                                        <div class="block block-two"></div>
+                                        <div class="block block-three"></div>
+                                        <div class="block block-four"></div>
+                                        <a href="javascript:void(0)">
+                                            <img class="avatar" src="{% static "img/daud.jpg" %}" alt="...">
+                                            <h5 class="title">DAUD AHMED</h5>
+                                        </a>
+                                <p class="description">
+                                    Ceo/Co-Founder
+                                </p>
+                            </div>
+                            </p>
+                            <div class="card-description">
+                                Do not be scared of your sensitive and critical data being sold because we need to restart the human foundation in truth
+                                And you just need to trust the DARKBOT and then definitely you will love DARKBOT...
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="button-container">
+                                <button href="javascript:void(0)" class="btn btn-icon btn-round btn-facebook">
+                                    <i class="fab fa-facebook"></i>
+                                </button>
+                                <button href="javascript:void(0)" class="btn btn-icon btn-round btn-twitter">
+                                    <i class="fab fa-twitter"></i>
+                                </button>
+                                <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                    <i class="fab fa-google-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

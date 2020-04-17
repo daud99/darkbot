@@ -1,0 +1,32 @@
+/* Dumping results pages css */
+#dumping_results .table tr {
+    cursor: pointer;
+  }
+  #dumping_results .table{
+  background-color: #fff !important;
+  }
+  #dumping_results .hedding h1{
+  color:#fff;
+  font-size:25px;
+  }
+  #dumping_results{
+  margin-top: 120px;
+  }
+  #dumping_results .hiddenRow {
+    padding: 0 4px !important; 
+    background-color: #eeeeee;
+    font-size: 13px;
+  }
+  #dumping_results .accordian-body span{
+  color:#a2a2a2 !important;
+  }
+
+  #pagination-div a
+  {
+    color: black;
+  }
+
+  #dumping_results
+  {
+    margin-top: 0%;
+  }

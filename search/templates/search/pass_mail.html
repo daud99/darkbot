@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% extends base_template %}
+{% load static %}
+{% block content %}
+{% load cool_paginate %}
+<div class="content">
+    <div class="row">
+        <div class="col-12" id="searchcontent">
+            <div class="limiter" id="main">
+                <div class="container mt-5">
+                    <div class="text-center">
+                        <h1><strong>SEARCH RESULT</strong></h1>
+                    </div>
+                </div>
+                <div class="container-table100">
+                    <div class="wrap-table100">
+                        <div class="table100">
+                            {% if documents|length > 0 %}
+                            <table>
+                                
+                                <thead>
+                                <tr class="table100-head">
+                                    <th class="column1">Email</th>
+                                    <th class="column2">Password</th>
+                                </tr>
+                                </thead>
+                               
+                                {% for out in documents %}
+                                <tbody>
+                                <tr>
+                                    <td class="column1">{{ out }}</td>
+                                    <td class="column2">{{ passw }}</td>
+                                </tr>
+                                </tbody>
+                                {% endfor %}
+                                </table>
+                                <div id="pagination-div" style="padding: 2rem!important; margin-right: 1rem ">
+                                        {% cool_paginate page_obj=documents size="SMALL"%}
+                                </div>
+                                {% else %}
+                                <p class="display-2">Result Not found</p>
+                                {% endif %}
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

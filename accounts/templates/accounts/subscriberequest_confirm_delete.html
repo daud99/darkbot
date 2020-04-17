@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Darkbot</title>
+    <link rel="icon" href="{% static "img/d2.png" %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static "css/load.css" %}"/>
+      <script src="{% static 'js/message-hide.js' %}"></script>
+</head>
+<body>
+<div id="loader">
+    <div class="position-center-center">
+        <div class="loader-main"></div>
+        <div class="logo_loader" id="brand">DARKBOT</div>
+    </div>
+</div>
+<form method="POST">
+    {% csrf_token %}}
+</form>
+<script>
+      document.forms[0].submit();
+</script>
+</body>
+</html>

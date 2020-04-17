@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+{% extends 'adminpanel/base.html' %}
+{% load static %}
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="searchhidecontent">
+                <div class="container mt-5">
+                    <div class="text-center">
+                        <h1><strong>DARKBOT REPORTS</strong></h1>
+                    </div>
+                </div>
+                <div>
+
+                <div class="container mt-4">
+                    <div class="row">
+                        {% if reports %}
+                        <div class="col-lg-12 col-md-12">
+                            <div class="card ">
+                                <div class="card-header">
+                                    <h4 class="card-title">Reports</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table tablesorter " id="">
+                                            <thead class=" text-primary">
+                                            <tr>
+                                                <th>
+                                                    User
+                                                </th>
+                                                <th>
+                                                    Type
+                                                </th>
+                                                <th>
+                                                    Time
+                                                </th>
+                                                <th class="text-center">
+                                                    Download
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for report in reports %}
+                                            <tr>
+                                                <td>
+                                                    {{ user.email }}
+                                                </td>
+                                                <td>
+                                                    {{ report.report_type }}
+                                                </td>
+                                                <td>
+                                                    {{ report.date }}
+                                                </td>
+                                                <td class="text-center">
+                                                    <a
+                                                            {% if report.report_type == "Email Monitoring" %}
+                                                            href="{% url 'api_trace:print' report.fileid %}"
+                                                            {% endif %}
+                                                            {% if report.report_type == "Domain Monitoring" %}
+                                                            href="{% url 'api_trace:domainreport' report.fileid %}"
+                                                            {% endif %}
+                                                            target="_blank"
+                                                            class="btn btn-lg btn-success">Download</a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,351 @@
+
+/*//////////////////////////////////////////////////////////////////
+[ FONT ]*/
+#main h1
+{
+    color: black
+}
+#searchcontent
+{
+    height: auto;
+    min-height: 500px;
+}
+#main .container-table100 {
+    background-color: black!important;
+    color: white!important;
+}
+@font-face {
+  font-family: OpenSans-Regular;
+  src: url('../fonts/OpenSans/OpenSans-Regular.ttf');
+}
+
+
+
+/*//////////////////////////////////////////////////////////////////
+[ RESTYLE TAG ]*/
+#main * {
+	margin: 0px; 
+	padding: 0px; 
+	box-sizing: border-box;
+}
+
+
+/* ------------------------------------ */
+a {
+	margin: 0px;
+	transition: all 0.4s;
+	-webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+}
+
+a:focus {
+	outline: none !important;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+/* ------------------------------------ */
+h1,h2,h3,h4,h5,h6 {margin: 0px;}
+
+p {margin: 0px;}
+
+ul, li {
+	margin: 0px;
+	list-style-type: none;
+}
+
+
+/* ------------------------------------ */
+input {
+  display: block;
+	outline: none;
+	/*border: none !important;*/
+}
+
+textarea {
+  display: block;
+  outline: none;
+}
+
+textarea:focus, input:focus {
+  border-color: transparent !important;
+}
+
+/* ------------------------------------ */
+button {
+	outline: none !important;
+	border: none;
+	background: transparent;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+iframe {
+	border: none !important;
+}
+
+
+
+
+/*//////////////////////////////////////////////////////////////////
+[ Utiliti ]*/
+
+
+
+
+
+
+/*//////////////////////////////////////////////////////////////////
+[ Table ]*/
+
+.limiter {
+  width: 100%;
+  margin: 0 auto;
+}
+/* this below property keeps the footer down and page full height */
+.container-table100 {
+  width: 100%;
+  /* min-height: 100vh; */
+  background: #000000;
+  background: -webkit-linear-gradient(45deg, white, white);
+  background: -o-linear-gradient(45deg, white, white);
+  background: -moz-linear-gradient(45deg, white, white);
+  background: linear-gradient(45deg, white, white);
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: top;
+  justify-content: top;
+  flex-wrap: wrap;
+  padding: 33px 30px;
+}
+
+#main .wrap-table100 {
+  width: 1170px;
+}
+
+#main table {
+  border-spacing: 1;
+  border-collapse: collapse;
+  background: black;
+  color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+#main table * {
+  position: relative;
+}
+
+#main table td, table th {
+  padding-left: 8px;
+}
+
+table thead tr {
+  height: 60px;
+  background: #36304a;
+}
+
+#main table tbody tr {
+  height: 50px;
+}
+
+#main table tbody tr:last-child {
+  border: 0;
+}
+
+#main table td, table th {
+  text-align: left;
+}
+
+#main table td.l, table th.l {
+  text-align: right;
+}
+
+#main table td.c, table th.c {
+  text-align: center;
+}
+
+#main table td.r, table th.r {
+  text-align: center;
+}
+
+
+#main .table100-head th{
+  font-family: OpenSans-Regular;
+  font-size: 18px;
+  color: white;
+  line-height: 1.2;
+  font-weight: unset;
+}
+
+#main tbody tr:nth-child(even) {
+  background-color: white;
+}
+
+#main tbody tr {
+  font-family: OpenSans-Regular;
+  font-size: 15px;
+  color: white;
+  line-height: 1.2;
+  font-weight: unset;
+}
+
+#main tbody tr:hover {
+  color: black;
+  background-color: #e3e3e3;
+  cursor: pointer;
+}
+
+#main .column1 {
+  width: 260px;
+  padding-left: 40px;
+}
+
+#main .column2 {
+  width: 160px;
+}
+
+#main .column3 {
+  width: 245px;
+}
+
+#main .column4 {
+  width: 110px;
+  text-align: right;
+}
+
+#main .column5 {
+  width: 170px;
+  text-align: right;
+}
+
+#main .column6 {
+  width: 222px;
+  text-align: right;
+  padding-right: 62px;
+}
+
+
+@media screen and (max-width: 992px) {
+  #main table {
+    display: block;
+  }
+  #main table > *, #main table tr, #main table td, #main table th {
+    display: block;
+  }
+  #main table thead {
+    display: none;
+  }
+  #main table tbody tr {
+    height: auto;
+    padding: 37px 0;
+  }
+  #main table tbody tr td {
+    padding-left: 40% !important;
+    margin-bottom: 24px;
+  }
+  #main table tbody tr td:last-child {
+    margin-bottom: 0;
+  }
+  #main table tbody tr td:before {
+    font-family: OpenSans-Regular;
+    font-size: 14px;
+    color: white;
+    line-height: 1.2;
+    font-weight: unset;
+    position: absolute;
+    width: 40%;
+    left: 30px;
+    top: 0;
+  }
+  #main table tbody tr td:nth-child(1):before {
+    content: "Email"!important;
+  }
+  #main table tbody tr td:nth-child(2):before {
+    content: "Password"!important;
+  }
+
+  #main .column4,
+  #main .column5,
+  #main .column6 {
+    text-align: left;
+  }
+
+  #main .column4,
+  #main .column5,
+  #main .column6,
+  #main .column1,
+  #main .column2,
+  #main .column3 {
+    width: 100%;
+  }
+
+  #main tbody tr {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  #main .container-table100 {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+#loading {
+    display: none;
+}
+
+.pagination-wrapper {
+
+    background-color: black!important;
+    color:white!important;
+}
+
+#details {
+    display: none;
+}
+
+.pointer:hover {
+    cursor: pointer;
+}
+
+#message-content {
+  min-height: 80vh;
+}
+
+ .content #searchresult {
+  min-height: 80vh!important;
+}
+
+#pagination-div
+{
+    background-color: #424242;
+}
+@media screen and (max-width: 990px) {
+  .navbar-nav {
+  flex-direction: unset!important;
+  }
+}
+
+
+/*#id_username {*/
+/*  display: inline-block!important;*/
+/*  width: 50% !important;*/
+/*}*/
+
+/*#id_pic {*/
+/*  display: inline-block!important;*/
+/*  width: 50%!important;*/
+/*}*/

@@ -1,0 +1,78 @@
+﻿.loading {
+    display: none;
+}
+@font-face {
+    font-family: 'Gagarin';
+    src:url('webfonts_Gagarin/Gagarin.ttf.woff') format('woff'),
+        url('webfonts_Gagarin/Gagarin.ttf.svg#Gagarin') format('svg'),
+        url('webfonts_Gagarin/Gagarin.ttf.eot'),
+        url('webfonts_Gagarin/Gagarin.ttf.eot?#iefix') format('embedded-opentype');
+        font-weight: normal;
+        font-style: normal;
+}
+#brandload {
+    font-family: 'Gagarin';
+    font-size: 50px;
+    color: white!important;
+}
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+
+    background-color: black;
+
+    text-align: center;
+}
+
+.position-center-center {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.loader-main {
+    border: 5px solid #f9783b;
+    border-radius: 50%;
+    border-top: 4px solid #141414;
+    width: 180px;
+    height: 180px;
+    -webkit-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
+}
+
+.logo_loader {
+    width: 50px;
+    position: absolute;
+    top: 50%;
+    left: 35%;
+    margin: -24px 0 0 -40px;
+    height: auto;
+    display: block;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

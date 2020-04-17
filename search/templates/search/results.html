@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% extends base_template %}
+{% load static %}
+{% block content %}
+<div class="content">
+    <div class="row" id="searchresult">
+        <div class="col-12" id="showresultcontent">
+            <section class="mt-5">
+                <div class="container">
+                    <div class="display-4">
+                        Search Results
+                    </div>
+                    <hr>
+                    <div class="display-8">
+                        About {{ length }} result found in {{duration}} second
+                    </div>
+                    <div class="mt-2">
+                        {% if documents %}
+                        {% for out in documents %}
+                        <div class="mt-5">
+                            <div>
+                                <h1 class="userdashboard-title"><i class="fa fa-heart"></i>&nbsp;&nbsp;{{ out.email }}</h1>
+                            </div>
+                            <div>
+                                <p><a class="text-muted">{{ out.channel_name }}</a></p>
+                                <p class="description"><a>{{ out.channel_url }}</a></p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% elif mydocuments %}
+                        {% for out in mydocuments %}
+                        <div class="mt-5">
+                            <div>
+                                <h2 class="userdashboard-title"><i class="fa fa-heart"></i>&nbsp;&nbsp;{{ out.0 }}</h2>
+                            </div>
+                            <div>
+                                <p><a class="text-muted">{{ out.1 }}</a></p>
+                                <p class="description"><a>{{ out.2 }}</a></p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <p class="display-2">Result Not found</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

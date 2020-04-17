@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+{% extends base_template %}
+{% load static %}
+{% block content %}
+{% load cool_paginate %}
+<!-- Page Content -->
+<div class="content">
+<div class="container">
+
+    <!-- Page Heading -->
+    {% if total_results > 0 %}
+    <div class="display-4">
+            Search Results
+        </div>
+        <hr>
+        <div class="display-8 mb-5">
+           Found {{total_results}} Results in {{duration}} seconds
+        </div>
+    
+    <div class="container main-section" id="dumping_results">
+		<div class="row">
+			<div class="col-lg-12 hedding pb-2">
+		
+			</div>
+			<div class="col-lg-12">
+				<table class="table table-bordered table-hover" style="border-collapse:collapse;">
+				    <thead>
+				        <tr>
+				            <th style="color: white">Bin No</th>
+				            <th style="color: white">Owner Name</th>
+				            <th style="color: white">Bank</th>
+				            <th style="color: white">Country</th>
+				            <th style="color: white">Price</th>
+				        </tr>
+                    </thead>
+                    <tbody>
+    {% for dump in dumps %}
+    
+				    
+			    		<tr colspan="5" data-toggle="collapse" data-target="#demo{{forloop.counter}} " class="accordion-toggle dumps_table_row">
+				            <td>{{dump.bin_no}}</td>
+				            <td>{{dump.name}}</td>
+				            <td>{{dump.bank}}</td>
+				            <td><i class="flag-icon flag-icon-{{dump.country|lower}}"></i>{{dump.country}}</td>
+				            <td>$ {{dump.price}} </td>
+				        </tr>
+				        <tr class="p d-none">
+                                <td  colspan="5" class="hiddenRow">
+                                    <div class="accordian-body collapse p-3" id="demo{{forloop.counter}}">
+                                        <div class="row">
+                                        <div class="col-md-4">
+                                        <table class="table table-striped">  
+                        
+                                            <tbody>
+                                               
+                                              <tr>
+                                                    <th style="color: indigo">
+                                                        Card Mark
+                                                    </th>
+                                                    <td>
+                                                            {{dump.card_mark}}
+                                                    </td>
+                                                 
+                                              </tr>
+                                              <tr>
+                                                    <th style="color:indigo">
+                                                        Zip No
+                                                    </th>
+                                                    <td>
+                                                            {{dump.zip_no}}
+                                                    </td>
+                                                 
+                                              </tr>
+                                              <tr>
+                                                    <th style="color: indigo">
+                                                        Refund Facility
+                                                    </th>
+                                                    <td>
+                                                            {{dump.refund}}
+                                                    </td>
+                                                 
+                                              </tr>
+    
+                                              <tr>
+                                                    <th style="color: indigo">
+                                                        State
+                                                    </th>
+                                                    <td>
+                                                            {{dump.state}}
+                                                    </td>
+                                                 
+                                              </tr>
+                                              <tr>
+                                                    <th style="color: indigo">
+                                                        Expiry Date
+                                                    </th>
+                                                    <td>
+                                                            {{dump.expiry}}
+                                                    </td>
+                                                 
+                                              </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+    
+                                    
+                                        <div class="col-md-8">
+                                            <table class="table table-striped">  
+                            
+                                                <tbody>
+                                                        <tr>
+                                                                <th style="color: indigo">
+                                                                    Card Category
+                                                                </th>
+                                                                <td>
+                                                                        {{dump.card_category}}
+                                                                </td>
+                                                             
+                                                          </tr>
+                                                  
+                                                  <tr>
+                                                        <th style="color: indigo">
+                                                            City
+                                                        </th>
+                                                        <td>
+                                                                {{dump.city}}
+                                                        </td>
+                                                     
+                                                  </tr>
+                                                  <tr>
+                                                        <th style="color: indigo">
+                                                            Base
+                                                        </th>
+                                                        <td>
+                                                                {{dump.base}}
+                                                        </td>
+                                                     
+                                                  </tr>
+                                                  <tr>
+                                                        <th style="color: indigo">
+                                                            Source Market
+                                                        </th>
+                                                        <td>
+                                                                {{dump.source}}
+                                                        </td>
+                                                     
+                                                  </tr>
+                                                  <tr>
+                                                        <th style="color: indigo">
+                                                            Found on:
+                                                        </th>
+                                                        <td>
+                                                                {{dump.date}}
+                                                        </td>
+                                                     
+                                                  </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    </div> 
+                                </td> 
+                            </tr>
+				 
+                    
+                    {% endfor %}
+                </tbody>
+				</table>
+            </div>
+            <div id="pagination-div">
+                {% cool_paginate page_obj=dumps size="SMALL"%}
+                </div>
+            {% else %}
+            <h2>No Results Found</h2>
+           
+            {% endif %}
+            
+		</div>
+	</div>
+
+
+  {% endblock %}

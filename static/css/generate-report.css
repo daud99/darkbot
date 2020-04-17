@@ -1,0 +1,21 @@
+.wrapper-circle-noti {
+    background: #E6E6E6;
+    padding: 1.6rem 1.2rem;
+    text-align: left;
+    color: black;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.circle-noti {
+    background: #f5f5f5;
+    padding: 0.8rem;
+    min-height: 5rem;
+    border-radius: 10px;
+    cursor: text;
+}
+
+.instruction-heading {
+    font-size: 1.5rem;
+    font-weight: bolder;
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+{% extends base_template %}
+{% load static %}
+{% block content %}
+{% load cool_paginate %}
+<!-- Page Content -->
+<div class="content">
+<div class="container">
+
+    <!-- Page Heading -->
+    {% if message %}
+    <div class="display-4">
+            Search Results
+        </div>
+        <hr>
+        <div class="display-8 mb-5">
+            {{message}} in {{duration}} seconds
+        </div>
+    {% endif %}
+    {% if breaches|length > 0 %}
+    {% for breach in breaches %}
+    <div class="row">
+        <div class="col-md-3" style="background-color: black;">
+            {% if breach.LogoPath %}
+            <img src="{{breach.LogoPath}}" alt="imagr for breach">
+            {% endif %}
+        </div>
+      <div class="col-md-9">
+        <h3><i class="fa fa-heart"></i>&nbsp;&nbsp;{{breach.company}}</h3>
+        {% if breach.domain %}
+        <h5><b>Domain: </b>{{breach.domain}}</h5>
+        {% endif %}
+
+        {% if breach.PwnCount %}
+        <h5><b>Total Pwned Accounts: </b>{{breach.PwnCount}}</h5>
+        {% endif %}
+        {% if breach.BreachDate %}
+        <h5><b>Breached on: </b>{{breach.BreachDate}}</h5>
+        {% endif %}
+        <p style="text-align: justify">{{breach.description}}</p>
+        <h4>Compromised Data: </h4>
+        <p>{{breach.compromised_data}}</p>
+      </div>
+    </div>
+
+    <hr>
+    {% endfor %}
+
+<!-- {% if showpagination %}
+
+
+{#<nav aria-label="..." >#}
+{#  <ul class="pagination">#}
+{#    <li class="page-item disabled pagination-wrapper">#}
+{#      <span class="page-link">Previous</span>#}
+{#    </li>#}
+{#    <li class="page-item pagination-wrapper"><a class="page-link" href="#">1</a></li>#}
+{#    <li class="page-item active">#}
+{#      <span class="page-link">#}
+{#        2#}
+{#        <span class="sr-only">(current)</span>#}
+{#      </span>#}
+{#    </li>#}
+{#    <li class="page-item pagination-wrapper"><a class="page-link" href="#">3</a></li>#}
+{#    <li class="page-item pagination-wrapper">#}
+{#      <a class="page-link" href="#">Next</a>#}
+{#    </li>#}
+{#  </ul>#}
+{#</nav>#}
+
+    <div class="pagination">
+    <span class="step-links">
+        {% if breaches.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ breaches.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ breaches.number }} of {{ breaches.paginator.num_pages }}.
+        </span>
+
+        {% if breaches.has_next %}
+            <a href="?page={{ breaches.next_page_number }}">next</a>
+            <a href="?page={{ breaches.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endif %} -->
+<div id="pagination-div">
+    {% cool_paginate page_obj=breaches size="SMALL"%}
+    </div>
+ {% else %}
+ <h3 style="text-align: center"> Congrats! No Breaches Found</h3>
+ {% endif %}
+  </div>
+</div>
+
+  <!-- /.container -->
+  {% endblock %}

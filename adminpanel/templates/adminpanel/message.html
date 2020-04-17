@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+{% extends 'adminpanel/base.html' %}
+{% load static %}
+{% block content %}
+<div class="content">
+    <div class="row" id="message-content">
+        <div class="col-12" id="messagepage">
+            <div class="container">
+                <div class="text-center mt-4 mb-4">
+                    <h1><strong id="msgheading">Messages</strong></h1>
+                </div>
+            </div>
+            {% if msgs %}
+             {% for m in msgs%}
+             <div class="card card-nav-tabs mt-5">
+                 <div class="ml-auto">
+                     <i class="tim-icons icon-trash-simple p-1" data-toggle="modal" data-target="#exampleModal"></i>
+                 </div>
+                <div class="card-header card-header-success">
+                    FROM: <strong>{{m.sender_email}}</strong>
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>{{m.sender_message}}.</p>
+                        <footer class="blockquote-footer"> <cite title="Source Title">{{m.sender_name}}</cite></footer>
+                    </blockquote>
+                </div>
+            </div>
+            <!-- Button trigger modal -->
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel"><strong>Confirm Deletion</strong></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete?
+                        </div>
+                        <div class="modal-footer ml-auto">
+                            <button type="button" class="btn btn-danger"><a href="{% url 'adminpanel:deletemsg' m.id %}">Delete</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p class="blockquote blockquote-primary" id="makemeblack">
+                <strong>"There are no messages yet!."</strong>
+                <br>
+                <br>
+                <small>
+                    - Darkbot
+                </small>
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% extends base_template %}
+{% load static %}
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-12">
+            <section class="mt-5">
+                <div class="container" id="frm">
+                    <div id="feedback" class="alert alert-danger">
+                        <h1>Please select the desire search option</h1>
+                    </div>
+                    <div id="i"></div>
+                    <div class="text-center">
+                        <h1>DARKBOT SEARCHER</h1>
+                        <p class="text-muted">Start track on DARKNET, by entering email or any other data below.</p>
+                        <form method="POST">
+                            <div class="row">
+                                <div class="container">
+                                    <div class="form-group">
+                                        <div id="form-search" class="input-group">
+                                            <input id="search-field" placeholder="Enter here....." type="text"
+                                                   class="form-control" name="search" required>
+                                            <div id="search-dropdown-btn" class="input-group-btn">
+                                                <select id="search-dropdown" class="form-control" name="category">
+                                                    <!--<option selected="selected">Select</option>!-->
+                                                    <option value="1">Trace Email</option>
+                                                    <option value="2">Trace Password</option>
+                                                    <option value="3">Trace Any Info</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="offset-md-4 col-lg-4">
+                                    <div class="input-group">
+                                        <br>
+                                        {% csrf_token %}
+                                        <a href="#" class="mx-auto"><input id="search-btn" type="submit" name="submit"
+                                                                           value="SEARCH" class="btn btn-default"
+                                                                           onclick="loading();"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            {% endblock %}

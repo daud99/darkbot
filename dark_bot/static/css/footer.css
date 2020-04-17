@@ -1,0 +1,46 @@
+@import url(http://weloveiconfonts.com/api/?family=entypo);
+
+.boxi
+{
+	font-size: 25px;
+}
+.angotha
+{
+	cursor:pointer;
+	user-select:none;
+}
+.ungli
+{
+	color:white;
+}
+.ari
+{
+	background-color: black;
+}
+
+#inli
+{
+	display:inline;
+}
+.line
+{
+	background-color: #868e96;
+}
+#foot
+{
+ background-color:black;
+ color: white;
+ padding: 20px;
+}
+.box
+{
+	font-family: entypo;
+}
+.list-group-item:nth-child(even) {
+  background-color: #F5F5F5;
+}
+#footer-copyright {
+background-color: #1a1f23;
+color: white;
+}
+

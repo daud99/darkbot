@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="blankpage">
+
+    </div>
+    <div class="wrapper">
+        <div class="main-header">
+            <div class="heading-bolder">Dark Web Monitoring</div>
+            <div class="date">
+                <div class="datetag datebox">
+                    Start Date
+                </div>
+                <div class="datebox">
+                    {{ starttime }}
+                </div>
+                <br>
+                <div class="datetag datebox">
+                    End Date
+                </div>
+                <div class="datebox">
+                    {{ endtime }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    </section>
+    {% if leakedpasswords %}
+    <section>
+        <div class="heading heading-passwords">
+            CURRENT EXPOSURE OF LEAKED PASSWORDS
+        </div>
+        {% for each in leakedpasswords %}
+            <table class="leaked-passwords__table">
+            {% for key,val in each.items() %}
+                {% if key != "_id" and val != None and key != "id" and key != "before_at"%}
+              <tr class="round-border">
+                <th class="purple-head-vertical-table"> {{key|capitalize}}:</th>
+                <td>{{ val }}</td>
+              </tr>
+                {% endif %}
+            {% endfor %}
+
+            </table>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+ </div>
+</body>
+</html>

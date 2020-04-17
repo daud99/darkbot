@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+{% extends 'adminpanel/base.html' %}
+{% load static %}
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div id="searchcontent" class="col-12">
+            <div class="searchhidecontent">
+                <div class="container mt-5">
+                    <div class="text-center">
+                        <h1><strong>DARKBOT SMART DATA COLLECTOR</strong></h1>
+                    </div>
+                   
+                    <div class="mt-5">
+                        <div id="feedback" class="alert alert-danger alert-with-icon">
+                            <button type="button" aria-hidden="true" class="close" data-dismiss="alert"
+                                    aria-label="Close">
+                                <i class="tim-icons icon-simple-remove"></i>
+                            </button>
+                            <span data-notify="icon" class="tim-icons icon-alert-circle-exc"></span>
+                            <span><b> ERROR! - </b> Please select the desired options properly.</span>
+                        </div>
+                        <div id="i"></div>
+                    </div>
+                </div>
+                <div>
+                    <section class="mt-5" id="centerme">
+                        <div class="container" id="frm">
+                            <!--                    <div id="feedback" class="alert alert-danger">-->
+                            <!--                        <h1>Please select the desire search option</h1>-->
+                            <!--                    </div>-->
+                            <div class="text-center">
+
+                                <p class="text-muted">Collect Critical Data from Darnet</p>
+                                <form method="POST" >
+
+                                    <div class="row">
+                                        <div class="container">
+                                            <div class="form-group">
+                                                <div id="form-search" class="input-group">
+                    
+                                                        <div id="sea-dropdown-btn" class="input-group-btn">
+                                                                <label for="sea-dropdown"><b>Select Market/Forum</b></label>
+                                                                <select id="sea-dropdown" class="form-control"
+                                                                        name="marketplace">
+                                                                    <!--<option selected="selected">Select</option>!-->
+                                                                    <option value="0" selected>-----------</option>
+                                                                    <option value="1">BroCard Dumps</option>
+                                                                    <option value="2">Mecca Dumps</option>
+                                                                    <option value="3">Franklins D.</option>
+                                                                    <option value="4">Indexed Forums</option>
+                                                                    <option value="5">Email & Pass </option>
+                                                                    <option value="6">Banking</option>
+                                                                </select>
+                                                            </div>
+                                                    <div id="searchh-dropdown-btn" class="input-group-btn">
+                                                        <label for="searchh-dropdown"><b>Select Action</b></label>
+                                                        <select id="searchh-dropdown" class="form-control"
+                                                                name="categ">
+                                                            <!--<option selected="selected">Select</option>!-->
+                                                            <option value="0" selected>-----------</option>
+                                                            <option value="1">Collect Dumps</option>
+                                                            <option value="2">Collect CVVs</option>
+                                                            <option value="3">Email Intelligence</option>
+                                                            <option value="4">Username Intelligence</option>
+                                                            <option value="5">CVV</option>
+                                                            <option value="6">DUMPS</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                    </div>
+                                    <!--
+                                    <div id="userpopup" class="row mb-2">
+                                        <div class="offset-md-4 col-lg-4">
+                                            <span class="popupp">Please enter a valid <strong>Email</strong>.</span>
+                                        </div>
+                                    </div>
+                                    -->
+                                    <div class="row">
+                                        <div class="offset-md-2 col-lg-4">
+                                            <div class="input-group">
+                                                <br>
+                                                {% csrf_token %}
+                                                <a href="#" class="mx-auto"><input id="searchh-btn" type="submit"
+                                                                                   name="submit"
+                                                                                   value="Start Data Collection"
+                                                                                   class="btn btn-default"></a>
+                                            </div>
+                                           
+                                        </div>
+                                        
+              
+                                    </div>
+    
+                                    
+                                </form>
+                                <hr size="5" color="black">
+                                <div id="cancel_crawling_div">
+                                        <p class="text-muted">Kill And Checkpoint Running Processes (If any)</p>
+                             <form method="POST" action="/gatherdata/cancel/">
+                                <div class="row">
+                                    
+                                        <div class="col-md-6 offset-md-1 col-sm-12 form-group">
+                                            <div class="input-group">
+
+                                          
+                                                <div id="cancel-dropdown-btn" class="input-group-btn">
+                                                        
+                                                        <select id="cancel-dropdown" style="background-color: black; color:white" class="form-control"
+                                                                name="cancel-option">
+                                                            <!--<option selected="selected">Select</option>!-->
+                                                            <option value="0">Select choice</option>
+                                                            <option value="1">Stop All</option>
+                                                            <option value="2">Email spilder</option>
+                                                            <option value="3">Password spider</option>
+                                                            <option value="4">Dumps Crawl</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-12 input-group">
+                                                {% csrf_token %}
+                                                <a href="#" class="mx-auto"><input id="cancel_crawling-btn"
+                                                                                    type="submit"
+                                                                                   name="cancel_btn"
+                                                                                   value="Break It"
+                                                                                   class="btn btn-info btn-sm"></a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                
+                                </div>
+                                
+                            </div>
+
+                            
+                        </div>
+                    </section>
+                    
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div>
+{% endblock %}

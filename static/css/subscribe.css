@@ -1,0 +1,96 @@
+
+.bg {
+    background-color: black;
+    color: white;
+    background: url('../img/bg.jpg') no-repeat center center fixed;
+    background-repeat: repeat-y;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+#bggg .row {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    font-size: x-large;
+    background: url('../img/bg.jpg') no-repeat center center fixed;
+    background-repeat: repeat-y;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+body {
+    background-color: black;
+    background: url('../img/bg.jpg') no-repeat center center fixed;
+    background-repeat: repeat-y;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#bgg .container-fluid{
+    background-color: #1e1e1e!important;
+    color: white;
+    border-right: #999999;
+    border-left: #999999;
+    border-radius: 25px!important;
+    border: 3px solid black;
+    background: url('../img/bg.jpg') no-repeat center center fixed;
+    background-repeat: repeat-y;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.container {
+    background-color: white;
+    color: black;
+}
+
+.heading {
+    padding: 5px;
+    background-color: white;
+    color: darkblue;
+}
+
+#subscribeform {
+    border-radius: 25px!important;
+    border: 4px solid #f9783b;
+    margin-bottom: 30px;
+}
+
+#subscribebtn {
+    background: black;
+    color: white;
+    border-radius: 5px;
+}
+
+#error-noti {
+    color: red;
+}
+
+#ipinstruction {
+    color: black;
+    font-weight: 400;
+}
+
+
+#fromip {
+    display: none!important;
+}
+
+
+.upper-heading {
+    color: whitesmoke;
+    text-decoration: none;
+    cursor: pointer;
+}
+.upper-heading:hover {
+    color: #f9783b;
+    text-decoration: none;
+    cursor: pointer;
+}

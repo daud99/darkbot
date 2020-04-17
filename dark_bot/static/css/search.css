@@ -1,0 +1,92 @@
+
+#search-dropdown-btn {
+background-color: black!important;
+color: white!important;
+}
+
+#search-btn {
+background-color: black;
+color: white;
+}
+#search-field {
+background-color: black;
+color: white;
+}
+::placeholder {
+  color: white!important;
+  opacity: 1; /* Firefox */
+}
+
+::-ms-input-placeholder { /* Internet Explorer 10-11 */
+ color: white!important;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+ color: white!important;
+}
+
+#feedback {
+ display: none;
+}
+
+#form-search .form-control {
+    background-color: black!important;
+    color: white!important;
+}
+#form-bank-search .form-control {
+  background-color: black!important;
+  color: white!important;
+}
+#form-email-search .form-control {
+  background-color: black!important;
+  color: white!important;
+}
+#search-any {
+    display: none;
+}
+
+#pcli
+{
+  display: none;
+}
+#check2
+{
+  display: none;
+}
+.popupp{
+  position:relative;
+  display:inline-block;
+  cursor:pointer;
+  user-select:none;
+  width:80%;
+  background-color:#be4b49;
+  color:#fff;
+  text-align:center;
+  padding:5px;
+  margin-left:10px;
+  border-radius:10px;
+  padding: 3%;
+}
+.popupp::before{
+  content: "";
+  position: absolute;
+  top: -80%;
+  left:50%;
+  margin-left:-20px;
+  border-width: 20px;
+  border-style: solid;
+  border-color: transparent transparent #be4b49 transparent;
+}
+
+#userpopup {
+    display: none;
+}
+#userpopup2
+{
+  display: none;
+}
+
+#pagination-div {
+  padding: 2rem;
+  text-align: right;
+}

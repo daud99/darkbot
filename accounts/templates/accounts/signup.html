@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+{% extends 'adminpanel/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="container" id="signupbox">
+                <div class="text-center">
+                    <h1><strong>ACCEPT SUBSCRIPTION REQUEST</strong></h1>
+                </div>
+                <div class="container-fluid">
+                    <div>
+                        {% if form.errors %}
+                        <div class="mt-5">
+                            <h3 class="text-center">ERRORS</h3>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">{{form.errors}}</li>
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% for field in form%}
+
+                        <div id="{{forloop.counter}}">
+                            {{field|as_crispy_field}}
+                        </div>
+
+
+                        {% endfor %}
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="mx-auto">
+<!--                                    <input type="submit" id="signupbtn" value="Sign Up" class="btn form-control">-->
+                                    <button class="btn btn-success animation-on-hover" type="submit">Accept Request</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+                <div id="details">
+                    <div id="11">
+                        {{request.company}}
+                    </div>
+                    <div id="22">
+                        {{request.ip_address}}
+                    </div>
+                    <div id="33">
+                        {{request.email}}
+                    </div>
+                    <div id="44">
+                        {{request.firstname}}
+                    </div>
+                    <div id="55">
+                        {{request.lastname}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+         var forthvalue = $('#44').html();
+        forthvalue = forthvalue.replace(/\s+/g, '');
+        $('#id_first_name').val(forthvalue);
+
+        var fifthvalue = $('#55').html();
+        fifthvalue = fifthvalue.replace(/\s+/g, '');
+        $('#id_last_name').val(fifthvalue);
+
+        $('#id_status').val("Approved");
+
+        var subscription = $('#id_subscription_plan').val();
+        if(subscription == "Basic"){
+            $('#id_number_of_queries').val(60);
+        }
+        else if(subscription == "Advance") {
+            $('#id_number_of_queries').val(100);
+        } else if(subscription == "Pro") {
+            $('#id_number_of_queries').val(200);
+        }
+
+    });
+</script>
+{% endblock %}

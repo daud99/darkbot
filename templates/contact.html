@@ -1,0 +1,79 @@
+<!doctype html>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<section class="mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <form method="POST" action="{% url 'contact' %}">
+                    {% csrf_token %}
+                    <h3>Contact Us</h3>
+                    <p>We are here to answer your questions you may have regarding anything about us. Reach out us and
+                        we will
+                        response as soon as possible.</p>
+                    <p>Even if something you have always wanted to experience and can't find on DARKBOT, let us
+                        know we
+                        promise we'll do our best to do it for you.</p>
+                    <div class="row">
+                        <div class="col-md-5 form-group">
+                            <input type="text" name="name"  placeholder="Name"
+                                   class="form-control" required>
+                        </div>
+                        <div class="offset-md-2 col-md-5 form-group">
+                            <input type="email" name="email" placeholder="Enter Email"
+                                   class="form-control" required>
+                        </div>
+                    </div>
+                    <h5>Message</h5>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <textarea name="message" rows="4" class="form-control"
+                                          required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset-md-10 col-md-2 mx-auto">
+                            <div class="form-group ">
+                                <input id="search-btn" type="submit" name="submit" value="SEND" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-3">
+                <h4>EMAIL</h4>
+                <div class="">
+                    daudahmed870@gmail.com
+                </div>
+                <br>
+                <h4>TELEPHONE</h4>
+                <div class="">
+                    051-4426672
+                    <br>
+                    051-4850577
+                </div>
+                <br>
+                <h4>SKYPE</h4>
+                <div class="">
+                    ch.daud786
+                </div>
+                <br>
+                <h4>ADDRESS</h4>
+                <div class="">
+                    Tranculus Company , Minister Enclave, Islamabad
+                </div>
+                <br>
+                <div class="box boxi">
+                    <a target='_blank' href="https://web.facebook.com/Fashion-affairs-dulha-dress-1694478830770908/">&#62220;</a>
+                    <a href="">&#62217;</a>
+                    <a href="">&#62223;</a>
+                    <a href="">&#62253;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

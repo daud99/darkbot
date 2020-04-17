@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% extends base_template %}
+{% load static %}
+{% block content %}
+{% load cool_paginate %}
+<div class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="limiter">
+                <div class="container mt-5">
+                    <div class="text-center">
+                        <h1><strong>SEARCH RESULT</strong></h1>
+                    </div>
+                </div>
+                <div class="container-table100">
+                    <div class="wrap-table100">
+                        <div class="table100">
+                            {% if pastes|length > 0 %}
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr class="table100-head " >
+                                    <th style="color: white" scope="col">Paste Title</th>
+                                    <th style="color: white" scope="col">Paste Source</th>
+                                    <th style="color: white" scope="col">Paste Path</th>
+                                    <th style="color: white" scope="col">Date</th>
+                                    <th style="color: white" scope="col">Total Pastes</th>
+                                </tr>
+                                </thead>
+                                {% for out in pastes %}
+                                <tbody>
+                                <tr >
+                                    <td>{{ out.paste_title }}</td>
+                                    <td>{{ out.Source }}</td>
+                                    <td>{{ out.paste_url }}</td>
+                                    <td>{{ out.date }}</td>
+                                    <td>{{ out.total_emails }}</td>
+                                </tr>
+                                </tbody>
+                                {% endfor %}
+                            </table>
+                            <div id="pagination-div">
+                                    {% cool_paginate page_obj=pastes size="SMALL"%}
+                                    </div>
+                            {% else %}
+                            <h3 style="text-align: center"> Congrats! No Pastes Found</h3>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

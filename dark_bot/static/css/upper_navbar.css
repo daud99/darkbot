@@ -1,0 +1,99 @@
+#upper-navbar {
+    background-color: #1a1f23;
+    padding: 0px 90px;
+    position: relative;
+}
+.nav-link {
+    color: #F4F4F4;
+    font-size: 11px;
+    padding: 8px 10px;
+}
+#header-secondary-outer #social li a i {
+    color: #f4f4f4!important;
+}
+#header-secondary-outer #social li {
+    padding: 8px 10px;
+}
+#header-secondary-outer #social li a i:hover {
+    color: #f9783b!important;
+}
+#header-secondary-outer #second-ul li a span {
+    color: #f4f4f4!important;
+}
+#header-secondary-outer #second-ul li a .icon-tiny {
+    color: #f9783b!important;
+}
+#header-secondary-outer #second-ul a:link {
+    text-decoration: none;
+}
+.sf-menu {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+    z-index: 10;
+}
+
+@media only screen and (min-width : 1001px) {
+    #second-ul {
+        position: absolute;
+        right: 100px;
+    }
+}
+@media only screen and (max-width: 1000px) /* pehlay 690 tha*/
+{
+    body #header-secondary-outer nav > ul > li, body #header-secondary-outer nav > ul > li a {
+        border: none!important;
+    }
+}
+
+@media only screen and (max-width: 1000px) and (min-width: 1px)
+{
+    #header-secondary-outer nav > ul > li {
+        display: inline-block!important;
+        float: none!important;
+        width: 100%;
+        text-align: center;
+        height: auto!important;
+    }
+}
+
+
+
+#header-secondary-outer ul {
+    height: 32px;
+    z-index: 1000;
+}
+@media only screen and (max-width: 1000px) and (min-width: 1px)
+{
+    #header-secondary-outer nav > ul {
+        float: none!important;
+        width: 100%;
+        text-align: center;
+        height: auto!important;
+    }
+}
+@media only screen and (max-width: 1000px) and (min-width: 1px)
+{
+    #header-secondary-outer nav ul.sf-menu {
+        border-top: 1px solid #DDDDDD;
+    }
+}
+@media only screen and (max-width: 1000px)/* pehlay 690 tha*/
+{
+    #header-secondary-outer nav ul.sf-menu {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
+@media (min-width: 1px)
+{   /* this code keep all li in our navbar inline */
+    #social {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+         flex-flow: row nowrap; 
+        -webkit-box-pack: start;
+        -ms-flex-pack: start;
+        justify-content: flex-start;
+    }    
+}
+/* Till here is the css properties of upper-navbar */

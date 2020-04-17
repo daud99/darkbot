@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+{% extends 'adminpanel/base.html' %}
+{% load static %}
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-chart">
+                <div class="card-header ">
+                    <div class="row">
+                        <div class="col-sm-6 text-left">
+                            <h5 class="card-category">Performance</h5>
+                            <h2 class="card-title">Total Searches</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area h-50">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card card-chart">
+                <div class="card-header">
+                    <h5 class="card-category">TOP 4 Users</h5>
+
+                </div>
+                <div class="card-body h-100">
+
+                        <canvas id="agentSearchDoughnut" class="h-100"></canvas>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card card-chart">
+                <div class="card-header">
+                    <h5 class="card-category">Search Type Histogram</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area h-100">
+                        <canvas id="histogramChart" class="h-100"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-chart">
+                <div class="card-header">
+                    <h5 class="card-category">Data Indexed</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area h-100">
+                        <canvas id="polarChart" class="h-100"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card card-chart">
+                <div class="card-header">
+                    <h5 class="card-category">Users Active</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area h-100">
+                        <canvas id="user-chart" class="h-100"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% if requests %}
+        <div class="col-md-12">
+            <div class="card card-tasks">
+                <div class="card-header ">
+                    <h6 class="title d-inline">Subscription Requests({{ requests.length }})</h6>
+                    <p class="card-category d-inline">today</p>
+                </div>
+                <div class="card-body ">
+                    <div class="table-full-width table-responsive">
+                        <table class="table">
+                            <tbody>
+                            {% for request in requests %}
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="">
+                                            <span class="form-check-sign">
+                                <span class="check"></span>
+                              </span>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p class="title">{{request.email}}</p>
+                                    <p class="text-muted">{{ request.subscription_plan }}, {{ request.created_request }}</p>
+                                </td>
+                                <td class="td-actions text-right">
+                                    <button type="button" rel="tooltip" title="" class="btn btn-link"
+                                            data-original-title="Edit Task">
+                                        <i class="tim-icons icon-pencil"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+<div class="row">
+        {% if logs %}
+        <div class="col-lg-12 col-md-12">
+            <div class="card ">
+                <div class="card-header">
+                    <h4 class="card-title"> Search Logs</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table tablesorter " id="">
+                            <thead class=" text-primary">
+                            <tr>
+                                <th>
+                                    User
+                                </th>
+                                <th>
+                                    Search Term
+                                </th>
+                                <th>
+                                    Type
+                                </th>
+                                <th class="text-center">
+                                    Time
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for log in logs %}
+                            <tr>
+                                <td>
+                                    {{ log.user }}
+                                </td>
+                                <td>
+                                    {{ log.search_term }}
+                                </td>
+                                <td>
+                                    {{ log.type }}
+                                </td>
+                                <td class="text-center">
+                                    {{ log.search_time }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <input id="save" type="button" value="Download" onclick="window.open('output')" class="btn btn-danger">
+</div>
+    <script type="text/javascript">
+        $.get('{% url "adminpanel:doughnutchart" %}', function(data) {
+            var ctx = document.getElementById('agentSearchDoughnut');
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                        datasets: [{
+                            data: data.l,
+                            backgroundColor: [
+                                "purple","red","orange","green","blue"
+                            ]
+                        }],
+
+                        // These labels appear in the legend and in the tooltips when hovering different arcs
+                        labels: data.labels
+                    }
+            });
+                    });
+
+
+         $.get('{% url "adminpanel:activeuserchart" %}', function(data) {
+            var ctx = document.getElementById('user-chart');
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                        datasets: [{
+                            data: data.l,
+                            backgroundColor: [
+                                "green","red"
+                            ]
+                        }],
+
+                        // These labels appear in the legend and in the tooltips when hovering different arcs
+                        labels: data.labels
+                    }
+            });
+                    });
+
+    {#    polar chart stuff below #}
+
+        $.get('{% url "adminpanel:polarchart" %}', function(data) {
+            var ctx = document.getElementById('polarChart');
+            var myChart = new Chart(ctx, {
+                type: 'polarArea',
+                data: {
+                        datasets: [{
+                            data: data.data,
+                            backgroundColor: [
+                                "purple","red","orange"
+                            ]
+                        }],
+
+                        // These labels appear in the legend and in the tooltips when hovering different arcs
+                        labels: data.labels
+                    }
+            });
+                    });
+
+    {#    histogram chart stuff bottom #}
+
+    $.get('{% url "adminpanel:histogramchart" %}', function(data) {
+            var ctx = document.getElementById('histogramChart');
+            var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: data.labels,
+                                datasets: [{
+                                    label: '# of Searches W.R.T Types',
+                                    data: data.data,
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 0.2)',
+                                        'rgba(54, 162, 235, 0.2)',
+                                        'yellow',
+                                        'rgba(75, 192, 192, 0.2)',
+                                        'rgba(153, 102, 255, 0.2)',
+                                        'rgba(255, 159, 64, 0.2)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    });
+
+    </script>
+    <script type="text/javascript" src="{% static 'js/plugins/chartjs.min.js' %}"></script>
+        <script type="text/javascript">
+            $.get('{% url "adminpanel:linechart" %}', function(data) {
+                var ctx = $("#myChart").get(0).getContext("2d");
+                new Chart(ctx, {
+                    type: 'line',
+                    data: data,
+                    backgroundColor: [
+                                        'rgba(255, 99, 132, 0.2)',
+                                        'rgba(75, 192, 192, 0.2)',
+                                        'rgba(54, 162, 235, 0.2)',
+                                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                    ],
+                });
+            });
+        </script>
+ <script src="{% static 'js/core/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/FileSaver.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/canvas-toBlob.js' %}"></script>
+
+         <script type="text/javascript">
+
+
+             var delay = 1000;
+
+         $("#save").click(function(){
+
+           $.ajax({
+           url:download(),
+
+           success:function(){
+           setTimeout(function() {
+           report();
+        }, delay);
+
+}
+});
+
+
+});
+
+           function download(param) {
+        console.log("download");
+             var canvas1 = $("#myChart").get(0);
+                var canvas2 = $("#agentSearchDoughnut").get(0);
+                var canvas3 = $("#histogramChart").get(0);
+                var canvas4 = $("#polarChart").get(0);
+                var canvas5 = $("#user-chart").get(0);
+                var line = canvas1.toDataURL('image/png');
+                var circle = canvas2.toDataURL('image/png');
+                var histogram = canvas3.toDataURL('image/png');
+                var polar = canvas4.toDataURL('image/png');
+                var circle2 = canvas5.toDataURL('image/png');
+
+                  $.ajax({
+            url : 'output',
+            type : "post", // http method
+            data : { "line" : line,
+            "circle" : circle,
+            "histogram" : histogram,
+            "polar" : polar,
+            "circle2" : circle2,
+
+            'csrfmiddlewaretoken': '{{csrf_token}}'
+
+
+                }, // data sent with the post request
+            // handle a successful response
+            success : function(data) {
+            },
+    });
+
+
+
+}
+
+function report(param)
+{
+
+           $.ajax({
+        url: 'output', //The URL you defined in urls.py
+        success: function(data) {
+
+          //If you wish you can do additional data manipulation here.
+        }
+
+    });
+
+}
+
+
+
+
+
+       </script>
+{% endblock %}

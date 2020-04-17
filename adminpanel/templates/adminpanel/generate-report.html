@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+{% extends 'adminpanel/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content">
+    <div class="container">
+        <div class="row mt-1 mb-4">
+            <div class="col-12">
+                <div class="searchhidecontent">
+                    <div class="container mt-5">
+                        <div class="text-center">
+                            <h1><strong>REAL TIME REPORT GENERATION</strong></h1>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="container">
+                             {% if form.errors %}
+                                <ul class="list-group list-group-flush">
+                                  <li class="list-group-item">{{ form.errors }}</li>
+                                </ul>
+                             {% endif %}
+                        </div>
+                        <div class="row mt-3 mb-3">
+                            <div class="col-3">
+                                <div class="sub-heading__monitoring">
+                                   EMAIL MONITORING
+                               </div>
+                            </div>
+                            <div class="offset-6 col-3">
+                                <a href="{% url 'adminpanel:showreports' %}" class="btn btn-block btn-default"> My reports</a>
+                            </div>
+                        </div>
+
+                      <section class="mt-2">
+                              <div class="container">
+                              <div class="wrapper-circle-noti mb-3">
+                                  <span class="instruction-heading">Instruction!</span>
+                                <div class="circle-noti">
+                                    <p>Please upload the .txt file which contains email in it seperated by space.</p>
+                                    <p>like test@test.com ali@ali.com</p>
+                                </div>
+                              </div>
+
+                                  <form action="/adminpanel/generate/report" method="POST" enctype="multipart/form-data">
+                                      <div class="row">
+                                          <div class="col-6 offset-3">
+                                              {% if form %}
+                                                  {% for field in form %}
+                                                    <div class="form-control">
+                                                        {{field}}
+                                                    </div>
+                                                  {% endfor %}
+                                              {% endif %}
+                                          </div>
+                                      </div>
+                                      <div class="row mt-2">
+                                          <div class="col-4 offset-4">
+                                              {% csrf_token %}
+                                              <input type="submit" value="Upload" class="btn btn-md btn-success form-control">
+                                          </div>
+                                      </div>
+                                  </form>
+                              </div>
+                      </section>
+                      <div class="sub-heading__monitoring">
+                           Domain MONITORING
+                       </div>
+                      <section class="mt-5">
+                              <div class="container">
+                                  <div>
+                                      <form action="/adminpanel/report/domain" method="POST">
+                                      <div class="row">
+                                        <div class="col-6 offset-3">
+                                          {% if domains %}
+                                          <select name="domain" class="form-control">
+                                              {% for domain in domains %}
+                                              <option value="{{ domain }}">{{ domain }}</option>
+                                              {% endfor %}
+                                          </select>
+                                          {% endif %}
+                                        </div>
+                                      </div>
+                                      <div class="row">
+                                          <div class="col-4 offset-4 mt-2">
+                                          {% if domains %}
+                                              {% csrf_token %}
+                                              <input type="submit" value="Generate Report" class="btn btn-md btn-success form-control">
+                                          {% endif %}
+                                          </div>
+                                      </div>
+                                      </form>
+                                  </div>
+                              </div>
+                      </section>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

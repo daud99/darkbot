@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Darkbot</title>
+    <link rel="icon" href="{% static "img/d2.png" %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static "css/upper_navbar.css" %}">
+    <link rel="stylesheet" href="{% static "css/bottom_navbar.css" %}">
+    <link rel="stylesheet" href="{% static "css/home_body.css" %}">
+    <link rel="stylesheet" href="{% static "css/footer.css" %}">
+    <link rel="stylesheet" href="{% static "css/search.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/mainn.css" %}">
+    <link rel="stylesheet" href="{% static "css/util.css" %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "css/load.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/landing-home.css" %}">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.0.js"
+            integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/footer.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/dropdown.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/dd.js" %}"></script>
+    <script src="{% static 'js/message-hide.js' %}"></script>
+</head>
+<body>
+<div id="loading">
+    <div id="loader">
+        <div class="position-center-center">
+            <div class="loader-main"></div>
+            <div class="logo_loader" id="brand">DARKBOT</div>
+        </div>
+    </div>
+</div>
+<div id="content">
+<div id="header-secondary-outer" data-full-width="false" data-permanent-transparent="false" class="sticky-top">
+    <nav id="upper-navbar" class="navbar navbar-dark">
+        <ul id="social" class="navbar-nav">
+            <li class="nav-item"><a target="_blank" href=""><i class="fa fa-twitter"></i> </a></li>
+            <li class="nav-item"><a target="_blank" href=""><i class="fa fa-facebook"></i> </a></li>
+            <li class="nav-item"><a target="_blank" href=""><i class="fa fa-linkedin"></i> </a></li>
+            <li class="nav-item"><a target="_blank" href=""><i class="fa fa-google-plus"></i> </a></li>
+        </ul>
+        <ul id="second-ul" class="sf-menu sf-js-enabled sf-arrows mt-1">
+            <li id="menu-item-6226" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6226"><a
+                    href="tel:"><span class="icon-tiny fa fa-phone phonebig"></span> <span class="phonebig">+92-316-1707201</span></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+<nav id="bottom-navbar" class="navbar navbar-expand-lg navbar-dark">
+    <a id="brand" class="navbar-brand mx-auto" href="{% url 'index' %}">DARKBOT</a>
+    <button class='navbar-toggler' data-toggle="collapse" data-target="#navco">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navco">
+        <ul class="navbar-nav">
+            <li class='nav-item'>
+                <a class='nav-link mt-2' href="{% url 'index' %}">Home</a>
+            </li>
+            <!--<li class='nav-item'>
+                <a class='nav-link mt-2' href="{% url 'search:searchi' %}">Investigate</a>
+            </li>!-->
+             <li class='nav-item pointer'>
+                <a class='nav-link mt-2'
+                   {% if "/" == request.path %}
+                   onclick="scrollToServices()"
+                   {% else %}
+                   href="{% url 'index' %}"
+                   {% endif %}
+                >Service</a>
+            </li>
+            <li class='nav-item pointer'>
+                <a class='nav-link mt-2'
+                   {% if "/" == request.path %}
+                   onclick="scrollToTeam()"
+                   {% else %}
+                   href="{% url 'index' %}"
+                   {% endif %}
+                >
+                    Team</a>
+            </li>
+            <li class='nav-item'>
+                <a class='nav-link mt-2' href="http://85.195.114.172:8080/#price">Pricing</a>
+            </li>
+            <li class='nav-item'>
+                <a class='nav-link mt-2' href="{% url 'contact' %}">Contact</a>
+            </li>
+             <li class='nav-item'>
+                <a class='nav-link mt-2' href="{% url 'login' %}">Log In</a>
+            </li>
+
+
+            <li class='nav-item'>
+                <a id="demo-btn" type="button" class='nav-link mt-1 btn btn-default d-none d-lg-block d-xl-block'
+                   href="/contact">Product Demo</a>
+            </li>
+            <li class='nav-item d-lg-none d-xl-none'>
+                <a class='nav-link mt-2' href="/contact">Product Demo</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% include 'adminpanel/partials/_alerts.html' %}
+{% block content %}
+{% endblock %}
+<footer id="foot" class="site-footer mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="list list-unstyled">
+                    <div class="pao">
+                        <h5 class="angotha text-muted" id="custmenu">CUSTOMER SUPPORT</h5>
+                        <div class="ari1">
+                            <a class="ungli" href="#">
+                                <li>Help</li>
+                            </a>
+{#                            <a class="ungli" href="orderTracker">#}
+{#                                <li>Query Tracker</li>#}
+{#                            </a>#}
+                            <!--<a class="ungli" href="">-->
+                                <!--<li>Store Locator</li>-->
+                            <!--</a>-->
+                            <!--<a class="ungli" href="">-->
+                                <!--<li>Site Map</li>-->
+                            <!--</a>-->
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <ul class="list list-unstyled">
+                    <div class="pao">
+                        <hr class="line line1">
+                        <h5 class="angotha text-muted" id='company_menu'>THE COMPANY</h5>
+                        <div class="ari2">
+                            <a class="ungli" href="">
+                                <li>About Us</li>
+                            </a>
+                            <a class="ungli" href="">
+                                <li>Careers</li>
+                            </a>
+                            <a class="ungli" href="">
+                                <li>Legal</li>
+                            </a>
+                            <a class="ungli" href="">
+                                <li>Privacy & Cookie Policy</li>
+                            </a>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            <div class="col-md-2">
+                <ul class="list list-unstyled">
+                    <div class="pao">
+                        <hr class="line line2">
+                        <h5 class="angotha text-muted" id="find_menu">FIND US ON</h5>
+                        <div class="ari3">
+                            <div class="box"><a class="ungli" target='_blank'
+                                                href="#">
+                                <li>&#62220;&nbsp;&nbsp;Facebook</li>
+                            </a>
+                                <a class="ungli" href="">
+                                    <li>&#62217;&nbsp;Twitter</li>
+                                </a>
+                                <a class="ungli" href="">
+                                    <li>&#62223;&nbsp;Google</li>
+                                </a>
+                                <a class="ungli" href="">
+                                    <li>&#62253;&nbsp;Instagram</li>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <ul class="list-unstyled">
+                    <hr class="line line3">
+                    <h5 class="angotha text-muted" id="email_menu">SIGN UP FOR UPDATES</h5>
+                    <hr class="line line4">
+                    <div class="ari4">
+                        <p id="inli">By signing up, you accept the terms of DARBOT's Privacy Policy</p>
+                        <br>
+                        <label class="text-muted">Email Address</label>
+                        <br>
+                        <input type="Email" name="email">
+                    </div>
+                </ul>
+            </div>
+        </div>
+
+</div>
+
+</footer>
+<div id="footer-copyright"class="footer-copyright text-center py-3">© 2019 Copyright:
+    <a href="#" class="text-muted"> DARKBOT AN AUTOMATED THREAD INTELLIGENCE SYSTEM LICENCE # 2294/I/1936 and 5647/I/1936</a>
+  </div>
+</div>
+</body>
+</html>

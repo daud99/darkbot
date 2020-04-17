@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link href="report.css" rel="stylesheet">
+    <title>{{title}}</title>
+    <meta name="description" content="Report example">
+  </head>
+
+  <body>
+    <article id="cover">
+
+
+
+    </article>
+
+    <article id="contents">
+      <h2>Table of contents</h2>
+      <h3>Part one</h3>
+      <ul>
+        <li><a href="#columns-title"></a></li>
+        <li><a href="#competences-title"></a></li>
+      </ul>
+
+
+    </article>
+
+    <article id="columns">
+      <h2 id="columns-title">{{ct}}</h2>
+
+
+
+          <h3 style="color: red; font-weight: bold;font-size: 25px;">Total Searches</h3>
+          <figure>
+            <img src="{{line}}" style="height: 500px;width: 620px;" />
+            <figcaption>Fig.1 - Total Searches(Performance).</figcaption>
+          </figure>
+
+        <h3 style="color: red; font-weight: bold;font-size: 25px;"> Data Indexed</h3>
+      <figure >
+        <img src="{{polar}}"  style="height: 360px;width: 700px; margin-right: 900px" />
+        <figcaption>Fig.2 - Data Indexed.</figcaption>
+      </figure>
+
+        <h3 style="color: red; font-weight: bold;font-size: 25px;">Top Users</h3>
+          <figure>
+            <img src="{{circle}}"  style="height: 360px;width: 700px;"  />
+            <figcaption>Fig.3 - Top 4 Users.</figcaption>
+          </figure>
+
+        <h3 style="color: red; font-weight: bold;font-size: 25px;">Search Type</h3>
+          <figure>
+            <img src="{{histogram}}"  style="height: 360px;width: 700px;"/>
+            <figcaption>Fig.4 - Search Type.</figcaption>
+          </figure>
+
+       <h3 style="color: red; font-weight: bold;font-size: 25px;">Active Users</h3>
+        <figure>
+            <img src="{{circle2}}"  style="height: 360px;width: 700px;"  />
+            <figcaption>Fig.5 - Users Active.</figcaption>
+          </figure>
+
+
+
+
+
+
+    </article>
+
+    <article id="competences">
+      <h2 id="competences-title">{{ct2}}</h2>
+
+      <div class="container">
+	<table>
+		<thead>
+			<tr>
+				<th>User</th>
+				<th>Search Term</th>
+				<th>Type</th>
+				<th>Time</th>
+
+			</tr>
+		</thead>
+		<tbody>
+        {% for log in logs %}
+			<tr>
+				<td>{{ log.user }}</td>
+				<td>{{ log.search_term }}</td>
+				<td> {{ log.type }}</td>
+				<td>{{ log.search_time }}</td>
+
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+
+
+
+
+
+
+    </article>
+
+
+
+    <article id="typography">
+      <h2 id="typography-title">About Us</h2>
+
+      <section>
+        <h4>About DarkBot</h4>
+        <p>
+          Automatic <em>Threat Intelligence System.</em>
+        </p>
+      </section>
+
+
+
+      <section id="ligatures">
+        <h4>Devolpers</h4>
+        <dl>
+          <dt>Daud Ahmed</dt>
+            <dd><span class="none">Web Devolper and Designer </span></dd>
+          <dt>Umar Mukhtar</dt>
+            <dd><span class="none">Design Engineer </span></dd>
+          <dt>M.Bilal Khalid</dt>
+          <dd><span class="none">Programmer</span></dd>
+        </dl>
+      </section>
+
+      <section id="numbers">
+        <h4>Contact Us</h4>
+        <dl>
+          <dt>EMAIL</dt>
+          <dd>daudahmed870@gmail.com</dd>
+          <dt>TELEPHONE</dt>
+          <dd>051-4426672 → <span id="ordinals">051-4850577</span></dd>
+          <dt>SKYPE</dt>
+          <dd>ch.daud786</dd>
+          <dt>Address1</dt>
+          <dd>Tranculus Company , Minister Enclave, Islamabad. </dd>
+            <dt>Address2</dt>
+            <dd>COMSATS University Islamabad,
+                Park Road, Tarlai Kalan,
+                Islamabad 45550, Pakistan.</dd>
+
+        </dl>
+      </section>
+
+
+
+    </article>
+
+
+
+<script
+			  src="https://code.jquery.com/jquery-3.4.1.min.js"
+			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			  crossorigin="anonymous"></script>
+
+         <script>
+    $(function(){
+      $("#includedContent").load("index.html");
+    });
+    </script>
+
+
+  </body>
+</html>

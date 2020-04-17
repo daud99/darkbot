@@ -1,0 +1,243 @@
+
+
+
+
+* {
+    box-sizing: border-box;
+}
+
+
+@page {
+
+    border-bottom: 1pt solid #c1c1c1;
+    border-top: 1pt solid #c1c1c1;
+    counter-increment: pagenumber;
+    padding-top: 2rem;
+    @bottom-right-corner {
+         content: counter(pagenumber);
+        text-align: center;
+        vertical-align: middle;
+    }
+}
+
+
+
+
+@page :first {
+
+    background: url("../img/cover.jpg") no-repeat center;
+  background-size: cover;
+  margin: 0;
+    counter-reset: pagenumber -1;
+   }
+.heading {
+    font-weight: bolder;
+    font-size: 1.5rem;
+    color: #2ACBB9;
+}
+
+/*.heading-passwords {*/
+/*    width: 60%;*/
+/*}*/
+.wrapper {
+    padding: 0.8rem 0;
+
+}
+.main-header {
+        background: #ECF0F3;
+        color: #0B86E9;
+        padding: 2rem;
+        border-left: 15px solid #0B86E9;
+        margin-top: 0.8rem;
+}
+.date {
+    padding: 0.8rem;
+    display: block;
+}
+.datetag {
+    color: #BFC3C6;
+    font-weight: bold;
+    text-align: left;
+    width: 40%;
+}
+
+.datebox {
+    display: inline-block;
+    vertical-align: middle;
+}
+.heading-bolder {
+    font-weight: bolder;
+}
+.heading-breach-email {
+    font-weight: bolder;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    margin: auto;
+    width: 100%;
+    color: #0A85E3;
+}
+
+/*.heading-breaches, .heading-pastes {*/
+/*    width: 50%;*/
+/*}*/
+
+/*.heading-indexemails {*/
+/*    width: 90%;*/
+/*}*/
+
+.leaked-passwords__table, .pastes__table{
+
+    margin: 1rem auto;
+    padding: 2rem;
+}
+
+.breaches-table {
+    padding: 2rem;
+}
+
+.breach-company {
+    display: block;
+}
+
+.breach-body {
+    padding-bottom: 1rem;
+}
+
+.paste-body {
+    display: block;
+    padding: 2rem;
+    margin: auto;
+    width: 10%;
+}
+
+.body-indexemails {
+    padding: 2rem;
+}
+
+.heading-histogram {
+    display: inline-block;
+    text-align: left;
+    font-weight: bolder;
+    font-size: 1.5rem;
+    color: #2ACBB9;
+}
+
+.img1 {
+    position: relative;
+    padding: 2rem;
+    width: 100%;
+}
+
+th {
+
+    text-align: center;
+    padding: 1rem;
+}
+td {
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.body-repeat-indexemails {
+    padding-bottom: 0.8rem;
+}
+
+
+.container {
+    display: block;
+}
+
+
+
+#blankpage {
+    padding-top: 1300px;
+}
+
+table {
+
+  background: #000000;
+  background: -webkit-linear-gradient(45deg, white, white);
+  background: -o-linear-gradient(45deg, white, white);
+  background: -moz-linear-gradient(45deg, white, white);
+  background: linear-gradient(45deg, white, white);
+  padding: 33px 30px;
+  border-collapse: collapse;
+  background: black;
+  color: white;
+  border-radius: 10px!important;
+  width: 70%;
+  margin: 0 auto;
+  position: relative;
+}
+
+
+table td, table th {
+  padding-left: 8px;
+}
+
+table thead tr {
+  height: 60px;
+  background: #36304a;
+    color: white;
+}
+
+table tbody tr {
+  height: 50px;
+    color: white;
+}
+
+table tbody tr:last-child {
+  border: 0;
+}
+
+table td, table th {
+  text-align: left;
+}
+
+table td.l, table th.l {
+  text-align: right;
+}
+
+table td.c, table th.c {
+  text-align: center;
+}
+
+table td.r, table th.r {
+  text-align: center;
+}
+
+
+th{
+  font-family: OpenSans-Regular;
+  font-size: 18px;
+  color: white;
+  line-height: 1.2;
+  font-weight: unset;
+}
+
+
+
+tbody tr {
+  font-family: OpenSans-Regular;
+  font-size: 15px;
+  color: white;
+  line-height: 1.2;
+  font-weight: unset;
+}
+
+
+.compromise-items {
+    color: red;
+}
+
+.breach-company  {
+    color: #F39F03;
+}
+
+table tbody tr td {
+    color: white;
+}
+
+.purple-head-vertical-table {
+    color: #BBC0D6;
+}

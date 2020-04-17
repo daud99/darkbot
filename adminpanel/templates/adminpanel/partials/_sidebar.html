@@ -1,0 +1,111 @@
+{% load static %}
+<div class="sidebar">
+      <!--
+        Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red"
+    -->
+      <div class="sidebar-wrapper">
+        <div class="logo">
+          <a href="javascript:void(0)" class="simple-text logo-mini">
+            AP
+          </a>
+          <a href="{% url 'index' %}" target="_blank" class="simple-text logo-normal" id="brandit">
+{#            <a href="#" target="_blank" class="simple-text logo-normal" id="brandit">#}
+            DARKBOT
+          </a>
+        </div>
+        <ul class="nav">
+          <li
+                  {% if "/adminpanel/" == request.path %}
+                  class="active"
+                  {% endif %}
+          >
+            <a href="{% url 'adminpanel:dashboard' %}">
+              <i class="tim-icons icon-chart-pie-36"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li
+                  {% if "/admin/" in request.path %}
+                  class="active"
+                  {% endif %}
+          >
+            <a href="{% url 'admin:index' %}">
+              <i class="tim-icons icon-settings"></i>
+              <p>DB ADMINISTRATION</p>
+            </a>
+          </li>
+          <li
+                  {% if "/search/" in request.path and "/admin" not in request.path %}
+                  class="active"
+                  {% endif %}
+          >
+            <a href="{% url 'search:searchi' %}">
+              <i class="tim-icons icon-zoom-split"></i>
+              <p>Search</p>
+            </a>
+          </li>
+          <li
+                  {% if "/adminpanel/profile/" == request.path %}
+                  class="active"
+                  {% endif %}
+          >
+            <a href="{% url 'adminpanel:profile' %}">
+              <i class="tim-icons icon-single-02"></i>
+              <p>User Profile</p>
+            </a>
+          </li>
+          <li
+                  {% if "/adminpanel/subscription/request" == request.path %}
+                  class="active"
+                  {% endif %}
+          >
+            <a href="{% url "adminpanel:request" %}">
+              <i class="tim-icons icon-notes"></i>
+              <p>Subscrition Requests</p>
+            </a>
+          </li>
+          <li
+                  {% if "/adminpanel/message" == request.path %}
+                  class="active"
+                  {% endif %}
+          >
+            <a href="{% url 'adminpanel:message' %}">
+              <i class="tim-icons icon-chat-33"></i>
+              <p>Messages</p>
+            </a>
+          </li>
+          <li
+                  {% if "/gatherdata/" == request.path %}
+                  class="active"
+                  {% endif %}
+          >
+            <a href="{% url 'gatherdumps:gathering_main' %}">
+              <i class="tim-icons icon-spaceship"></i>
+              <p>Goto</p>
+            </a>
+          </li>
+          <li
+                  {% if "/adminpanel/monitoring" == request.path %}
+                  class="active"
+                  {% endif %}
+          >
+            <a href="{% url 'adminpanel:monitoring' %}">
+              <i class="tim-icons icon-user-run"></i>
+              <p>Live Monitoring</p>
+            </a>
+
+          </li>
+         <li
+                  {% if "/adminpanel/generate/report" == request.path %}
+                  class="active"
+                  {% endif %}
+          >
+            <a href="{% url 'adminpanel:reportgeneration' %}">
+              <i class="tim-icons icon-single-copy-04"></i>
+              <p>Report Generation</p>
+            </a>
+
+          </li>
+        </ul>
+      </div>
+    </div>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+{% extends 'userdashboard/base.html' %}
+{% load static %}
+{% block content %}
+<div class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-chart">
+                <div class="card-header ">
+                    <div class="row">
+                        <div class="col-sm-6 text-left">
+                            <h5 class="card-category">Performance</h5>
+                            <h2 class="card-title">Total Searches</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area h-50">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card card-chart">
+                <div class="card-header">
+                    <h5 class="card-category">Current Queries Status</h5>
+
+                </div>
+                <div class="card-body h-100">
+
+                        <canvas id="agentSearchDoughnut" class="h-100"></canvas>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card card-chart">
+                <div class="card-header">
+                    <h5 class="card-category">Subscription Status</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area h-100">
+                        <canvas id="dayChart" class="h-100"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        {% if logs %}
+        <div class="col-lg-12 col-md-12">
+            <div class="card ">
+                <div class="card-header">
+                    <h4 class="card-title"> Search Logs</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table tablesorter " id="">
+                            <thead class=" text-primary">
+                            <tr>
+                                <th>
+                                    User
+                                </th>
+                                <th>
+                                    Search Term
+                                </th>
+                                <th>
+                                    Type
+                                </th>
+                                <th class="text-center">
+                                    Time
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for log in logs %}
+                            <tr>
+                                <td>
+                                    {{ log.user }}
+                                </td>
+                                <td>
+                                    {{ log.search_term }}
+                                </td>
+                                <td>
+                                    {{ log.type }}
+                                </td>
+                                <td class="text-center">
+                                    {{ log.search_time }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <input id="save" type="button" value="Download" onclick="window.open('output')" class="btn btn-danger">
+</div>
+
+<script src="{% static 'js/core/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/FileSaver.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/canvas-toBlob.js' %}"></script>
+
+         <script type="text/javascript">
+
+
+             var delay = 1000;
+
+         $("#save").click(function(){
+
+           $.ajax({
+           url:download(),
+
+           success:function(){
+           setTimeout(function() {
+           report();
+        }, delay);
+
+}
+});
+
+
+});
+
+           function download(param) {
+        console.log("download");
+                var canvas1 = $("#myChart").get(0);
+                var canvas2 = $("#agentSearchDoughnut").get(0);
+                var canvas3 = $("#dayChart").get(0);
+
+                var circle = canvas2.toDataURL('image/png');
+                var histogram = canvas1.toDataURL('image/png');
+                var circles = canvas3.toDataURL('image/png');
+
+                  $.ajax({
+            url : 'output',
+            type : "post", // http method
+            data : {
+            "circleq" : circle,
+            "histogramt" : histogram,
+            "circles" : circles,
+
+            'csrfmiddlewaretoken': '{{csrf_token}}'
+
+
+                }, // data sent with the post request
+            // handle a successful response
+            success : function(data) {
+            },
+    });
+
+
+
+}
+
+function report(param)
+{
+
+           $.ajax({
+        url: 'output', //The URL you defined in urls.py
+        success: function(data) {
+
+          //If you wish you can do additional data manipulation here.
+        }
+
+    });
+
+}
+
+
+
+
+
+       </script>
+{% endblock %}
