@@ -75,8 +75,7 @@ def output(request):
 
     print("report")
     global today_search_logs
-    today_subscription_requests = RequestModel.objects.all()[:5]
-    today_search_logs = ApiSearchLog.objects.all()[:8]
+    today_search_logs = ApiSearchLog.objects.all()[:50]
     print("report = ", report)
     env = Environment(loader=FileSystemLoader(searchpath=report))
 
