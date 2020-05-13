@@ -8,7 +8,7 @@ import base64 , re
 from PIL import Image
 from io import BytesIO
 from accounts.models import SubscribeRequest as RequestModel, User
-from search.models import Messages, SearchLog, IndexEmail
+from search.models import ApiSearchLog
 from pathlib import Path
 
 
@@ -76,7 +76,7 @@ def output(request):
     print("report")
     global today_search_logs
     today_subscription_requests = RequestModel.objects.all()[:5]
-    today_search_logs = SearchLog.objects.all()[:8]
+    today_search_logs = ApiSearchLog.objects.all()[:8]
     print("report = ", report)
     env = Environment(loader=FileSystemLoader(searchpath=report))
 

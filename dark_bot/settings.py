@@ -63,9 +63,9 @@ AUTH_USER_MODEL = 'accounts.User'
 SECRET_KEY = 'q*%r*kevzyp_s)36=ec2)2n&y8dv+745z1i+j5z!1h@s#)^!nm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["85.195.114.172"]
+ALLOWED_HOSTS = ["*"]
 
 
 
@@ -147,33 +147,12 @@ WSGI_APPLICATION = 'dark_bot.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'darkbot',
-        'PASSWORD': 'darkbot',
+        'USER': 'daud',
+        'PASSWORD': 'daud',
         'NAME': 'darkbot',
         'HOST': 'localhost',
     },
 }
-
-
-# DATABASES = {
-#         'default': {
-#             'ENGINE': 'djongo',
-#             'ENFORCE_SCHEMA': True,
-#             'NAME': 'darkbot',
-#             'HOST': 'mongodb://localhost:27017/darkbot',
-#             'PORT': 27017,
-#             # 'USER': 'daud123',
-#             # 'PASSWORD': 'daud123',
-#             # 'AUTH_SOURCE': 'darkbot',
-#             # 'AUTH_MECHANISM': 'SCRAM-SHA-1',
-#             # 'REPLICASET': 'replicaset',
-#             # 'SSL': 'ssl',
-#             # 'SSL_CERTFILE': 'ssl_certfile',
-#             # 'SSL_CA_CERTS': 'ssl_ca_certs',
-#             # 'READ_PREFERENCE': 'read_preference'
-#         }
-#     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -228,7 +207,7 @@ MESSAGE_TAGS = {
 LOGIN_REDIRECT_URL = '/adminpanel'
 
 
-try:
-    from .local_settings import *
-except ImportError:
-    pass
+# try:
+#     from .local_settings import *
+# except ImportError:
+#     pass

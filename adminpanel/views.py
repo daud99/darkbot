@@ -1,8 +1,6 @@
 import threading
 from django.db.models import Count
 from django.contrib.sessions.models import Session
-from search.darkbot.monitor import continuousMonitor, startMonitor
-from search.darkbot import domain_monitoring
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -10,30 +8,22 @@ from django.shortcuts import render, get_object_or_404
 from accounts.models import SubscribeRequest as RequestModel, User
 from accounts.forms import UserCreateForm
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, DeleteView
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.core.mail import send_mail
-from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import AccessMixin
 from accounts.script import sendmail, iplisting
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from search.models import Messages, SearchLog, IndexEmail
-from gatherdumps.models import CardDump, CardCvv
+from gatherdumps.models import CardDump, CardCvv, Email_passwords
 from chartjs.views.lines import BaseLineChartView
 from django.utils import timezone
 from .forms import UploadFileForm
-import datetime, time
-from search.api.views import saveMonitorEmail, saveCurrentStatus, darkbotEmailReport, darkbotDomainReport
-from search.models import Messages, SearchLog, IndexEmail, MonitorDomain, Report, GlobalVar
+import datetime
+from search.api.views import saveMonitorEmail, saveCurrentStatus, darkbotEmailReport
+from search.models import Messages, MonitorDomain, Report, GlobalVar, ApiSearchLog
 from  adminpanel.tasks import Monitoring, startDomainMonitoring, stopDomainMonitoring
 from search import tasks
-# def superuser_is_required(viewfunc):
-#     def wrapper(*args,**kwargs):
-#         print('this should be the request object below')
-#         print(args[0])
-#     myfunc = user_is_superuser(viewfunc)
-#     messages.error('Testing error message')
-#     return myfunc
 
 
 def user_is_loggedin_and_superuser(func):
@@ -51,9 +41,7 @@ def user_is_loggedin_and_superuser(func):
 @user_is_loggedin_and_superuser
 def index(request):
     today_subscription_requests = RequestModel.objects.all().order_by('-created_request')[:5]
-    today_search_logs = SearchLog.objects.all().order_by('-search_time')[:8]
-    # print("today subscriptions request")
-    # print(today_subscription_requests)
+    today_search_logs = ApiSearchLog.objects.all().order_by('-search_time')[:8]
     context = {
         "requests": today_subscription_requests,
         "logs": today_search_logs
@@ -67,7 +55,7 @@ def message(request):
     context = {
         'msgs': messages
     }
-    return render(request,'adminpanel/message.html',context)
+    return render(request,'adminpanel/message.html', context)
 
 def deleteMessage(request,id):
     print("i am in delete message method")
@@ -175,16 +163,19 @@ class LineChartJSONView(BaseLineChartView):
 
     def get_providers(self):
         """Return names of datasets."""
-        return ["General", "Emails", "Bank Data"]
+        return ["Email", "Password", "Domain", "Any", "Hash", "IP", "Username", "phone"]
 
     def get_data(self):
         """Return 3 datasets to plot."""
-        emailSearchList = countEachSearchNumber("Trace Email")
-        bankSearchList = countEachSearchNumber("Trace Bank Data")
-        GeneralSearchList = countEachSearchNumber("Trace Any Info")
-        return [emailSearchList,
-                bankSearchList,
-                GeneralSearchList]
+        emailSearchList = countEachSearchNumber("email")
+        passSearchList = countEachSearchNumber("password")
+        domainSearchList = countEachSearchNumber("domain")
+        anySearchList = countEachSearchNumber("any")
+        hashSearchList = countEachSearchNumber("hash")
+        ipSearchList = countEachSearchNumber("ip")
+        usernameSearchList = countEachSearchNumber("username")
+        phoneSearchList = countEachSearchNumber("phone")
+        return [emailSearchList, passSearchList, domainSearchList, anySearchList, hashSearchList, ipSearchList, usernameSearchList, phoneSearchList]
 
 
 line_chart = TemplateView.as_view(template_name='line_chart.html')
@@ -192,8 +183,9 @@ line_chart_json = LineChartJSONView.as_view()
 
 
 def countEachSearchNumber(type_of_search):
+    year = datetime.datetime.today().year
     monthCountList = [0,0,0,0,0,0,0,0,0,0,0,0]
-    relevantSearch = SearchLog.objects.filter(type__iexact=type_of_search).filter(search_time__year=2019)
+    relevantSearch = ApiSearchLog.objects.filter(type__iexact=type_of_search).filter(search_time__year=year)
     for each in relevantSearch:
         currentMonth = extract_month(str(each.search_time))
         if currentMonth == "01":
@@ -230,11 +222,11 @@ def extract_month(date):
 def DoughnutChart(request):
     l = []
     labels = []
-    topFiveAgents = SearchLog.objects.values("user").annotate(searchcount=Count("user")).order_by('-searchcount')
+    topFiveAgents = ApiSearchLog.objects.values("userid").annotate(searchcount=Count("userid")).order_by('-searchcount')
     for each in topFiveAgents:
         l.append(each["searchcount"])
-        currentUser = User.objects.get(pk=each['user'])
-        labels.append(currentUser.email)
+        currentUser = ApiSearchLog.objects.filter(userid=each['userid']).first()
+        labels.append(currentUser.useremail)
         print(each["searchcount"])
     if(len(l)>4):
         totalSearch = sum(l)
@@ -253,7 +245,7 @@ def DoughnutChart(request):
 def HistogramChart(request):
     data = []
     labels = []
-    searchTypeList = SearchLog.objects.values("type").annotate(searchcount=Count("type"))
+    searchTypeList = ApiSearchLog.objects.values("type").annotate(searchcount=Count("type"))
     for each in searchTypeList:
         labels.append(each["type"])
         data.append((each["searchcount"]))
@@ -262,13 +254,11 @@ def HistogramChart(request):
 
 
 def PolarChart(request):
-    totalIndexEmails = IndexEmail.objects.all().count()
+    totalIndexEmails = Email_passwords.objects.all().count()
     totalCardDumps = CardDump.objects.all().count()
     totalCardCvvs = CardCvv.objects.all().count()
     data = [totalIndexEmails, totalCardDumps, totalCardCvvs]
-    labels = ["Emails", "Card Dump", "Card Cvv"]
-    # print("total index emails are ", totalIndexEmails)
-    # print("total card dumps are ", totalCardDumps)
+    labels = ["Credentials", "Card Dump", "Card Cvv"]
     dataa = {"labels": labels, "data": data}
     return JsonResponse(dataa, safe=False)
 
@@ -276,7 +266,7 @@ def ActiveUserChart(request):
     l = []
     active_users = Session.objects.filter(expire_date__gte=timezone.now()).count()
     total_users = User.objects.all().count()
-    labels = ['Active Users', "Unactive Users"]
+    labels = ['Active Users', "InActive Users"]
     print("active users are", active_users)
     l.append(active_users)
     l.append(total_users-active_users)
