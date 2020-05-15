@@ -170,7 +170,7 @@ class LineChartJSONView(BaseLineChartView):
         emailSearchList = countEachSearchNumber("email")
         passSearchList = countEachSearchNumber("password")
         domainSearchList = countEachSearchNumber("domain")
-        anySearchList = countEachSearchNumber("any")
+        anySearchList = countEachSearchNumber("searchengine")
         hashSearchList = countEachSearchNumber("hash")
         ipSearchList = countEachSearchNumber("ip")
         usernameSearchList = countEachSearchNumber("username")

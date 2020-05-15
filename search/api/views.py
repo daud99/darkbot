@@ -867,6 +867,7 @@ def search(request):
         return Response(status.HTTP_400_BAD_REQUEST)
 
     # storeApiLog(type,query)
+
     tasks.saveLog.delay(typee, query, userid, username, useremail)
 
     if typee == 'email' or typee == 'breaches' or typee == 'indexemails' or typee == 'paste':
@@ -1202,9 +1203,10 @@ def storeInDb(res):
 
 def storeApiLog(typee, query, userid, username, useremail):
     try:
-        l = ApiSearchLog(userid=userid, username=username, useremail=useremail, typee=typee, search_term=query)
+        l = ApiSearchLog(userid=userid, username=username, useremail=useremail, type=typee, search_term=query)
         l.save()
     except Exception as e:
+        print(e)
         print('exception while storing api search logs in table')
     print("search log is saved successfully")
 

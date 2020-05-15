@@ -19,7 +19,6 @@ urlpatterns = [
    path('dumpbankname/', views.DumpSearchBankName.as_view(), name="dumpbankname"),
    path('getcleanpassword', views.getPasswordByUsername, name="passwordusername"),
    path('emailinbreaches', views.checkEmailBreaches, name="emailbreaches"),
-   path('searchengine', views.searchEngine, name="searchengine"),
    path('pastesearchemail', views.pasteSearch, name="pastesearchemail"),
    path('getemailsbysha', views.getEmailsByHash, name="emailbyhashpassword"),
    path('upload', views.FileUploadView.as_view(), name="monitorEmails"),
