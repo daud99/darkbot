@@ -19,7 +19,6 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from search.api.serializers import IndexEmailSerializer, CardCvvSerializer, CardDumpSerializer, Email_passwordsSerializer, MonitorDomainSerializer, ReportSerializer
 from django.views.generic import ListView
 from django.http import JsonResponse, HttpResponseRedirect
-from django.shortcuts import render
 from gatherdumps.models import CardCvv, CardDump, Email_passwords
 from search.darkbot.common.get_ghostproject_data import get_ghost_data
 from search.darkbot.pwnedorNot_new import HaveIBeenPwned

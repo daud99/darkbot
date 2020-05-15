@@ -207,7 +207,7 @@ MESSAGE_TAGS = {
 LOGIN_REDIRECT_URL = '/adminpanel'
 
 
-# try:
-#     from .local_settings import *
-# except ImportError:
-#     pass
+try:
+    from .local_settings import *
+except ImportError:
+    pass
