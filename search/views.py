@@ -1,4 +1,3 @@
-# print("current module is: " + __name__)
 import datetime
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
@@ -197,23 +196,6 @@ def search(request):
                 
                 messages.warning(request,"Don't Go there, try searching by cleanpass")
                 return redirect('/search')
-                '''
-                driver = MySpacX_pass_mail()
-                start_time = time.time()
-                response_data = None
-                a = "search/pass_mail.html"
-                try:
-                    driver.create_driver()
-                    response_data = driver.retrieve_emails_by_hash(search_info)
-                except Exception as e:
-                    driver.close_driver()
-                else:
-                    driver.close_driver()
-                    end_time = time.time() - start_time
-                    mydict = response_data.copy()
-                    mydict['duration'] = end_time
-                    mydict['passw'] = search_info
-                '''
             elif (email_search_subtype == "1" and email_search_type == "3"):
                 a = "search/breach_result.html"
                 final_mails = get_ghost_data(search_info, 2)

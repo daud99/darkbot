@@ -1195,6 +1195,7 @@ def storeInDb(res):
                 e = Email_passwords(**each)
                 e.save()
         except Exception as e:
+            print(e)
             print('exception while storing in email_passwords table')
 
     print('stored successfully check your DB')

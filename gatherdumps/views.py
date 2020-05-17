@@ -7,6 +7,7 @@ from gatherdumps.scripts.common.check_crawler_access import check_breaker_state,
 from gatherdumps.tasks import crawl_markets
 from gatherdumps.scripts.celery_related import crawler_handlers
 from gatherdumps.scripts.dumpsCollectors.dump_csv import read_cvvs
+from fileparser.scripts.main import main
 
 # from gatherdumps.models import dumps
 # Create your views here.
@@ -114,13 +115,15 @@ def index(request):
             # data.close()
 
         if marketplace == "5" and action == "4":
-            if (check_start_permission(300) == False):
-                messages.warning(request, "You are Not Allowed to start that Crawler")
-                return HttpResponseRedirect('/gatherdata')
-            # crawler_handlers.daud_collect_email_passwords(300)
-            identity = int(marketplace + action)
-            crawl_markets.delay(identity)
-            messages.success(request, 'Process pushed to Queue')
+            print("main should be running")
+            main("/daud/Desktop/test/")
+            # if (check_start_permission(300) == False):
+            #     messages.warning(request, "You are Not Allowed to start that Crawler")
+            #     return HttpResponseRedirect('/gatherdata')
+            # # crawler_handlers.daud_collect_email_passwords(300)
+            # identity = int(marketplace + action)
+            # crawl_markets.delay(identity)
+            # messages.success(request, 'Process pushed to Queue')
             return HttpResponseRedirect('/gatherdata')
 
         else:

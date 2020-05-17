@@ -1,0 +1,13 @@
+.vscode
+geckodriver.log
+.idea
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+*.iws /out/ 
+*.py[cod] 
+*$py.class 
+celerybeat-schedule.* 
+reports/
