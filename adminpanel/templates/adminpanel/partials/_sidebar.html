@@ -74,6 +74,16 @@
               <p>Messages</p>
             </a>
           </li>
+            <li
+              {% if "/adminpanel/fileparser" == request.path %}
+              class="active"
+              {% endif %}
+              >
+            <a href="{% url 'adminpanel:fileparser' %}">
+              <i class="tim-icons icon-spaceship"></i>
+              <p>File Parser</p>
+            </a>
+          </li>
           <li
                   {% if "/gatherdata/" == request.path %}
                   class="active"

@@ -3,7 +3,7 @@ from celery import shared_task
 
 from search.darkbot import domain_monitoring
 from search.darkbot.monitor import startMonitor
-
+from fileparser.scripts.main import main
 @shared_task
 def Monitoring(switch):
     startMonitor(switch)
@@ -18,3 +18,8 @@ def startDomainMonitoring():
 def stopDomainMonitoring():
     domain_monitoring.stop_domain_monitoring()
     return "stop domain monitoring returning"
+
+@shared_task
+def startMainForFileParser(folder_path):
+    main(folder_path)
+    return "returining from file parser main"

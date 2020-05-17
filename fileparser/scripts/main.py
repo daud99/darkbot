@@ -71,9 +71,10 @@ def subMain(f, fri, lines=None, additonal_regex=None, additional_field=None):
                     groups = pattren.match(line)
                 else:
                     groups = None
-            print("this is where you should zoom in lol")
-            print(fri.folder.parser)
             Parser = returnRightParser(fri.folder.parser)
+            if Parser == None:
+                print("The parser is not found")
+                return
             if groups:
                 groups = list(groups.groups())
                 if len(groups) == len(additional_field):

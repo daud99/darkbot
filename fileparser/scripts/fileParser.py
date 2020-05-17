@@ -92,9 +92,6 @@ class TextFileParser(FileParser):
                     if self._additional_fields != None and self._additional_values != None:
                         for index in range(len(self._additional_values)):
                             leak[self._additional_fields[index]] = self._additional_values[index]
-                    print("this is below what i'm looking for")
-                    print(leak)
-                    print(type(leak))
                     super().storeInDb(leak)
                 except Exception as e:
                     print(e)

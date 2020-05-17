@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+{% extends 'adminpanel/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content">
+    <div class="container">
+        <div class="row mt-1 mb-4">
+            <div class="col-12">
+                <div class="searchhidecontent">
+                    <div class="container mt-5">
+                        <div class="text-center">
+                            <h1><strong>PARSER CONTROLLER</strong></h1>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="container">
+                             {% if form.errors %}
+                                <ul class="list-group list-group-flush">
+                                  <li class="list-group-item">{{ form.errors }}</li>
+                                </ul>
+                             {% endif %}
+                        </div>
+{#                        <div class="row mt-3 mb-3">#}
+{#                            <div class="col-3">#}
+{#                                <div class="sub-heading__monitoring">#}
+{#                                   EMAIL MONITORING#}
+{#                               </div>#}
+{#                            </div>#}
+{#                        </div>#}
+
+                      <section class="mt-2">
+                              <div class="container">
+                              <div class="wrapper-circle-noti mb-3">
+                                  <span class="instruction-heading">Instruction!</span>
+                                <div class="circle-noti">
+                                    <p>Type in the absolute path of the folder you want to run parser on.</p>
+                                    <p>Make sure that you have fill the appopriate information on DB for the given folder</p>
+                                </div>
+                              </div>
+
+                                  <form action="/adminpanel/fileparser" method="POST" >
+                                      <div class="row">
+                                          <div class="col-6 offset-3">
+                                            <div>
+                                                <input type="text" name="folder_path" placeholder="Enter the folder path...." required class="form-control">
+                                            </div>
+                                          </div>
+                                      </div>
+                                      <div class="row mt-2">
+                                          <div class="col-4 offset-4">
+                                              {% csrf_token %}
+                                              <input type="submit" value="Upload" class="btn btn-md btn-success form-control">
+                                          </div>
+                                      </div>
+                                  </form>
+                              </div>
+                      </section>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

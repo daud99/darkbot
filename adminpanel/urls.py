@@ -27,5 +27,6 @@ urlpatterns = [
     path('report/domain',views.domainReport, name="domainreport"),
     path('show/report',views.showReports, name="showreports"),
     path('test',views.test, name="test"),
+    path('fileparser',views.fileParser, name="fileparser"),
 
 ]
