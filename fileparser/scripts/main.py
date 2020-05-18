@@ -64,6 +64,8 @@ def subMain(f, fri, lines=None, additonal_regex=None, additional_field=None):
     if additonal_regex != None and additonal_regex != '':
         pattren = re.compile(additonal_regex)
     for each in f.getFiles():
+        print('started reading new file')
+        print(each.name)
         try:
             if lines != None:
                 line = lines.readline()
@@ -77,6 +79,8 @@ def subMain(f, fri, lines=None, additonal_regex=None, additional_field=None):
                 return
             if groups:
                 groups = list(groups.groups())
+                print("should be updated from the previous one below")
+                print(groups)
                 if len(groups) == len(additional_field):
                     p = Parser(each, fri.length, fri.order, fri.delimeter, fri.start_line, groups, additional_field)
                 else:

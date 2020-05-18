@@ -45,10 +45,11 @@ class FileParser(ABC):
                 e = Email_passwords(**each)
                 e.save()
         except Exception as e:
-            print(e)
-            print('exception while storing in email_passwords table')
+            pass
+            # print(e)
+            # print('exception while storing in email_passwords table')
 
-        print('stored successfully check your DB')
+        # print('stored successfully check your DB')
 
 
 

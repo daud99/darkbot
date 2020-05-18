@@ -24,7 +24,6 @@ from search.api.views import saveMonitorEmail, saveCurrentStatus, darkbotEmailRe
 from search.models import Messages, MonitorDomain, Report, GlobalVar, ApiSearchLog
 from fileparser.models import FolderSelectInfoModel, FileReadInfoModel
 from  adminpanel.tasks import Monitoring, startDomainMonitoring, stopDomainMonitoring, startMainForFileParser
-
 from search import tasks
 
 
@@ -437,14 +436,13 @@ def fileParser(request):
             try:
                 fsi = FolderSelectInfoModel.objects.get(folder_path__exact=folder_path)
                 if fsi.status == True:
-                    message.errot(request, 'The parser for the respective folder is already running')
+                    messages.error(request, 'The parser for the respective folder is already running')
                     return render(request, 'adminpanel/fileParser.html')
                 fri = FileReadInfoModel.objects.get(folder=fsi)
             except Exception as e:
                 print(e)
-                messages.error(request, 'Respective folder selector infor or file read info missing in DB')
+                messages.error(request, 'Respective folder selector info or file read info missing in DB')
                 return render(request, 'adminpanel/fileParser.html')
-
 
             startMainForFileParser.delay(folder_path)
             messages.success(request, "started successfully")

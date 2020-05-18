@@ -23,7 +23,7 @@ class FileExtractor():
         '''
         getFiles method return the generator object for required files by the parser
         '''
-        for each in os.scandir(self._path):
+        for each in sorted(os.scandir(self._path), key=FileExtractor.sortingKey):
             if each.is_file():
                 try:
                     if FileExtractor.pattren.match(each.name).group(1) in self._extensions:
@@ -31,4 +31,13 @@ class FileExtractor():
                 except Exception as e:
                     continue
 
+    @staticmethod
+    def sortingKey(file):
+        '''
+        The method used for sorting the files in the directory
+        '''
+        if file.is_file() and '.' in file.name:
+            return int(file.name.split('.')[0])
+        else:
+            return 0
 
