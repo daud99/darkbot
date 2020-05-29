@@ -97,6 +97,9 @@ def subMain(f, fri, lines=None, additonal_regex=None, additional_field=None):
 
 
 def updateFSRStatus(folder_path, status):
+    '''
+    The method for updating the status property in the DB for given folder_path
+    '''
     try:
         FolderSelectInfoModel.objects.filter(folder_path=folder_path).update(status=status)
     except Exception as e:
@@ -109,6 +112,8 @@ def returnRightParser(parser):
 
     :param parser: The name of parser
     :type parser: str
+
+    :returns: the appropriate parser given the parser string may return nothing given the string
     '''
     if parser == None or parser == "":
         return

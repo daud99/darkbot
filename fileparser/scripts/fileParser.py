@@ -27,6 +27,8 @@ class FileParser(ABC):
         Static method parses the given input
         :param line: The text you want to remove spaces and next line \n from the end
         :type line: str
+
+        :returns: line string after removing the special character from the right side and spaces from the both sides of the given file
         '''
         return ((line.encode('ascii', 'ignore')).decode('utf-8').strip()).rstrip(r"\n")
 
@@ -71,8 +73,8 @@ class TextFileParser(FileParser):
 
     def __init__(self, file, length, field_order, delimeter = [":"], start_line = 0, additional_values = None, additional_fields = None):
         super().__init__(file, length, field_order, delimeter, start_line)
-        self._additional_values = additional_values
-        self._additional_fields = additional_fields
+        self.__additional_values = additional_values
+        self.__additional_fields = additional_fields
 
 
     def readFile(self):
@@ -92,9 +94,9 @@ class TextFileParser(FileParser):
                         break
                     line = super().lineStriping(line)
                     leak = TextFileParser.processLine(line, self._delimeter.copy(), self._field_order.copy(), {})
-                    if self._additional_fields != None and self._additional_values != None:
-                        for index in range(len(self._additional_values)):
-                            leak[self._additional_fields[index]] = self._additional_values[index]
+                    if self.__additional_fields != None and self.__additional_values != None:
+                        for index in range(len(self.__additional_values)):
+                            leak[self.__additional_fields[index]] = self.__additional_values[index]
                     super().storeInDb(leak)
                 except Exception as e:
                     print(e)
@@ -112,6 +114,9 @@ class TextFileParser(FileParser):
         :type order_fields: list
         :param d: For the sake of recurrsion empty object
         :type d: dict
+
+
+        :returns: a dict containing email password complete row
         '''
 
         if len(sep) == 0:
@@ -132,43 +137,11 @@ class TextFileParser(FileParser):
         :type value: str
         :param value: The value which will be converted to lower case
         :type value: str
+
+        :returns: lower case string value
         '''
 
         if key == "email":
             value = value.lower()
         return value
 
-# if __name__ == "__main__":
-#     f = FileExtractor("/daud/Desktop/test/", ['.txt'])
-#     additional_file = "/daud/Desktop/additonalfile.txt"
-#     additional_field = ["source"]
-#     additonal_regex = r"^.*  (.*)\..*$"
-#     pattren = re.compile(additonal_regex)
-#     try:
-#         with open(additional_file) as lines:
-#             for each in f.getFiles():
-#                 try:
-#                     line = lines.readline()
-#                     if line not in ["\n", "", None]:
-#                         groups = pattren.match(line)
-#                     else:
-#                         groups = None
-#                     if groups:
-#                         groups = list(groups.groups())
-#                         if len(groups) == len(additional_field):
-#                             p = TextFileParser(each, 2, ["email", "password"], [":"], 0, groups, additional_field)
-#                         else:
-#                             p = TextFileParser(each, 2, ["email", "password"], [":"], 0)
-#                         p.readFile()
-#                     else:
-#                         print("wao")
-#                         p = TextFileParser(each, 2, ["email", "password"], [":"], 0)
-#                         p.readFile()
-#
-#                 except Exception as e:
-#                     print("here exception")
-#                     print(e)
-#                     continue
-#     except Exception as e:
-#         print("No here exception")
-#         print(e)
