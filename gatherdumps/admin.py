@@ -4,7 +4,7 @@ from .models import CardDump, Country, CardCvv, CardMarket, Checkpoint, CrawlerA
 # Register your models here.
 
 class Email_passwordsAdmin(admin.ModelAdmin):
-    list_display = ['email', 'username', 'password']
+    list_display = ['email', 'username', 'password', 'source']
 
 admin.site.register(CardDump)
 admin.site.register(CardCvv)

@@ -55,15 +55,15 @@ class Country(models.Model):
 
 
 class Email_passwords(models.Model):
-    email = models.CharField(max_length=50, null=True)
+    email = models.CharField(max_length=50, null=True, blank=True)
     password = models.CharField(db_index=True, max_length=40, null=True)
     source = models.CharField(default='unknown', max_length=150, null=True)
-    domain = models.CharField(max_length=50, null=True)
-    before_at = models.CharField(max_length=255, null=True)
-    username = models.CharField(db_index=True, max_length=150, null=True)
-    hash = models.CharField(max_length=255, null=True)
-    ipaddress = models.CharField(max_length=50, null=True)
-    phonenumber = models.CharField(max_length=100, null=True)
+    domain = models.CharField(max_length=50, null=True, blank=True)
+    before_at = models.CharField(max_length=255, null=True, blank=True)
+    username = models.CharField(db_index=True, max_length=150, null=True, blank=True)
+    hash = models.CharField(max_length=255, null=True, blank=True)
+    ipaddress = models.CharField(max_length=50, null=True, blank=True)
+    phonenumber = models.CharField(max_length=100, null=True, blank=True)
 
     class Meta:
         # constraints = [

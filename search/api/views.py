@@ -242,7 +242,7 @@ def deleteDomain(request):
     if 'userid' in request.data:
         userid = request.data['userid']
         print("userid id ", userid)
-    print("id is ", id)
+    # print("id is ", id)
     try:
         if userid != 0:
             domain = MonitorDomain.objects.get(id=id, userid=userid)
@@ -971,7 +971,7 @@ def leakCheck(obj):
         typee = 'domain_email'
     elif obj['type'] == 'username':
         typee = 'login'
-    data = {'key': key, 'type': typee, "check": obj['query']}
+    data = {'key': key, 'type': typee, "check": obj['query'], "with_sources": 1}
     #print(data)
     try:
         res = requests.get(url, params=data)
@@ -991,8 +991,8 @@ def leakCheck(obj):
 
 
 def getRecordsFromDB(obj):
-    print('yess')
-    print(obj)
+    # print('yess')
+    # print(obj)
     max_limit = 10000
     invalid_domains = ['gmail.com', 'google.com', 'zoho.com', 'outlook.com', 'hotmail.com', 'live.com']
     records = []
@@ -1018,8 +1018,8 @@ def getRecordsFromDB(obj):
     elif obj['type'] == "username" and obj['wildcard'] == "false" and obj['regex'] == "false":
         try:
             records = Email_passwords.objects.filter(username__exact=obj['query']).values()
-            for each in records:
-                print(each)
+            # for each in records:
+            #     print(each)
         except Exception as err:
             print(f'Other error occurred: {err}')
             records = []
@@ -1170,21 +1170,29 @@ def parseLeakCheckResponse(response):
                 else:
                     mydict['email'] = each['line'][0]
                 mydict['password'] = each['line'][1]
-                final.append(mydict)
+                if len(each['sources']) > 0:
+                    for source in each['sources']:
+                        mydict["source"] = source
+                        final.append(mydict.copy())
+                        del mydict["source"]
+                else:
+                    mydict["source"] = "unknown"
+                    final.append(mydict)
+
     return final
 
 def mergeResponse(obj):
     l = []
-    obj['res1'] = list(obj['res1'])
-    obj['res2'] = list(obj['res2'])
+    obj['res1'] = list(obj['res1']) # db response
+    obj['res2'] = list(obj['res2']) # leakcheck response
     for each in obj['res1']:
         for e in obj['res2']:
-            if "email" in e and "password" in e and "email" in each and "password" in each:
-                if e["email"].lower() == each["email"].lower() and e["password"] == each["password"]:
+            if "email" in e and "password" in e and "email" in each and "password" in each and "source" in each and "source" in e:
+                if e["email"].lower() == each["email"].lower() and e["password"] == each["password"] and e["source"].lower() == each["source"].lower():
                     obj['res2'].remove(e)
                     break
-            elif "username" in e and "password" in e and "username" in each and "password" in each:
-                if e["username"] == each["username"] and e["password"] == each["password"]:
+            elif "username" in e and "password" in e and "username" in each and "password" in each  and "source" in each and "source" in e:
+                if e["username"] == each["username"] and e["password"] == each["password"] and e["source"].lower() == each["source"].lower():
                     obj['res2'].remove(e)
                     break
     l.extend(obj['res1'])
@@ -1240,15 +1248,15 @@ def download(request):
 def createReportForQuery(obj):
     max_limit = 10000
     if obj['wildcard'] == "false" and obj['regex'] == "true":
-        print("yes regex thing")
-        print('regex is', obj['query'])
+        # print("yes regex thing")
+        # print('regex is', obj['query'])
         if misc.isDigitOrNumber(obj['query'][0]):
             obj['query'] = r'^' + obj['query']
         if misc.isDigitOrNumber(obj['query'][-1]):
             obj['query'] = obj['query'] + r'$'
-        print('regex is', obj['query'])
+        # print('regex is', obj['query'])
         try:
-            print('before counting')
+            # print('before counting')
             filter = obj['type'] + '__regex'
             queryset = Email_passwords.objects.filter(** {filter: obj['query']}).count()
             if queryset > max_limit:
@@ -1258,7 +1266,7 @@ def createReportForQuery(obj):
                 updateReportInstance(obj["fileid"], "No Records Found", datetime.datetime.now())
                 return
             else:
-                print('before actual response')
+                # print('before actual response')
                 queryset = Email_passwords.objects.filter(** {filter: obj['query']}).values()
         except Exception as err:
             print(f'Other error occurred: {err}')
@@ -1266,16 +1274,16 @@ def createReportForQuery(obj):
             return
 
     elif obj['wildcard'] == "true" and obj['regex'] == "false":
-        print("yes wildcard thing")
-        print("obj['query'] ",obj['query'])
-        print("obj[type] ",obj['type'])
+        # print("yes wildcard thing")
+        # print("obj['query'] ",obj['query'])
+        # print("obj[type] ",obj['type'])
         query_number = 2
         if obj['type'] == 'email':
             before_at, after_at = misc.returnTwo(obj['query'])
             before_at = misc.finalizeRegex(before_at, "email")
             after_at = misc.finalizeRegex(after_at, "email")
-            print("before_at", before_at)
-            print("after_at", after_at)
+            # print("before_at", before_at)
+            # print("after_at", after_at)
             if before_at != r'[a-zA-Z0-9\-_.]*' and after_at != r'[a-zA-Z0-9\-_.]*\.[a-zA-Z0-9\-_.]*':
                 query_number = 1
             if after_at != r'[a-zA-Z0-9\-_.]*\.[a-zA-Z0-9\-_.]*':
@@ -1286,15 +1294,15 @@ def createReportForQuery(obj):
                 obj['query'] = before_at
         else:
             obj['query'] = misc.finalizeRegex(obj['query'], obj['type'])
-            print('final regex is', obj['query'])
+            # print('final regex is', obj['query'])
 
         filter = obj['type'] + '__regex'
         try:
-            print('before counting')
+            # print('before counting')
             if query_number == 1:
                 queryset = Email_passwords.objects.filter(before_at__regex=before_at,domain__regex=after_at).count()
             elif query_number == 2:
-                print("executing right query 2")
+                # print("executing right query 2")
                 queryset = Email_passwords.objects.filter(** {filter: obj['query']}).count()
             if queryset > max_limit:
                 updateReportInstance(obj["fileid"], "MAX ALLOWED RECORDS LIMIT EXCEEDS", datetime.datetime.now())
@@ -1303,17 +1311,17 @@ def createReportForQuery(obj):
                 updateReportInstance(obj["fileid"], "No Records Found", datetime.datetime.now())
                 return
             else:
-                print('before actual response')
+                # print('before actual response')
                 if query_number == 1:
                     queryset = Email_passwords.objects.filter(before_at__regex=before_at,domain__regex=after_at).values()
                 elif query_number == 2:
-                    print('executing right query again')
+                    # print('executing right query again')
                     queryset = Email_passwords.objects.filter(** {filter: obj['query']}).values()
         except Exception as err:
             print(f'Other error occurred: {err}')
             updateReportInstance(obj["fileid"], "failure", datetime.datetime.now())
             return
-    print(type(queryset))
+    # print(type(queryset))
     context = {}
     context['leakedpasswords'] = queryset
     context['endtime'] = str(misc.formatDate(datetime.datetime.now()))
@@ -1324,7 +1332,7 @@ def createReportForQuery(obj):
     env = Environment(loader=FileSystemLoader(searchpath=path))
     template = env.get_template("search_result.html")
     html_out = template.render(context)
-    print(__file__)
+    # print(__file__)
     HTML(string=html_out, base_url=__file__).write_pdf(dest, stylesheets=[stylesheet])
     updateReportInstance(obj['fileid'], "success", datetime.datetime.now())
     views.sendReportCompletionEmail(obj['email'])
