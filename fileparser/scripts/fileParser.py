@@ -31,12 +31,14 @@ class FileParser(ABC):
         return ((line.encode('ascii', 'ignore')).decode('utf-8').strip()).rstrip(r"\n")
 
     @staticmethod
+    @misc.checkRecordUniqueness
     def storeInDb(each):
         '''
         Static method use to store given object in table Email_passwords
         :param each: The object you want to save in DB
         :type each: dict
         '''
+        # misc.validateSavageInEmailPassword(each)
         try:
             if "email" in each:
                 each["before_at"], each["domain"] = misc.returnTwo(each["email"])
@@ -45,9 +47,9 @@ class FileParser(ABC):
                 e = Email_passwords(**each)
                 e.save()
         except Exception as e:
-            pass
-            # print(e)
-            # print('exception while storing in email_passwords table')
+            # pass
+            print(e)
+            print('exception while storing in email_passwords table')
 
         # print('stored successfully check your DB')
 

@@ -29,7 +29,7 @@ def saveLog(type,query, userid, username, useremail):
 
 @shared_task
 def saveData(res):
-    sv.storeInDb(res)
+    sv.storeInDbCaller(res)
 
 
 @shared_task

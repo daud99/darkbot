@@ -923,6 +923,7 @@ def search(request):
             t7 = executor.submit(mergeResponse, objr)
             final = t7.result()
         tasks.saveData.delay(final)
+        # storeInDbCaller(final)
         return Response(final)
 
     elif wildcard == 'false' and regex == 'false' and typee in ['hash', 'ip', 'name', 'phone', 'password', 'before_at']:
@@ -997,8 +998,9 @@ def getRecordsFromDB(obj):
     records = []
     if obj['type'] == "email" and obj['wildcard'] == "false" and obj['regex'] == "false":
         try:
+            before_at, domain = misc.returnTwo(obj['query'])
             print('here why not?')
-            records = Email_passwords.objects.filter(email__exact=obj['query']).values()
+            records = Email_passwords.objects.filter(before_at=before_at, domain=domain).values()
         except Exception as err:
             print(f'Other error occurred: {err}')
             records = []
@@ -1181,24 +1183,34 @@ def mergeResponse(obj):
                 if e["email"].lower() == each["email"].lower() and e["password"] == each["password"]:
                     obj['res2'].remove(e)
                     break
+            elif "username" in e and "password" in e and "username" in each and "password" in each:
+                if e["username"] == each["username"] and e["password"] == each["password"]:
+                    obj['res2'].remove(e)
+                    break
     l.extend(obj['res1'])
     l.extend(obj['res2'])
     return l
 
-def storeInDb(res):
-    for each in res:
-        try:
-            if "email" in each:
-                each["before_at"], each["domain"] = misc.returnTwo(each["email"])
-                each["email"] = each["email"].lower()
-            if not (each == {}):
-                e = Email_passwords(**each)
-                e.save()
-        except Exception as e:
-            print(e)
-            print('exception while storing in email_passwords table')
+@misc.checkRecordUniqueness
+def storeInDb(each):
+    # misc.validateSavageInEmailPassword(res)
+    # for each in res:
+    try:
+        if "email" in each:
+            each["before_at"], each["domain"] = misc.returnTwo(each["email"])
+            each["email"] = each["email"].lower()
+        if not (each == {}):
+            e = Email_passwords(**each)
+            e.save()
+    except Exception as e:
+        print(e)
+        print('exception while storing in email_passwords table')
 
-    print('stored successfully check your DB')
+
+def storeInDbCaller(res):
+    for each in res:
+        storeInDb(each)
+    # print('stored successfully check your DB')
 
 
 def storeApiLog(typee, query, userid, username, useremail):

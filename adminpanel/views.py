@@ -23,6 +23,7 @@ import datetime
 from search.api.views import saveMonitorEmail, saveCurrentStatus, darkbotEmailReport
 from search.models import Messages, MonitorDomain, Report, GlobalVar, ApiSearchLog
 from fileparser.models import FolderSelectInfoModel, FileReadInfoModel
+from fileparser.scripts.main import main
 from  adminpanel.tasks import Monitoring, startDomainMonitoring, stopDomainMonitoring, startMainForFileParser
 from search import tasks
 
@@ -444,6 +445,7 @@ def fileParser(request):
                 messages.error(request, 'Respective folder selector info or file read info missing in DB')
                 return render(request, 'adminpanel/fileParser.html')
 
+            # main(folder_path)
             startMainForFileParser.delay(folder_path)
             messages.success(request, "started successfully")
 

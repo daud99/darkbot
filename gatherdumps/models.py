@@ -55,28 +55,28 @@ class Country(models.Model):
 
 
 class Email_passwords(models.Model):
-    email = models.CharField(db_index=True, max_length=50, null=True)
+    email = models.CharField(max_length=50, null=True)
     password = models.CharField(db_index=True, max_length=40, null=True)
     source = models.CharField(default='unknown', max_length=150, null=True)
-    domain = models.CharField(db_index=True, max_length=50, null=True)
+    domain = models.CharField(max_length=50, null=True)
     before_at = models.CharField(max_length=255, null=True)
     username = models.CharField(db_index=True, max_length=150, null=True)
-    hash = models.CharField(db_index=True, max_length=255, null=True)
-    ipaddress = models.CharField(db_index=True, max_length=50, null=True)
-    phonenumber = models.CharField(db_index=True, max_length=100, null=True)
+    hash = models.CharField(max_length=255, null=True)
+    ipaddress = models.CharField(max_length=50, null=True)
+    phonenumber = models.CharField(max_length=100, null=True)
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['email', 'password', 'source'],
-                                    condition=Q(email__isnull=False, username__isnull=True),
-                                    name='email password source unique'),
-            models.UniqueConstraint(fields=['username', 'password', 'source'],
-                                    condition=Q(username__isnull=False, email__isnull=True),
-                                    name='username password source unique'),
-            models.UniqueConstraint(fields=['username', 'email', 'password', 'source'],
-                                    condition=Q(username__isnull=False, email__isnull=False),
-                                    name='username  email password source unique')
-        ]
+        # constraints = [
+        #     models.UniqueConstraint(fields=['email', 'password', 'source'],
+        #                             condition=Q(email__isnull=False, username__isnull=True),
+        #                             name='email password source unique'),
+        #     models.UniqueConstraint(fields=['username', 'password', 'source'],
+        #                             condition=Q(username__isnull=False, email__isnull=True),
+        #                             name='username password source unique'),
+        #     models.UniqueConstraint(fields=['username', 'email', 'password', 'source'],
+        #                             condition=Q(username__isnull=False, email__isnull=False),
+        #                             name='username  email password source unique')
+        # ]
 
         index_together = [
             ("domain", "before_at"),
