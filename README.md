@@ -17,16 +17,20 @@ python3 manage.py migrate
 python3 manage.py makemigrations
 python3 manage migrate
 ```
-3- If you update your Django application, you can restart the Gunicorn process to pick up the changes by
+3- Updating celery demon with new code
+```shell script
+sudo systemctl daemon-reload
+sudo systemctl restart celery.service
+```
+4- If you update your Django application, you can restart the Gunicorn process to pick up the changes by
 ```shell script
 sudo systemctl restart gunicorn
 ```
-4- If you change Gunicorn socket or service files, reload the daemon and restart the process by
+5- If you change Gunicorn socket or service files, reload the daemon and restart the process by
 ```shell script
-sudo systemctl daemon-reload
 sudo systemctl restart gunicorn.socket gunicorn.service
 ```
-5- If you change the Nginx server block configuration, test the configuration and then Nginx by
+6- If you change the Nginx server block configuration, test the configuration and then Nginx by
 ```shell script
 sudo nginx -t && sudo systemctl restart nginx
 ```
