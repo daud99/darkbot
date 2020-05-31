@@ -1,6 +1,9 @@
 import os
 import re
+import logging
 from gatherdumps.models import Email_passwords
+
+logger = logging.getLogger(__name__)
 
 def getPath(basepath, lastpath):
     return os.path.join(basepath, lastpath)
@@ -70,10 +73,11 @@ def checkRecordUniqueness(func):
       record = Email_passwords.objects.filter(**args[0]).count()
 
     if record != 0:
-      print("Record already exist Duplication find")
+      # print("Record already exist Duplication find")
+      logger.info("Record already exist Duplication find while storing record in email_passwords table")
       return
     else:
-      print("storing in DB as it is not found in DB")
+      # print("storing in DB as it is not found in DB")
       return func(args[0])
 
   return wrapper

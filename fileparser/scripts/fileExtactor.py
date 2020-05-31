@@ -41,7 +41,10 @@ class FileExtractor():
         :returns: parse the string and return the fomer part of the . in string
         '''
         if file.is_file() and '.' in file.name:
-            return int(file.name.split('.')[0])
+            try:
+                return int(file.name.split('.')[0])
+            except ValueError:
+                return file.name.split('.')[0]
         else:
             return 0
 

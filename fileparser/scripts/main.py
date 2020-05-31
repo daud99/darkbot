@@ -1,7 +1,11 @@
 import re
+import logging
 from fileparser.scripts.fileExtactor import FileExtractor
 from fileparser.scripts.fileParser import TextFileParser
 from fileparser.models import FolderSelectInfoModel, FileReadInfoModel
+
+logger = logging.getLogger(__name__)
+
 
 def main(folder_path=None):
     '''
@@ -10,7 +14,6 @@ def main(folder_path=None):
     :param folder_path: The path of the folder you want to start parser for
     :type folder_path: str
     '''
-
 
     if folder_path == None:
         return
@@ -37,8 +40,10 @@ def main(folder_path=None):
 
     except Exception as e:
         updateFSRStatus(folder_path, False)
-        print("No here exception")
-        print(e)
+        # print("No here exception")
+        logger.info("exceptional while dealing with additional file")
+        logger.exception(e)
+        # print(e)
     finally:
         updateFSRStatus(folder_path, False)
 
@@ -64,8 +69,10 @@ def subMain(f, fri, lines=None, additonal_regex=None, additional_field=None):
     if additonal_regex != None and additonal_regex != '':
         pattren = re.compile(additonal_regex)
     for each in f.getFiles():
-        print('started reading new file')
-        print(each.name)
+        logger.info("started reading new file")
+        logger.info(f'file name is {each.name}')
+        # print('started reading new file')
+        # print(each.name)
         try:
             if lines != None:
                 line = lines.readline()
@@ -75,12 +82,15 @@ def subMain(f, fri, lines=None, additonal_regex=None, additional_field=None):
                     groups = None
             Parser = returnRightParser(fri.folder.parser)
             if Parser == None:
-                print("The parser is not found")
+                # print("The parser is not found")
+                logger.info("The parser is not found")
                 return
             if groups:
                 groups = list(groups.groups())
-                print("should be updated from the previous one below")
-                print(groups)
+                logger.info("should be updated from the previous one below")
+                # print("should be updated from the previous one below")
+                # print(groups)
+                logger.info(groups)
                 if len(groups) == len(additional_field):
                     p = Parser(each, fri.length, fri.order, fri.delimeter, fri.start_line, groups, additional_field)
                 else:
@@ -91,8 +101,10 @@ def subMain(f, fri, lines=None, additonal_regex=None, additional_field=None):
                 p.readFile()
 
         except Exception as e:
-            print("here exception")
-            print(e)
+            # print("exception while reading lines from file")
+            # print(e)
+            logger.info("exception while reading lines from file")
+            logger.exception(e)
             continue
 
 
@@ -103,8 +115,10 @@ def updateFSRStatus(folder_path, status):
     try:
         FolderSelectInfoModel.objects.filter(folder_path=folder_path).update(status=status)
     except Exception as e:
-        print(e)
-        print('exception in updating FSR instance')
+        # print(e)
+        # print('exception in updating FSR instance')
+        logger.info("exception while updating file status")
+        logger.exception(e)
 
 def returnRightParser(parser):
     '''

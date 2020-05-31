@@ -1,7 +1,10 @@
 # from fileExtactor import FileExtractor # for running as script
+import logging
 from abc import abstractmethod, ABC
 from gatherdumps.models import Email_passwords
 from search.api import misc
+
+logger = logging.getLogger(__name__)
 
 class FileParser(ABC):
     '''
@@ -50,9 +53,10 @@ class FileParser(ABC):
                 e.save()
         except Exception as e:
             # pass
-            print(e)
-            print('exception while storing in email_passwords table')
-
+            # print(e)
+            # print('exception while storing in email_passwords table')
+            logger.info('exception while storing in email_passwords table')
+            logger.exception(e)
         # print('stored successfully check your DB')
 
 
@@ -93,13 +97,17 @@ class TextFileParser(FileParser):
                     if line == "" or line == None:
                         break
                     line = super().lineStriping(line)
+                    if line == '':
+                        continue
                     leak = TextFileParser.processLine(line, self._delimeter.copy(), self._field_order.copy(), {})
                     if self.__additional_fields != None and self.__additional_values != None:
                         for index in range(len(self.__additional_values)):
                             leak[self.__additional_fields[index]] = self.__additional_values[index]
                     super().storeInDb(leak)
                 except Exception as e:
-                    print(e)
+                    # print(e)
+                    logger.info("Exception while reading line from file")
+                    logger.exception(e)
                     continue
 
     @staticmethod
