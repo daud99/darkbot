@@ -1,6 +1,6 @@
 from django.core.mail import send_mail
 from accounts.script import sendmail
-from search.models import MonitorDomain, DomainEmailStatus, IndexEmail
+from search.models import MonitorAsset, DomainEmailStatus, IndexEmail
 from gatherdumps.models import Email_passwords
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -214,7 +214,7 @@ def monitor_domains():
         if (breaker == True):
             break
         try:
-            domains = MonitorDomain.objects.all()
+            domains = MonitorAsset.objects.all()
         except Exception as e:
             print("Exception at domaing object finding from db")
             break
@@ -250,7 +250,7 @@ def start_domain_monitoring():
     # breaker = False
     # running_state = True
     try:
-        domains_in_queue = MonitorDomain.objects.all().count()
+        domains_in_queue = MonitorAsset.objects.all().count()
     except Exception as e:
         print('Something went wrong with db system')
         stop_domain_monitoring()

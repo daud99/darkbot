@@ -74,10 +74,11 @@ class CurrentStatus(models.Model):
     # emailsindb = JSONField(blank=True)
     indexemails = JSONField(blank=True)
 
-class MonitorDomain(models.Model):
-    domain = models.CharField(max_length=50, default='', unique=True)
+class MonitorAsset(models.Model):
+    asset = models.CharField(max_length=50, default='')
     support_email = models.EmailField(default="daudahmed@zoho.com")
     userid = models.CharField(max_length=255, default='')
+    fileid = models.CharField(max_length=255, default='')
     allow_monitoring = models.BooleanField(default=True)
     asset_type = models.CharField(max_length=50, default='Domain')
     asset_status = models.CharField(max_length=50, default='In Active')
@@ -89,7 +90,7 @@ class MonitorDomain(models.Model):
 
 class DomainEmailStatus(models.Model):
     email = models.EmailField(unique=True)
-    domain = models.ForeignKey(MonitorDomain, on_delete=models.CASCADE)
+    domain = models.ForeignKey(MonitorAsset, on_delete=models.CASCADE)
     passwords = JSONField(blank=True)
     darknet_occurrences = JSONField(blank=True)
     def __str__(self):

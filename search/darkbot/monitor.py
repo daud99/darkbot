@@ -12,7 +12,6 @@ from accounts.script import sendmail
 from search.api import views
 import json
 
-# breaker = False
 
 def continuousMonitor():
     globalvars = GlobalVar.objects.filter(id=1)[0]

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from search.models import IndexEmail, MonitorDomain, Report
+from search.models import IndexEmail, MonitorAsset, Report
 from gatherdumps.models import CardCvv, CardDump, Email_passwords
 
 class ReportSerializer(serializers.ModelSerializer):
@@ -7,9 +7,9 @@ class ReportSerializer(serializers.ModelSerializer):
         model = Report
         fields = ['fileid', 'userid', 'report_type', 'status', 'request_date', "create_date"]
 
-class MonitorDomainSerializer(serializers.ModelSerializer):
+class MonitorAssetSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MonitorDomain
+        model = MonitorAsset
         fields = ['id', 'domain', 'userid', 'asset_type', 'asset_status', 'asset_verify']
 
 

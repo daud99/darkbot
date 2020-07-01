@@ -16,7 +16,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import generics
 from rest_framework import authentication, permissions
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
-from search.api.serializers import IndexEmailSerializer, CardCvvSerializer, CardDumpSerializer, Email_passwordsSerializer, MonitorDomainSerializer, ReportSerializer
+from search.api.serializers import IndexEmailSerializer, CardCvvSerializer, CardDumpSerializer, Email_passwordsSerializer, MonitorAssetSerializer, ReportSerializer
 from django.views.generic import ListView
 from django.http import JsonResponse, HttpResponseRedirect
 from gatherdumps.models import CardCvv, CardDump, Email_passwords
@@ -24,7 +24,7 @@ from search.darkbot.common.get_ghostproject_data import get_ghost_data
 from search.darkbot.pwnedorNot_new import HaveIBeenPwned
 from search.darkbot.search_engine import search_engine as s
 from search.darkbot import monitor, domain_monitoring
-from search.models import MonitorEmail, CurrentStatus, Charts, MonitorDomain, IndexEmail, ApiSearchLog, Report
+from search.models import MonitorEmail, CurrentStatus, Charts, MonitorAsset, IndexEmail, ApiSearchLog, Report
 from django_weasyprint import WeasyTemplateResponseMixin
 from dark_bot import settings
 from adminpanel import views
@@ -245,10 +245,10 @@ def deleteDomain(request):
     # print("id is ", id)
     try:
         if userid != 0:
-            domain = MonitorDomain.objects.get(id=id, userid=userid)
+            domain = MonitorAsset.objects.get(id=id, userid=userid)
         else:
-            domain = MonitorDomain.objects.get(id=id)
-    except MonitorDomain.DoesNotExist:
+            domain = MonitorAsset.objects.get(id=id)
+    except MonitorAsset.DoesNotExist:
         return Response(status.HTTP_404_NOT_FOUND)
     data = ''
     if request.method == 'POST':
@@ -357,11 +357,11 @@ def celerySingleDomainReport(domain, userid, pdf_filename, starttime):
     print("executed single domain report creation")
     context = {}
     if userid != "superuser":
-        r = MonitorDomain.objects.filter(asset_verify__exact=True, domain__exact=domain, userid__exact=userid).count()
-        d = MonitorDomain.objects.filter(asset_verify__exact=True, domain__exact=domain, userid__exact=userid).values()
+        r = MonitorAsset.objects.filter(asset_verify__exact=True, domain__exact=domain, userid__exact=userid).count()
+        d = MonitorAsset.objects.filter(asset_verify__exact=True, domain__exact=domain, userid__exact=userid).values()
     else:
-        r = MonitorDomain.objects.filter(asset_verify__exact=True, domain__exact=domain).count()
-        d = MonitorDomain.objects.filter(asset_verify__exact=True, domain__exact=domain).values()
+        r = MonitorAsset.objects.filter(asset_verify__exact=True, domain__exact=domain).count()
+        d = MonitorAsset.objects.filter(asset_verify__exact=True, domain__exact=domain).values()
     if r == 0:
         updateReportInstance(pdf_filename, "failure", datetime.datetime.now())
         return
@@ -559,7 +559,7 @@ def registerDomains(request):
     domains = domains.split(" ")
     for each in domains:
         try:
-            currentdomain = MonitorDomain(domain=each, userid=userid, support_email=email)
+            currentdomain = MonitorAsset(domain=each, userid=userid, support_email=email)
             currentdomain.save()
         except Exception as e:
             print('exception')
@@ -653,7 +653,7 @@ class DomainPdf(ListView):
         # Add in a QuerySet of all the books
         domain = self.kwargs['file']
         #print ("domain is ",domain)
-        r = MonitorDomain.objects.filter(asset_verify__exact=True, domain__exact=domain).count()
+        r = MonitorAsset.objects.filter(asset_verify__exact=True, domain__exact=domain).count()
         #print("r is ", r)
         if r == 0:
             return context
@@ -779,8 +779,8 @@ def createHeader(c, startdate):
     c.drawString(2.3 * inch, -2.4 * inch, str(enddate))
 
 class Assets(generics.ListAPIView):
-    queryset = MonitorDomain.objects.all()
-    serializer_class = MonitorDomainSerializer
+    queryset = MonitorAsset.objects.all()
+    serializer_class = MonitorAssetSerializer
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.IsAdminUser,)
     pagination_class = OverRideDefaultPagination
@@ -803,8 +803,8 @@ class GroupReports(generics.ListAPIView):
     search_fields = ['userid']
 
 class GroupAssets(generics.ListAPIView):
-    queryset = MonitorDomain.objects.all()
-    serializer_class = MonitorDomainSerializer
+    queryset = MonitorAsset.objects.all()
+    serializer_class = MonitorAssetSerializer
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.IsAdminUser,)
     pagination_class = OverRideDefaultPagination
@@ -1077,74 +1077,6 @@ def getRecordsFromDB(obj):
             records = []
 
     return records
-
-def weLeak(obj):
-    url = settings.WE_LEAK_URL
-    key = settings.WE_LEAK_KEY
-    headers = {'Authorization': 'Bearer '+key, "User-Agent": 'Tranchulas'}
-    body = {'query': obj['query'], 'type': obj['type'], 'limit': 10000, 'wildcard': obj['wildcard'], 'regex': obj['regex']}
-    try:
-        res = requests.post(url, data=body, headers=headers)
-    except Timeout:
-        return []
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')  # Python 3.6
-        return []
-    except Exception as err:
-        print(f'Other error occurred: {err}')  # Python 3.6
-        return []
-    if (res.status_code != 200):
-        return []
-    print(res)
-    return res
-
-def parseWeLeakResponse(response):
-    realres = ''
-    for each in response:
-        each = str(each)
-        if each[0] == "b":
-            each = each [2:]
-        if each[0] == "'":
-            each = each [1:]
-        each = each[:-1]
-        each = each.replace('\\', '')
-        each = each.replace('""', '"')
-        realres = realres + each
-
-    if 'Database' in realres:
-        realres = realres.replace('Database', 'source')
-    if 'Email' in realres:
-        realres = realres.replace('Email', 'email')
-    if 'Password' in realres:
-        realres = realres.replace('Password', 'password')
-    if 'First Name' in realres:
-        realres = realres.replace('First Name', 'firstname')
-    if 'Last Name' in realres:
-        realres = realres.replace('Last Name', 'lastname')
-    if 'Name' in realres:
-        realres = realres.replace('Name', 'name')
-    if 'Date of Birth' in realres:
-        realres = realres.replace('Date of Birth', 'dateofbirth')
-    if 'Username' in realres:
-        realres = realres.replace('Username', 'username')
-    if 'Hash' in realres:
-        realres = realres.replace('Hash', 'hash')
-    if 'Registered IP Address' in realres:
-        realres = realres.replace('Registered IP Address', 'ipaddress')
-    if 'Last IP Address' in realres:
-        realres = realres.replace('Last IP Address', 'lastipaddress')
-    # for phone number goes down
-    if 'Phone' in realres:
-        realres = realres.replace('Phone', 'phonenumber')
-    if 'Salt' in realres:
-        realres = realres.replace('Salt', 'salt')
-    if 'Address' in realres:
-        realres = realres.replace('Address', 'address')
-    realres = str(realres)
-    realres = json.loads(realres)
-    #print(realres)
-    return realres['Data']
-
 
 def parseDbResponse(response):
     try:

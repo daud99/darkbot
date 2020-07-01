@@ -21,10 +21,9 @@ from django.utils import timezone
 from .forms import UploadFileForm
 import datetime
 from search.api.views import saveMonitorEmail, saveCurrentStatus, darkbotEmailReport
-from search.models import Messages, MonitorDomain, Report, GlobalVar, ApiSearchLog
+from search.models import Messages, MonitorAsset, Report, GlobalVar, ApiSearchLog
 from fileparser.models import FolderSelectInfoModel, FileReadInfoModel
-from fileparser.scripts.main import main
-from  adminpanel.tasks import Monitoring, startDomainMonitoring, stopDomainMonitoring, startMainForFileParser
+from adminpanel.tasks import Monitoring, startDomainMonitoring, stopDomainMonitoring, startMainForFileParser
 from search import tasks
 
 
@@ -353,7 +352,7 @@ def monitor(request):
 
 def generateReport(request):
     print("yes here")
-    domains = MonitorDomain.objects.all()
+    domains = MonitorAsset.objects.all()
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -404,7 +403,7 @@ def handle_uploaded_file(f, userid, email):
         sendReportCompletionEmail(email)
 
 def domainReport(request):
-    domains = MonitorDomain.objects.all()
+    domains = MonitorAsset.objects.all()
     form = UploadFileForm()
     if request.method == 'POST':
         domain = request.POST.get("domain")

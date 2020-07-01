@@ -38,7 +38,7 @@ class FileExtractor():
         '''
         The method used for sorting the files in the directory
 
-        :returns: parse the string and return the fomer part of the . in string
+        :returns: parse the string and return the former part of the . in string
         '''
         if file.is_file() and '.' in file.name:
             try:

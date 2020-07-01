@@ -41,7 +41,7 @@ logging.config.dictConfig({
         'file': {
             'level': 'DEBUG',
             'class': 'logging.handlers.TimedRotatingFileHandler',
-            'filename': 'darkbot.log',
+            'filename': 'logs/darkbot.log',
             'formatter': 'default',
             'when': 'midnight',
             'interval': 1,
@@ -265,8 +265,8 @@ MESSAGE_TAGS = {
 
 LOGIN_REDIRECT_URL = '/adminpanel'
 
-
-try:
-    from .local_settings import *
-except ImportError:
-    pass
+#
+# try:
+#     from .local_settings import *
+# except ImportError:
+#     pass
