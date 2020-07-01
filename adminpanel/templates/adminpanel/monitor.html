@@ -30,29 +30,18 @@
                    </div>
                   <section class="mt-5">
                           <div class="container">
-                              <form method="POST" action="/adminpanel/email/monitoring">
+                              <form method="POST" action="/adminpanel/monitoring">
                               <div class="row mt-5">
                                   <div class="offset-md-4 col-md-4 mb-2">
                                       {% csrf_token %}
+                                      <input type="hidden" value="email" name="type">
                                       <input type="submit" name="on" value="Turn On Email Monitoring" class="form-control btn-success"
                                       {%  if on %}
                                           disabled
                                       {% endif %}>
                                   </div>
-                                  </div>
-                                  </form>
-                                  <form method="POST" action="/adminpanel/email/monitoring">
-                                      <div class="row">
-                                  <div class="offset-md-4 col-md-4 mt-2">
-                                      {% csrf_token %}
-                                      <input type="submit" name="off" value="Turn Off Email Monitoring" class="form-control btn-success"
-                                      {%  if not on %}
-                                          disabled
-                                      {% endif %}
-                                      >
-                                  </div>
-                                      </div>
-                                  </form>
+                              </div>
+                              </form>
                           </div>
                   </section>
 
@@ -60,29 +49,18 @@
                         DOMAIN MONITORING
                     </div>
                     <section class="mt-5">
-                          <div class="container">
-                              <form method="POST" action="/adminpanel/domain/monitoring">
-                              <div class="row mt-5">
-                                  <div class="offset-md-4 col-md-4 mb-2">
-                                      {% csrf_token %}
-                                      <input type="submit" name="on" value="Turn On Domain Monitoring" class="form-control btn-success"
+                        <div class="container">
+                            <form method="POST" action="/adminpanel/monitoring">
+                                <div class="row mt-5">
+                                    <div class="offset-md-4 col-md-4 mb-2">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="domain" name="type">
+                                        <input type="submit" name="on" value="Turn On Domain Monitoring" class="form-control btn-success"
                                       {%  if on1 %}
                                           disabled
                                       {% endif %}>
                                   </div>
                                   </div>
-                                  </form>
-                                  <form method="POST" action="/adminpanel/domain/monitoring">
-                                      <div class="row">
-                                  <div class="offset-md-4 col-md-4 mt-2">
-                                      {% csrf_token %}
-                                      <input type="submit" name="off" value="Turn Off Domain Monitoring" class="form-control btn-success"
-                                      {%  if not on1 %}
-                                          disabled
-                                      {% endif %}
-                                      >
-                                  </div>
-                                      </div>
                                   </form>
                           </div>
                   </section>

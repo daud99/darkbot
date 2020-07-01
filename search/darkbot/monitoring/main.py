@@ -1,5 +1,5 @@
 from search.darkbot.monitoring import monitor
 
-def main():
-    m = monitor.Monitor(type="email")
+def main(type="email"):
+    m = monitor.Monitor(type=type)
     m.startMonitoring()

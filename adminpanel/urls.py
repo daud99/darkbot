@@ -11,8 +11,6 @@ urlpatterns = [
     path('message/delete/<int:id>/', views.deleteMessage, name='deletemsg'),
     path('profile/',views.profile,name='profile'),
     path('', views.index, name='dashboard'),
-    path('email/monitoring',views.monitorEmail, name="emailmonitoring"),
-    path('domain/monitoring',views.monitorDomain, name="domainmonitoring"),
     path('monitoring',views.monitor, name="monitoring"),
     path('subscription/request', views.RequestListView.as_view(login_url='/login'), name='request'),
     url('subscription/(?P<pk>\d+)/$', views.RequestDetailView.as_view(login_url='/login'), name='detail'),

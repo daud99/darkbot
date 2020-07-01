@@ -1,4 +1,3 @@
-import threading
 from django.db.models import Count
 from django.contrib.sessions.models import Session
 from django.http import JsonResponse
@@ -23,7 +22,7 @@ import datetime
 from search.api.views import saveMonitorEmail, saveCurrentStatus, darkbotEmailReport
 from search.models import Messages, MonitorAsset, Report, GlobalVar, ApiSearchLog
 from fileparser.models import FolderSelectInfoModel, FileReadInfoModel
-from adminpanel.tasks import Monitoring, startDomainMonitoring, stopDomainMonitoring, startMainForFileParser
+from adminpanel.tasks import Monitoring, startMainForFileParser
 from search import tasks
 
 from search.darkbot.monitoring import main
@@ -275,38 +274,6 @@ def ActiveUserChart(request):
     data = {"l": l, "labels": labels}
     return JsonResponse(data, safe=False)
 
-@user_is_loggedin_and_superuser
-def monitorEmail(request):
-    print("monitoremailfunction")
-    # globalvars = GlobalVar.objects.filter(id=1)[0]
-    # breaker = globalvars.emailmonitoring
-    if request.method == "POST":
-        main.main()
-    #     print('request is post')
-    #     on = request.POST.get('on')
-    #     off = request.POST.get('off')
-    #     print("on", on)
-    #     print("off", off)
-    #     switch = False
-    #     if on == "Turn On Email Monitoring":
-    #         # switch = True
-    #         # startMonitor(False)
-    #         Monitoring.delay(False)
-    #         breaker = False
-    #         messages.success(request, 'Live Email Monitoring started')
-    #     if off == "Turn Off Email Monitoring":
-    #         # switch = False
-    #         # startMonitor(True)
-    #         Monitoring.delay(True)
-    #         breaker = True
-    #         messages.success(request, 'Live Email Monitoring is successfully turned off')
-    #
-    # context = {
-    #     "on": not breaker
-    # }
-    # return render(request, 'adminpanel/monitor.html', context)
-    return render(request, 'adminpanel/monitor.html')
-
 def showReports(request):
     reports = Report.objects.all()
     context = {
@@ -315,44 +282,54 @@ def showReports(request):
     return render(request, 'adminpanel/view-reports.html', context)
 
 
-@user_is_loggedin_and_superuser
-def monitorDomain(request):
-    print("monitorDomain method")
-    globalvars = GlobalVar.objects.filter(id=1)[0]
-    breaker = globalvars.domainmonitoring
-    if request.method == "POST":
-        print('request is post')
-        on = request.POST.get('on')
-        off = request.POST.get('off')
-        print("on", on)
-        print("off", off)
-
-        if on == "Turn On Domain Monitoring":
-            breaker = False
-            messages.success(request, 'Live Domain Monitoring started')
-            startDomainMonitoring.delay()
-        if off == "Turn Off Domain Monitoring":
-            breaker = True
-            stopDomainMonitoring.delay()
-            messages.success(request, 'Live Domain Monitoring is successfully turned off')
-
-        context = {
-            "on1": not breaker
-        }
-        return render(request, 'adminpanel/monitor.html', context)
-
+# @user_is_loggedin_and_superuser
+# def monitorDomain(request):
+#     print("monitorDomain method")
+#     globalvars = GlobalVar.objects.filter(id=1)[0]
+#     breaker = globalvars.domainmonitoring
+#     if request.method == "POST":
+#         print('request is post')
+#         on = request.POST.get('on')
+#         off = request.POST.get('off')
+#         print("on", on)
+#         print("off", off)
+#
+#         if on == "Turn On Domain Monitoring":
+#             breaker = False
+#             messages.success(request, 'Live Domain Monitoring started')
+#             startDomainMonitoring.delay()
+#         if off == "Turn Off Domain Monitoring":
+#             breaker = True
+#             stopDomainMonitoring.delay()
+#             messages.success(request, 'Live Domain Monitoring is successfully turned off')
+#
+#         context = {
+#             "on1": not breaker
+#         }
+#         return render(request, 'adminpanel/monitor.html', context)
+#
 
 @user_is_loggedin_and_superuser
 def monitor(request):
-    # globalvars = GlobalVar.objects.filter(id=1)[0]
-    # breaker = globalvars.emailmonitoring
-    # breaker1 = globalvars.domainmonitoring
-    # context = {
-    #     "on": not breaker,
-    #     "on1": not breaker1
-    # }
-    # return render(request, 'adminpanel/monitor.html', context)
-    return render(request, 'adminpanel/monitor.html')
+    context = {}
+    try:
+        email_monitoring = GlobalVar.objects.get(type="email")
+        domain_monitoring = GlobalVar.objects.get(type="domain")
+        context = {
+            "on": email_monitoring.monitoring,
+            "on1": domain_monitoring.monitoring
+        }
+    except Exception as e:
+        print("exception while getting globalvar")
+        print(e)
+    if request.method == "POST":
+        type = request.POST.get('type')
+        if type == "email":
+            context["on"] = not context["on"]
+        if type == "domain":
+            context["on1"] = not context["on1"]
+        Monitoring.delay(type)
+    return render(request, 'adminpanel/monitor.html', context)
 
 def generateReport(request):
     print("yes here")

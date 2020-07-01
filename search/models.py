@@ -80,7 +80,7 @@ class MonitorAsset(models.Model):
     userid = models.CharField(max_length=255, default='')
     fileid = models.CharField(max_length=255, default='')
     allow_monitoring = models.BooleanField(default=True)
-    asset_type = models.CharField(max_length=50, default='Domain')
+    asset_type = models.CharField(max_length=50, default='domain')
     asset_status = models.CharField(max_length=50, default='In Active')
     asset_verify = models.BooleanField(default=False)
     allow_external = models.BooleanField(default=False)
@@ -128,3 +128,6 @@ class GlobalVar(models.Model):
     type = models.CharField(max_length=50, default='email', unique=True)
     monitoring = models.BooleanField(default=False)
 
+
+    def __str__(self):
+        return self.type
