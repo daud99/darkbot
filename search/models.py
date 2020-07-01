@@ -116,6 +116,6 @@ class Report(models.Model):
         return self.fileid
 
 class GlobalVar(models.Model):
-    emailmonitoring = models.BooleanField(default=False)
-    domainmonitoring = models.BooleanField(default=False)
+    type = models.CharField(max_length=50, default='email', unique=True)
+    monitoring = models.BooleanField(default=False)
 
