@@ -26,6 +26,7 @@ from fileparser.models import FolderSelectInfoModel, FileReadInfoModel
 from adminpanel.tasks import Monitoring, startDomainMonitoring, stopDomainMonitoring, startMainForFileParser
 from search import tasks
 
+from search.darkbot.monitoring import main
 
 def user_is_loggedin_and_superuser(func):
     def wrapper(*args):
@@ -277,32 +278,34 @@ def ActiveUserChart(request):
 @user_is_loggedin_and_superuser
 def monitorEmail(request):
     print("monitoremailfunction")
-    globalvars = GlobalVar.objects.filter(id=1)[0]
-    breaker = globalvars.emailmonitoring
+    # globalvars = GlobalVar.objects.filter(id=1)[0]
+    # breaker = globalvars.emailmonitoring
     if request.method == "POST":
-        print('request is post')
-        on = request.POST.get('on')
-        off = request.POST.get('off')
-        print("on", on)
-        print("off", off)
-        switch = False
-        if on == "Turn On Email Monitoring":
-            # switch = True
-            # startMonitor(False)
-            Monitoring.delay(False)
-            breaker = False
-            messages.success(request, 'Live Email Monitoring started')
-        if off == "Turn Off Email Monitoring":
-            # switch = False
-            # startMonitor(True)
-            Monitoring.delay(True)
-            breaker = True
-            messages.success(request, 'Live Email Monitoring is successfully turned off')
-
-    context = {
-        "on": not breaker
-    }
-    return render(request, 'adminpanel/monitor.html', context)
+        main.main()
+    #     print('request is post')
+    #     on = request.POST.get('on')
+    #     off = request.POST.get('off')
+    #     print("on", on)
+    #     print("off", off)
+    #     switch = False
+    #     if on == "Turn On Email Monitoring":
+    #         # switch = True
+    #         # startMonitor(False)
+    #         Monitoring.delay(False)
+    #         breaker = False
+    #         messages.success(request, 'Live Email Monitoring started')
+    #     if off == "Turn Off Email Monitoring":
+    #         # switch = False
+    #         # startMonitor(True)
+    #         Monitoring.delay(True)
+    #         breaker = True
+    #         messages.success(request, 'Live Email Monitoring is successfully turned off')
+    #
+    # context = {
+    #     "on": not breaker
+    # }
+    # return render(request, 'adminpanel/monitor.html', context)
+    return render(request, 'adminpanel/monitor.html')
 
 def showReports(request):
     reports = Report.objects.all()
@@ -341,14 +344,15 @@ def monitorDomain(request):
 
 @user_is_loggedin_and_superuser
 def monitor(request):
-    globalvars = GlobalVar.objects.filter(id=1)[0]
-    breaker = globalvars.emailmonitoring
-    breaker1 = globalvars.domainmonitoring
-    context = {
-        "on": not breaker,
-        "on1": not breaker1
-    }
-    return render(request, 'adminpanel/monitor.html', context)
+    # globalvars = GlobalVar.objects.filter(id=1)[0]
+    # breaker = globalvars.emailmonitoring
+    # breaker1 = globalvars.domainmonitoring
+    # context = {
+    #     "on": not breaker,
+    #     "on1": not breaker1
+    # }
+    # return render(request, 'adminpanel/monitor.html', context)
+    return render(request, 'adminpanel/monitor.html')
 
 def generateReport(request):
     print("yes here")

@@ -83,6 +83,7 @@ class MonitorAsset(models.Model):
     asset_type = models.CharField(max_length=50, default='Domain')
     asset_status = models.CharField(max_length=50, default='In Active')
     asset_verify = models.BooleanField(default=False)
+    allow_external = models.BooleanField(default=False)
     start_date = models.DateTimeField(default=datetime.now, blank=True)
 
     def __str__(self):
