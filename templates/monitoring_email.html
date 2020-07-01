@@ -346,14 +346,14 @@
 							<caption><h1>PASSWORD LEAKS</h1></caption>
 							<thead>
 								<tr>
-									<td colspan="2" style="padding: 0px 25px; color:#000;"><strong>EMAILS</strong></td>
-									<td colspan="2" style="padding: 0px 25px; color:#000;"><strong>PASSWORDS</strong></td>
+									<td colspan="2" style="padding: 0px 25px; color:#000;"><strong>EMAIL</strong></td>
+									<td colspan="2" style="padding: 0px 25px; color:#000;"><strong>PASSWORD</strong></td>
 								</tr>
 								<tbody>
                                     {% for each in passwords %}
 									<tr>
-										<td colspan="2" style="padding: 0px 25px;">{{each.0}}</td>
-										<td colspan="2" style="padding: 0px 25px;">{{each.1}}</td>
+										<td colspan="2" style="padding: 0px 25px;">{{each.email}}</td>
+										<td colspan="2" style="padding: 0px 25px;">{{each.password}}</td>
 									</tr>
                                     {% endfor %}
 								</tbody>
