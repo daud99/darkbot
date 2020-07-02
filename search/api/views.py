@@ -1,4 +1,3 @@
-
 from jinja2 import Environment, FileSystemLoader
 from search.api import misc
 from weasyprint import HTML
@@ -18,13 +17,13 @@ from rest_framework import authentication, permissions
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from search.api.serializers import IndexEmailSerializer, CardCvvSerializer, CardDumpSerializer, Email_passwordsSerializer, MonitorAssetSerializer, ReportSerializer
 from django.views.generic import ListView
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse
 from gatherdumps.models import CardCvv, CardDump, Email_passwords
 from search.darkbot.common.get_ghostproject_data import get_ghost_data
 from search.darkbot.pwnedorNot_new import HaveIBeenPwned
 from search.darkbot.search_engine import search_engine as s
 from search.darkbot import monitor, domain_monitoring
-from search.models import MonitorEmail, CurrentAssetStatus, Charts, MonitorAsset, IndexEmail, ApiSearchLog, Report
+from search.models import CurrentAssetStatus, Charts, MonitorAsset, IndexEmail, ApiSearchLog, Report
 from django_weasyprint import WeasyTemplateResponseMixin
 from dark_bot import settings
 from adminpanel import views
@@ -32,15 +31,16 @@ import time
 import datetime
 import json
 from selenium import webdriver
-from functools import partial
-import io
 import os
-from django.http import FileResponse
 import requests
 from requests.exceptions import Timeout, HTTPError
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import inch
 from search import tasks
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 # global lists
 filelist = []
@@ -562,94 +562,25 @@ def saveCurrentStatus(email, currentEmail, fileid=1):
 @authentication_classes([authentication.TokenAuthentication])
 @permission_classes([permissions.IsAdminUser])
 def registerDomains(request):
-    #print(request.data["domains"])
     domains = request.data["domains"]
     userid = request.data["userid"]
     email = request.data["email"]
     domains = domains.split(" ")
     for each in domains:
         try:
+            tasks.saveCurrentAssetStatus.delay(each, "domain", userid)
             currentdomain = MonitorAsset(asset=each, userid=userid, support_email=email, asset_type="domain")
             currentdomain.save()
         except Exception as e:
             print('exception')
-            #print(e)
     return Response({"success": "success"})
 
-
-class Pdf(ListView):
-    template_name = 'search/pdf.html'
-
-    def get_queryset(self):
-        return self.kwargs['file']
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
-        fileid = self.kwargs['file']
-        print ("fileid is ", fileid)
-        emails = MonitorEmail.objects.filter(fileid=fileid)
-
-        leakedpasswords = []
-        breaches = []
-        pastes = []
-        emailforbreaches = {}
-        indexemails = []
-        starttime = 0
-        for email in emails:
-            if starttime == 0 or starttime > email.start_date:
-                starttime = email.start_date
-
-            currentstatus = CurrentAssetStatus.objects.filter(asset=email).values()
-            currentstatus = list(currentstatus)
-            mypasses = json.loads(currentstatus[0]['ghostfrpasswords'])
-            mybreaches = json.loads(currentstatus[0]['breaches'])
-            mybreacheslen = len(mybreaches)
-            if not mybreacheslen == 0:
-                print(mybreacheslen)
-                keyslist = list(emailforbreaches.keys())
-                if 1 in keyslist:
-                    indi = emailforbreaches["previouslen"]
-                    emailforbreaches[indi] = email
-                    emailforbreaches["previouslen"] = mybreacheslen + indi
-                else:
-                    emailforbreaches[1] = email
-                    emailforbreaches["previouslen"] = mybreacheslen + 1
-            mypaste = currentstatus[0]['no_of_paste']
-            myindexemails = json.loads(currentstatus[0]['indexemails'])
-
-            p = [email,mypaste]
-            leakedpasswords.extend(mypasses)
-            breaches.extend(mybreaches)
-            pastes.append(p)
-            indexemails.extend(myindexemails)
-        context['leakedpasswords'] = leakedpasswords
-        context['breaches'] = breaches
-        context['pastes'] = pastes
-        context['emailforbreaches'] = emailforbreaches
-        context['indexemails'] = indexemails
-        context['endtime'] = str(misc.formatDate(datetime.datetime.now()))
-        context['starttime'] = str(misc.formatDate(starttime))
-        return context
 
 class TimeDelayMixin(object, ):
 
     def dispatch(self, request, *args, **kwargs):
         time.sleep(1)
         return super().dispatch(request, *args, **kwargs)
-
-class MyModelPrintView(Pdf, WeasyTemplateResponseMixin):
-    pdf_filename = 'tranchulas.pdf'
-    # now = datetime.datetime.now()
-    # pdf_filename = str(now) + ".pdf"
-    # print('i wish i could be last things can get a bit easy then lol')
-
-    def get_queryset(self):
-        print("wao", self.kwargs['file'])
-        MyModelPrintView.pdf_filename = str(self.kwargs['file']) + ".pdf"
-        return self.kwargs['file']
-
 
 class DomainPdf(ListView):
     template_name = 'search/domainpdf.html'
@@ -1278,3 +1209,30 @@ def createReportForQuery(obj):
     HTML(string=html_out, base_url=__file__).write_pdf(dest, stylesheets=[stylesheet])
     updateReportInstance(obj['fileid'], "success", datetime.datetime.now())
     views.sendReportCompletionEmail(obj['email'])
+
+
+def createAssetStatus(asset, asset_type, userid):
+    '''
+    This method is responsible for creating asset status for newly stored asset
+    :param asset: basically the value of the asset
+    :type asset: str
+    :param asset_type: The type of the asset such email, domain etc
+    :type asset_type: str
+    :param userid: The userid of the user which this asset to belongs to
+    :type userid: str
+    '''
+
+    monitor_asset = MonitorAsset.objects.get(asset__exact=asset, userid__exact=userid, asset_type=asset_type)
+    obj = {"query": asset, "type": asset_type, "wildcard": 'false', "regex": 'false'}
+    raw_record_leakcheck = leakCheck(obj)
+    record_leakcheck = parseLeakCheckResponse(raw_record_leakcheck)
+    raw_record_db = getRecordsFromDB(obj)
+    record_db = parseDbResponse(raw_record_db)
+    object = {"res1": record_db, "res2": record_leakcheck}
+    current_records = mergeResponse(object)
+    try:
+        current_asset_status = CurrentAssetStatus(asset=monitor_asset, records=current_records)
+        current_asset_status.save()
+    except Exception as e:
+        logger.info('exception at saving CurrentAssetStatus instance')
+        logger.exception(e)

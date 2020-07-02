@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from search.darkbot.common.get_ghostproject_data import get_ghost_data
 from search.darkbot.search_engine import search_engine as s
-from search.models import IndexEmail, SearchLog, MonitorEmail
+from search.models import IndexEmail, SearchLog
 from accounts.models import User
 from search.darkbot.haveibeenpwnedApi import HaveIBeenPwned
 from search.darkbot.pwnedorNot_new import HaveIBeenPwned as HIBPwned
@@ -452,63 +452,3 @@ def pwned_breach(request):
 def getSearchType(index):
     searchTypes = {1: "Trace Any Info", 2: "Trace Email", 3: "Trace Bank Data"}
     return searchTypes[int(index)]#print("current module is: " + __name__)
-
-def vv(request):
-    emails = MonitorEmail.objects.filter(fileid=22)
-
-    leakedpasswords = []
-    breaches = []
-    pastes = []
-    emailforbreaches = {}
-    indexemails = []
-    starttime = 0
-    for email in emails:
-        if starttime == 0 or starttime > email.start_date:
-            starttime = email.start_date
-
-        currentstatus = CurrentStatus.objects.filter(email=email).values()
-        currentstatus = list(currentstatus)
-        mypasses = json.loads(currentstatus[0]['ghostfrpasswords'])
-        mybreaches = json.loads(currentstatus[0]['breaches'])
-        mybreacheslen = len(mybreaches)
-        if not mybreacheslen == 0:
-            print(mybreacheslen)
-            keyslist = list(emailforbreaches.keys())
-            if 1 in keyslist:
-                indi = emailforbreaches["previouslen"]
-                emailforbreaches[indi] = email
-                emailforbreaches["previouslen"] = mybreacheslen + indi
-            else:
-                emailforbreaches[1] = email
-                emailforbreaches["previouslen"] = mybreacheslen + 1
-        mypaste = currentstatus[0]['no_of_paste']
-        myindexemails = json.loads(currentstatus[0]['indexemails'])
-
-        p = [email, mypaste]
-        leakedpasswords.extend(mypasses)
-        breaches.extend(mybreaches)
-        pastes.append(p)
-        indexemails.extend(myindexemails)
-
-    # charts = Charts.objects.filter(chart_file=fileid)[:3]
-    # for (index,chart) in enumerate(charts):
-    #     print("index ",index)
-    #     if "overview" in chart.chart_name:
-    #         chart1 = "img/report/" + str(chart.chart_name)
-    #     if "password" in chart.chart_name:
-    #         chart2 = "img/report/" + str(chart.chart_name)
-    #     if "criticality" in chart.chart_name:
-    #         chart3 = "img/report/" + str(chart.chart_name)
-    #
-    # context['chart1'] = chart1
-    # context['chart2'] = chart2
-    # context['chart3'] = chart3
-    context = {}
-    context['leakedpasswords'] = leakedpasswords
-    context['breaches'] = breaches
-    context['pastes'] = pastes
-    context['emailforbreaches'] = emailforbreaches
-    context['indexemails'] = indexemails
-    context['endtime'] = str(datetime.datetime.now())
-    context['starttime'] = str(starttime)
-    return render(request, 'search/pdf.html', context=context)

@@ -14,5 +14,4 @@ urlpatterns=[
     path('dumps', views.get_dump,name="get_dump"),
     path('pastes', views.get_paste,name="get_paste"),
     path('emails', views.get_pass_email, name="get_pass_mail"),
-    path('vv/', views.vv, name="view"),
 ]

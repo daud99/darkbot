@@ -52,27 +52,11 @@ class Messages(models.Model):
     def __str__(self):
         return self.sender_email
 
-class MonitorEmail(models.Model):
-    email = models.CharField(max_length=50, default='')
-    userid = models.CharField(max_length=255, default='')
-    fileid = models.CharField(max_length=255, default='')
-    start_date = models.DateTimeField(default=datetime.now, blank=True)
-
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['fileid', 'userid', 'email'], name='uniqueness constraints')
-        ]
-
-    def __str__(self):
-        return self.email
-
-
 class MonitorAsset(models.Model):
     asset = models.CharField(max_length=50, default='')
     support_email = models.EmailField(default="daudahmed@zoho.com")
     userid = models.CharField(max_length=255, default='')
-    fileid = models.CharField(max_length=255, default='')
+    fileid = models.CharField(max_length=255, default='', blank=True)
     allow_monitoring = models.BooleanField(default=True)
     asset_type = models.CharField(max_length=50, default='domain')
     asset_status = models.CharField(max_length=50, default='In Active')

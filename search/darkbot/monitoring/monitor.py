@@ -30,9 +30,9 @@ class Monitor():
             logger.info("The monitoring is not getting started because no asset is found")
             self.stopMonitoring()
         else:
-            assets = MonitorAsset.objects.filter(asset_type=self.__type)
             obj = {"type": self.__type, "wildcard": 'false', "regex": 'false'}
             while True:
+                assets = MonitorAsset.objects.filter(asset_type=self.__type)
                 breaker = GlobalVar.objects.get(type=self.__type)
                 if not breaker.monitoring:
                     logger.info("Monitoirng is getting turned off")
@@ -53,21 +53,21 @@ class Monitor():
                         record_leakcheck = views.parseLeakCheckResponse(raw_record_leakcheck)
                         object = {"res1": record_db, "res2": record_leakcheck}
                         current_records = views.mergeResponse(object)
-
                     else:
+                        logger.info("Getting data from DB only for asset = "+each.asset)
                         current_records = list(record_db)
 
                     try:
-                        save_records = CurrentAssetStatus.objects.get(asset__asset=each.asset)
+                        save_records = CurrentAssetStatus.objects.get(asset__asset=each.asset, asset__userid=each.userid)
                         save_records = list(save_records.records)
                         diff = Monitor.compareLists(current_records, save_records)
                         # if len(save_records) != 0:
                         if (len(current_records) == len(save_records) and diff) or (len(current_records) < len(save_records) and diff):
-                            logger.info("no new record find for "+each.asset)
+                            logger.info("no record find for "+each.asset)
                             pass
                         else:
                             logger.info("new record find for "+each.asset)
-                            CurrentAssetStatus.objects.filter(asset__asset=each.asset).update(records=current_records)
+                            CurrentAssetStatus.objects.filter(asset__asset=each.asset, asset__userid=each.userid).update(records=current_records)
                             Monitor.sendMail(each.support_email, "SOC ALERT", diff)
 
 

@@ -46,3 +46,9 @@ def processDomainCreateReport(domain, userid, pdf_filename, starttime):
 def createReportForRegexWildcard(obj):
     sv.createReportForQuery(obj)
     return "returning createReportForRegexWildcard"
+
+
+@shared_task
+def saveCurrentAssetStatus(asset, asset_type, userid):
+    sv.createAssetStatus(asset, asset_type, userid)
+    return "returning saveCurrentAssetStatus"
