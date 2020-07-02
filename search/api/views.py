@@ -24,7 +24,7 @@ from search.darkbot.common.get_ghostproject_data import get_ghost_data
 from search.darkbot.pwnedorNot_new import HaveIBeenPwned
 from search.darkbot.search_engine import search_engine as s
 from search.darkbot import monitor, domain_monitoring
-from search.models import MonitorEmail, CurrentStatus, Charts, MonitorAsset, IndexEmail, ApiSearchLog, Report
+from search.models import MonitorEmail, CurrentAssetStatus, Charts, MonitorAsset, IndexEmail, ApiSearchLog, Report
 from django_weasyprint import WeasyTemplateResponseMixin
 from dark_bot import settings
 from adminpanel import views
@@ -326,8 +326,6 @@ class FileUploadView(APIView):
         starttime = str(misc.formatDate(datetime.datetime.now()))
         emails = request.data["emails"]
         print(emails)
-        #emails = emails.read()
-        #emails = str(emails, 'utf-8')
         userid = request.data["userid"]
         fileid = request.data["fileid"]
         print('fileid', fileid)
@@ -357,11 +355,11 @@ def celerySingleDomainReport(domain, userid, pdf_filename, starttime):
     print("executed single domain report creation")
     context = {}
     if userid != "superuser":
-        r = MonitorAsset.objects.filter(asset_verify__exact=True, domain__exact=domain, userid__exact=userid).count()
-        d = MonitorAsset.objects.filter(asset_verify__exact=True, domain__exact=domain, userid__exact=userid).values()
+        r = MonitorAsset.objects.filter(asset_verify__exact=True, asset__exact=domain, userid__exact=userid, asset_type="domain").count()
+        d = MonitorAsset.objects.filter(asset_verify__exact=True, asset__exact=domain, userid__exact=userid, asset_type="domain").values()
     else:
-        r = MonitorAsset.objects.filter(asset_verify__exact=True, domain__exact=domain).count()
-        d = MonitorAsset.objects.filter(asset_verify__exact=True, domain__exact=domain).values()
+        r = MonitorAsset.objects.filter(asset_verify__exact=True, asset__exact=domain, asset_type="domain").count()
+        d = MonitorAsset.objects.filter(asset_verify__exact=True, asset__exact=domain, asset_type="domain").values()
     if r == 0:
         updateReportInstance(pdf_filename, "failure", datetime.datetime.now())
         return
@@ -419,7 +417,7 @@ def celeryEmailReport(emails, userid, fileid, uploaderemail, starttime):
     # return Response(status=200)
     # return HttpResponseRedirect('/api/trace/print/' + fileid)
 
-    emails = MonitorEmail.objects.filter(fileid=fileid)
+    emails = MonitorAsset.objects.filter(fileid=fileid)
     context = {}
     leakedpasswords = []
     breaches = []
@@ -428,11 +426,23 @@ def celeryEmailReport(emails, userid, fileid, uploaderemail, starttime):
     indexemails = []
     previouslen = 0
     for email in emails:
-        currentstatus = CurrentStatus.objects.filter(email=email).values()
+        currentstatus = CurrentAssetStatus.objects.filter(asset=email).values()
+
+        # print("currentstatus")
+        # print(currentstatus)
+        # print(list(currentstatus))
         currentstatus = list(currentstatus)
-        mypasses = json.loads(currentstatus[0]['ghostfrpasswords'])
-        mybreaches = json.loads(currentstatus[0]['breaches'])
+        mypasses = json.loads(currentstatus[0]['records'])
+        # mybreaches = json.loads(currentstatus[0]['breaches'])
+        # mybreacheslen = len(mybreaches)
+
+        mybreaches = monitor.checkEmailBreaches(email.asset)
         mybreacheslen = len(mybreaches)
+        tmp_pastes = monitor.pasteSearch(email.asset)
+        mypaste = len(tmp_pastes['pastes'])
+        # print(no_of_paste)
+        myindexemails = monitor.getEmailPresenceOnDarkweb(email.asset)
+
         if not mybreacheslen == 0:
             print(mybreacheslen)
             keyslist = list(emailforbreaches.keys())
@@ -443,9 +453,9 @@ def celeryEmailReport(emails, userid, fileid, uploaderemail, starttime):
             else:
                 emailforbreaches[1] = email
                 previouslen = mybreacheslen + 1
-        mypaste = currentstatus[0]['no_of_paste']
-        myindexemails = json.loads(currentstatus[0]['indexemails'])
-
+        # mypaste = currentstatus[0]['no_of_paste']
+    #     myindexemails = json.loads(currentstatus[0]['indexemails'])
+    #
         p = [email, mypaste]
         leakedpasswords.extend(mypasses)
         breaches.extend(mybreaches)
@@ -497,25 +507,25 @@ def monitorEmails(request):
 
 def saveMonitorEmail(email, userid, fileid):
     try:
-        currentEmail = MonitorEmail(email=email, userid=userid, fileid=fileid)
+        currentEmail = MonitorAsset(asset=email, userid=userid, fileid=fileid, asset_type="email")
         currentEmail.save()
         return currentEmail
     except Exception as e:
-        MonitorEmail.objects.filter(email=email).update(userid=userid, fileid=fileid)
+        MonitorAsset.objects.filter(asset=email).update(userid=userid, fileid=fileid, asset_type="email")
         print('exception')
         #print(e)
 
 def saveCurrentStatus(email, currentEmail, fileid=1):
     try:
-        print("is not it what it should be",email)
-        print(type(email))
+        # print("is not it what it should be",email)
+        # print(type(email))
         obj = {}
         obj['type'] = 'email'
         obj['query'] = email
         obj['wildcard'] = 'false'
         obj['regex'] = 'false'
         cleanPass = leakCheck(obj)
-        print('cleanpass')
+        # print('cleanpass')
         # print(cleanPass)
         cleanPass = parseLeakCheckResponse(cleanPass)
         # print(cleanPass)
@@ -525,23 +535,23 @@ def saveCurrentStatus(email, currentEmail, fileid=1):
         o['res1'] = db
         o['res2'] = cleanPass
         cleanPass = mergeResponse(o)
-        print(cleanPass)
-        print("yaha",email)
-        breaches = monitor.checkEmailBreaches(email)
-        pastes = monitor.pasteSearch(email)
-        no_of_paste = len(pastes['pastes'])
-        print(no_of_paste)
-        indexemails = monitor.getEmailPresenceOnDarkweb(email)
-        #print('emailfound ', email)
-        emailfound = CurrentStatus.objects.filter(email__email__exact=email, email__fileid__exact=fileid).count()
-        #print('emailfound ', emailfound)
-        # print("emailfound are ", emailfound)
+        # print(cleanPass)
+        # print("yaha",email)
+        # breaches = monitor.checkEmailBreaches(email)
+        # pastes = monitor.pasteSearch(email)
+        # no_of_paste = len(pastes['pastes'])
+        # print(no_of_paste)
+        # indexemails = monitor.getEmailPresenceOnDarkweb(email)
+        emailfound = CurrentAssetStatus.objects.filter(asset__asset__exact=email, asset__fileid__exact=fileid).count()
+
         if emailfound == 0:
-            currentstatus = CurrentStatus(email=currentEmail, ghostfrpasswords=cleanPass, breaches=breaches, no_of_paste=no_of_paste, indexemails=indexemails)
+            currentstatus = CurrentAssetStatus(asset=currentEmail, records=cleanPass)
+            # currentstatus = CurrentAssetStatus(asset=currentEmail, records=cleanPass, breaches=breaches, no_of_paste=no_of_paste, indexemails=indexemails)
             #currentstatus = CurrentStatus(email=currentEmail, breaches=breaches, no_of_paste=no_of_paste, indexemails=indexemails)
             currentstatus.save()
         else:
-            CurrentStatus.objects.filter(email=currentEmail).update(ghostfrpasswords=cleanPass, breaches=breaches, no_of_paste=no_of_paste, indexemails=indexemails)
+            CurrentAssetStatus.objects.filter(asset=currentEmail).update(records=cleanPass)
+            # CurrentAssetStatus.objects.filter(asset=currentEmail).update(ghostfrpasswords=cleanPass, breaches=breaches, no_of_paste=no_of_paste, indexemails=indexemails)
             #CurrentStatus.objects.filter(email=currentEmail).update( breaches=breaches, no_of_paste=no_of_paste, indexemails=indexemails)
     except Exception as e:
         print('exception')
@@ -559,7 +569,7 @@ def registerDomains(request):
     domains = domains.split(" ")
     for each in domains:
         try:
-            currentdomain = MonitorAsset(domain=each, userid=userid, support_email=email)
+            currentdomain = MonitorAsset(asset=each, userid=userid, support_email=email, asset_type="domain")
             currentdomain.save()
         except Exception as e:
             print('exception')
@@ -591,7 +601,7 @@ class Pdf(ListView):
             if starttime == 0 or starttime > email.start_date:
                 starttime = email.start_date
 
-            currentstatus = CurrentStatus.objects.filter(email=email).values()
+            currentstatus = CurrentAssetStatus.objects.filter(asset=email).values()
             currentstatus = list(currentstatus)
             mypasses = json.loads(currentstatus[0]['ghostfrpasswords'])
             mybreaches = json.loads(currentstatus[0]['breaches'])
@@ -779,7 +789,7 @@ def createHeader(c, startdate):
     c.drawString(2.3 * inch, -2.4 * inch, str(enddate))
 
 class Assets(generics.ListAPIView):
-    queryset = MonitorAsset.objects.all()
+    queryset = MonitorAsset.objects.filter(asset_type="domain")
     serializer_class = MonitorAssetSerializer
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.IsAdminUser,)
@@ -803,7 +813,7 @@ class GroupReports(generics.ListAPIView):
     search_fields = ['userid']
 
 class GroupAssets(generics.ListAPIView):
-    queryset = MonitorAsset.objects.all()
+    queryset = MonitorAsset.objects.filter(asset_type="domain")
     serializer_class = MonitorAssetSerializer
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.IsAdminUser,)

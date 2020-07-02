@@ -44,12 +44,16 @@ class Monitor():
                         save_records = CurrentAssetStatus.objects.get(asset__asset=each.asset)
                         save_records = list(save_records.records)
                         diff = Monitor.compareLists(current_records, save_records)
-                        if len(save_records) != 0:
-                            if (len(current_records) == len(save_records) and diff) or (len(current_records) < len(save_records) and diff):
-                                pass
-                            else:
-                                CurrentAssetStatus.objects.filter(asset__asset=each.asset).update(records=current_records)
-                                Monitor.sendMail(each.support_email, "SOC ALERT", diff)
+                        # if len(save_records) != 0:
+                        if (len(current_records) == len(save_records) and diff) or (len(current_records) < len(save_records) and diff):
+                            print("no new record find for "+each.asset)
+                            pass
+                        else:
+                            print("new record find for "+each.asset)
+                            CurrentAssetStatus.objects.filter(asset__asset=each.asset).update(records=current_records)
+                            Monitor.sendMail(each.support_email, "SOC ALERT", diff)
+                        # else:
+                        #     print("length of save record is 0")
 
 
                     except Exception as e:

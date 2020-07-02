@@ -99,11 +99,10 @@ class DomainEmailStatus(models.Model):
 
 class CurrentAssetStatus(models.Model):
     asset = models.ForeignKey(MonitorAsset, on_delete=models.CASCADE, related_name='asset_name')
-    records = JSONField(blank=True)
+    records = JSONField(blank=True, default=[])
 
     def __str__(self):
         return self.asset.asset
-
 
 class Charts(models.Model):
     chart_name = models.CharField(max_length=255)
