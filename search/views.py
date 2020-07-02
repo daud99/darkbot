@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from search.darkbot.common.get_ghostproject_data import get_ghost_data
 from search.darkbot.search_engine import search_engine as s
-from search.models import IndexEmail, SearchLog, MonitorEmail, CurrentStatus
+from search.models import IndexEmail, SearchLog, MonitorEmail
 from accounts.models import User
 from search.darkbot.haveibeenpwnedApi import HaveIBeenPwned
 from search.darkbot.pwnedorNot_new import HaveIBeenPwned as HIBPwned

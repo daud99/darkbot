@@ -2,6 +2,7 @@ from jsonfield import JSONField
 from django.db import models
 from datetime import datetime
 from accounts.models import User
+from django.db.models import Q
 
 # Create your models here.
 
@@ -66,13 +67,6 @@ class MonitorEmail(models.Model):
     def __str__(self):
         return self.email
 
-class CurrentStatus(models.Model):
-    email = models.ForeignKey(MonitorEmail, on_delete=models.CASCADE, related_name='em')
-    ghostfrpasswords = JSONField(blank=True)
-    breaches = JSONField(blank=True)
-    no_of_paste = models.PositiveIntegerField(blank=True)
-    # emailsindb = JSONField(blank=True)
-    indexemails = JSONField(blank=True)
 
 class MonitorAsset(models.Model):
     asset = models.CharField(max_length=50, default='')
@@ -86,16 +80,14 @@ class MonitorAsset(models.Model):
     allow_external = models.BooleanField(default=False)
     start_date = models.DateTimeField(default=datetime.now, blank=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['fileid', 'userid', 'asset'], condition=Q(asset_type="email"), name='uniqueness constraint email asset'),
+            models.UniqueConstraint(fields=['userid', 'asset'], condition=Q(asset_type="domain"), name='uniqueness constraint domain asset')
+        ]
+
     def __str__(self):
         return self.asset
-
-class DomainEmailStatus(models.Model):
-    email = models.EmailField(unique=True)
-    domain = models.ForeignKey(MonitorAsset, on_delete=models.CASCADE)
-    passwords = JSONField(blank=True)
-    darknet_occurrences = JSONField(blank=True)
-    def __str__(self):
-        return self.email
 
 class CurrentAssetStatus(models.Model):
     asset = models.ForeignKey(MonitorAsset, on_delete=models.CASCADE, related_name='asset_name')
