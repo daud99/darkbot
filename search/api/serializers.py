@@ -10,7 +10,7 @@ class ReportSerializer(serializers.ModelSerializer):
 class MonitorAssetSerializer(serializers.ModelSerializer):
     class Meta:
         model = MonitorAsset
-        fields = ['id', 'domain', 'userid', 'asset_type', 'asset_status', 'asset_verify']
+        fields = ['id', 'asset', 'userid', 'asset_type', 'asset_status', 'asset_verify']
 
 
 class Email_passwordsSerializer(serializers.ModelSerializer):
