@@ -18,6 +18,11 @@ import json
 search_term = None
 breaches = None
 
+# Today
+import concurrent.futures
+from search import tasks
+from search.api.views import leakCheck, getRecordsFromDB, parseLeakCheckResponse, parseDbResponse, mergeResponse
+
 
 def user_is_loggedin(func):
     def wrapper(*args):
@@ -37,215 +42,53 @@ def search(request):
     final_list = []
     a = "search/search.html"
     mydict = {}
+    obj = {}
+    obj['wildcard'] = 'false'
+    obj['regex'] = 'false'
     if request.method == 'POST':
 
         search_info = request.POST.get('search')
         search_type = request.POST.get('category')
-        type = getSearchType(search_type)
         user = request.user
         search_log = SearchLog(user=user, type=type, search_term=search_info)
         search_log.save()
-        print('search info : ' + search_info)
-        # print('search type : ' + search_type)
+
+        start_time = time.time()
+        obj['query'] = search_info
         if search_type == "1":
-            #disconnect()
-            start_time = time.time()
-            mylist = s(search_info)
+            obj['type'] = 'email'
+        elif search_type == "2":
+            obj['type'] = 'username'
+        elif search_type == "3":
+            obj['type'] = 'pass_email'
+        elif search_type == "4":
+            obj['type'] = 'domain'
+
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            t1 = executor.submit(leakCheck, obj)
+            t2 = executor.submit(getRecordsFromDB, obj)
+            r1 = t1.result()
+            t3 = executor.submit(parseLeakCheckResponse, r1)
+            r2 = t2.result()
+            t4 = executor.submit(parseDbResponse, r2)
+            objr = {}
+            objr['res1'] = t4.result()
+            objr['res2'] = t3.result()
+            t7 = executor.submit(mergeResponse, objr)
+            final = t7.result()
+            tasks.saveData.delay(final)
             search_duration = time.time() - start_time
             search_duration = int(search_duration)
-            if len(mylist) > 0:
-                mydict = {'mydocuments': mylist, 'length': len(mylist),
-                          'duration': search_duration}
+            if search_type in  ["3","4"] :
+                obj['type'] = "email"
+            if len(final) > 0:
+                mydict = {'mydocuments': final, 'length': len(final),
+                          'duration': search_duration, 'type': obj['type']}
             else:
-                mydict = {'mydocuments': None, 'length': len(mylist),
-                          'duration': search_duration}
+                mydict = {'mydocuments': None, 'length': len(final),
+                          'duration': search_duration, 'type': obj['type']}
             a = "search/results.html"
 
-        elif search_type == "2":
-            email_search_subtype = request.POST.get('email-search-what')
-            email_search_type = request.POST.get('email-search-type')
-
-            if (email_search_subtype == "1" and email_search_type == "1"):
-
-                start_time = time.time()
-                final_list = IndexEmail.objects.filter(email__iexact=search_info)
-
-                # l = crawl.emails_with_channel()
-                # for e in l:
-                #     print('final list')
-                #     print(e)
-                #     if search_info == e[0]:
-                #         final_list.append(e)
-                '''for each in final_list:
-                    print(each)'''
-                # print("length of result is : ", len(final_list))
-                search_duration = time.time() - start_time
-                search_duration = int(search_duration)
-                if len(final_list) > 0:
-                    mydict = {'documents': final_list, 'length': len(final_list),
-                              'duration': search_duration}
-                else:
-                    mydict = {'documents': None, 'length': len(final_list),
-                              'duration': search_duration}
-                a = "search/results.html"
-
-            elif (email_search_subtype == "2" and email_search_type == "1"):
-                a = "search/breach_result.html"
-                final_mails = get_ghost_data(search_info, 1)
-                if len(final_mails) > 0:
-                    mydict = {'documents': final_mails}
-
-                else:
-                    mydict = {'documents': None}
-            elif (email_search_subtype == "3" and email_search_type == "1"):
-                #driver = HaveIBeenPwned()
-                driver = HIBPwned()
-                a = "search/pwned_breach.html"
-                try:
-                    start_time = time.time()
-                    driver.search_by_email(search_info)
-                    breaches = driver.retrieve_breaches()
-                    search_duration = time.time() - start_time
-                    search_duration = int(search_duration)
-
-                    # print(breaches)
-                    mydict = breaches.copy()
-                    mydict['duration'] = search_duration
-                except Exception as e:
-                
-                    driver.close_driver()
-
-                else:
-                    driver.close_driver()
-                    request.session['breach_result'] = json.dumps(mydict)
-                    return redirect('/search/pwned?page=1')
-
-            elif (email_search_subtype == "4" and email_search_type == "1"):
-                #driver = HaveIBeenPwned()
-                driver = HIBPwned()
-                a = "search/pwned_paste.html"
-                try:
-                    start_time = time.time()
-
-                    driver.search_by_email(search_info)
-                    pastes = driver.retrieve_pastes()
-                    search_duration = time.time() - start_time
-                    search_duration = int(search_duration)
-                    mydict = pastes.copy()
-                    mydict['duration'] = search_duration
-                except Exception as e:
-                    driver.close_driver()
-                else:
-                    driver.close_driver()
-                    request.session['paste_result'] = json.dumps(mydict)
-                    return redirect('/search/pastes?page=1')
-                    # print(pastes)
-
-
-            elif (email_search_subtype == "1" and email_search_type == "2"):
-                '''
-                driver = MySpacX_pass_mail()
-                '''
-                start_time = time.time()
-                response_data = None
-                a = "search/pass_mail.html"
-                '''
-                try:
-                    driver.create_driver()
-                    response_data = driver.retrieve_emails(search_info)
-                except Exception as e:
-                    driver.close_driver()
-                    response_data = None
-                driver.close_driver()
-                '''
-                try:
-                    data_from_db = Email_passwords.objects.filter(password__iexact=search_info).values('email')
-                except Exception as e:
-                    print("exception")
-                    data_from_db = None
-                end_time = time.time() - start_time
-
-                if response_data:
-                    total_results = response_data['total_results']
-                    documents = response_data['documents']
-                else:
-                    total_results = 0
-                    documents = []
-                if data_from_db:
-                    print(data_from_db)
-                    if total_results:
-                        total_results = int(total_results) + data_from_db.count()
-                    else:
-                        total_results = data_from_db.count()
-                    if documents:
-                        for x in data_from_db:
-                            documents.append(x['email'])
-                    else:
-                        documents = []
-                        for x in data_from_db:
-                            documents.append(x['email'])
-
-                mydict = {}
-                mydict['total_results'] = total_results
-                mydict['documents'] = documents
-                mydict['duration'] = end_time
-                mydict['passw'] = search_info
-                request.session['clean_mails'] = json.dumps(mydict)
-                return redirect('/search/emails?page=1')
-            elif (email_search_subtype == "2" and email_search_type == "2"):
-                
-                messages.warning(request,"Don't Go there, try searching by cleanpass")
-                return redirect('/search')
-            elif (email_search_subtype == "1" and email_search_type == "3"):
-                a = "search/breach_result.html"
-                final_mails = get_ghost_data(search_info, 2)
-                if len(final_mails) > 0:
-                    mydict = {'documents': final_mails}
-                else:
-                    mydict = {'documents': None}
-            elif (email_search_subtype == "2" and email_search_type == "3"):
-
-                start_time = time.time()
-                final_list = IndexEmail.objects.filter(email__istartswith=search_info)
-
-                # l = crawl.emails_with_channel()
-                # for e in l:
-                #     print('final list')
-                #     print(e)
-                #     if search_info == e[0]:
-                #         final_list.append(e)
-                '''for each in final_list:
-                    print(each)'''
-                # print("length of result is : ", len(final_list))
-                search_duration = time.time() - start_time
-                search_duration = int(search_duration)
-                if len(final_list) > 0:
-                    mydict = {'documents': final_list, 'length': len(final_list),
-                              'duration': search_duration}
-                else:
-                    mydict = {'documents': None, 'length': len(final_list),
-                              'duration': search_duration}
-                a = "search/results.html"
-
-        elif search_type == "3":
-            bank_search_type = request.POST.get('option-dp')
-            bank_search_category = request.POST.get('type-dp')
-
-            if bank_search_category == "1":
-                request.session['dump_checkpoint'] = True
-                request.session['dump_query'] = search_info
-                request.session['dump_search_type'] = bank_search_type
-                start_time = time.time()
-
-                return redirect('/search/dumps?page=1')
-                # a= "search/dumps_result.html"
-            if bank_search_category == "2":
-                request.session['cvv_checkpoint'] = True
-                request.session['cvv_query'] = search_info
-                request.session['cvv_search_type'] = bank_search_type
-                return redirect('/search/cvv?page=1')
-                # return get_cvv(request)
-                # a= "search/cvvs_results.html"
     if request.user.is_superuser:
         mydict["base_template"] = 'adminpanel/base.html'
     else:

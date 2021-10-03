@@ -87,6 +87,9 @@ cd Darkbot
 pip3 install -r requirements.txt
 ```
 ```shell script
+python -m pip install --upgrade pillow
+```
+```shell script
 apt-get install tor
 ```
 ```shell script

@@ -206,8 +206,8 @@ WSGI_APPLICATION = 'dark_bot.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'daud',
-        'PASSWORD': 'daud',
+        'USER': 'darkbot',
+        'PASSWORD': 'darkbot',
         'NAME': 'darkbot',
         'HOST': 'localhost',
     },
@@ -271,7 +271,7 @@ LOGIN_REDIRECT_URL = '/adminpanel'
 # except ImportError:
 #     pass
 #
-try:
-    from .local_settings import *
-except ImportError:
-    pass
+# try:
+#     from .local_settings import *
+# except ImportError:
+#     pass

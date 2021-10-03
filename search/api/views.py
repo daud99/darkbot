@@ -930,7 +930,6 @@ def leakCheck(obj):
     res = res.json()
     return res
 
-
 def getRecordsFromDB(obj):
     # print('yess')
     # print(obj)
@@ -1087,12 +1086,10 @@ def storeInDb(each):
         print(e)
         print('exception while storing in email_passwords table')
 
-
 def storeInDbCaller(res):
     for each in res:
         storeInDb(each)
     # print('stored successfully check your DB')
-
 
 def storeApiLog(typee, query, userid, username, useremail):
     try:
@@ -1114,9 +1111,6 @@ def download(request):
             response = HttpResponse(fh.read(), content_type="application/pdf")
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
-
-
-
 
 def createReportForQuery(obj):
     max_limit = 10000
@@ -1209,7 +1203,6 @@ def createReportForQuery(obj):
     HTML(string=html_out, base_url=__file__).write_pdf(dest, stylesheets=[stylesheet])
     updateReportInstance(obj['fileid'], "success", datetime.datetime.now())
     views.sendReportCompletionEmail(obj['email'])
-
 
 def createAssetStatus(asset, asset_type, userid):
     '''

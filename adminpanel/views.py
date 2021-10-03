@@ -19,7 +19,7 @@ from chartjs.views.lines import BaseLineChartView
 from django.utils import timezone
 from .forms import UploadFileForm
 import datetime
-from search.api.views import saveMonitorEmail, saveCurrentStatus, darkbotEmailReport
+# from search.api.views import saveMonitorEmail, saveCurrentStatus, darkbotEmailReport
 from search.models import Messages, MonitorAsset, Report, GlobalVar, ApiSearchLog
 from fileparser.models import FolderSelectInfoModel, FileReadInfoModel
 from adminpanel.tasks import Monitoring, startMainForFileParser

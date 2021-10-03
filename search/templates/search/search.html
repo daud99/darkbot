@@ -25,33 +25,13 @@
                 <div>
                     <section class="mt-5" id="centerme">
                         <div class="container" id="frm">
-                            <!--                    <div id="feedback" class="alert alert-danger">-->
-                            <!--                        <h1>Please select the desire search option</h1>-->
-                            <!--                    </div>-->
+
                             <div class="text-center">
 
                                 <p class="text-muted">Start track on DARKNET, by entering email or any other data
                                     below.</p>
                                 <form method="POST" onsubmit="return loading();">
 
-
-                                    <!--                                <div class="row">-->
-                                    <!--                                    <div class="col-9">-->
-                                    <!--                                        <div class="form-group">-->
-                                    <!--                                            <input type="email" class="form-control" id="exampleFormControlInput1"-->
-                                    <!--                                                   placeholder="name@example.com">-->
-                                    <!--                                        </div>-->
-                                    <!--                                    </div>-->
-                                    <!--                                    <div class="col-3">-->
-                                    <!--                                        <div class="form-group">-->
-                                    <!--                                            <select class="form-control" id="exampleFormControlSelect1">-->
-                                    <!--                                                <option>Trace EMAIL</option>-->
-                                    <!--                                                <option>Trace Password</option>-->
-                                    <!--                                                <option>Trace any info</option>-->
-                                    <!--                                            </select>-->
-                                    <!--                                        </div>-->
-                                    <!--                                    </div>-->
-                                    <!--                                </div>-->
                                     <div class="row">
                                         <div class="container">
                                             <div class="form-group">
@@ -63,10 +43,10 @@
                                                         <select id="search-dropdown" class="form-control"
                                                                 name="category">
                                                             <!--<option selected="selected">Select</option>!-->
-                                                            <option value="1">Trace Any Info</option>
-                                                            <option value="2">Trace Email</option>
-                                                            <option value="3">Search Bank Data</option>
-                                                         
+                                                            <option value="1">Email</option>
+                                                            <option value="2">Username</option>
+                                                            <option value="3">Password</option>
+                                                            <option value="4">Domain</option>
                                                         </select>
                                                     </div>
                                                    
@@ -75,75 +55,75 @@
                                         </div>
                                         <br>
                                     </div>
-                                    <div id="userpopup" class="row mb-2">
-                                        <div class="offset-md-4 col-lg-4">
-                                            <span class="popupp">Please enter a valid <strong>Email</strong>.</span>
-                                        </div>
-                                    </div>
-                                    <div id="userpopup2" class="row mb-2">
-                                        <div class="offset-md-4 col-lg-4">
-                                            <span class="popupp">Enter just partial text of <strong>Email</strong>.</span>
-                                        </div>
-                                    </div>
-                                    <div class="row d-none" id='bankOptions'>
-                                        <div class="container">
-                                            <div class="form-group">
-                                                <div id="form-bank-search" class="input-group">
-                    
-                                                        <div id="bank-option-dropdown" class="offset-md-1 input-group-btn">
-                                                                <label for="option-dropdown"><b>Select Option</b></label>
-                                                                <select id="option-dropdown" class="form-control"
-                                                                        name="option-dp">
-                                                                    <!--<option selected="selected">Select</option>!-->
-                                                                    <option value="1">Bin No</option>
-                                                                    <option value="2">Country</option>
-                                                                    <option value="3">Bank Name</option>
-                                                                    <option value="4">Base</option>
-                                                                </select>
-                                                            </div>
-                                                    <div id="bank-type-dropdown" class="offset-md-2 input-group-btn">
-                                                        <label for="type-dropdown"><b>Search Type</b></label>
-                                                        <select id="type-dropdown" class="form-control"
-                                                                name="type-dp">
-                                                            <!--<option selected="selected">Select</option>!-->
-                                                            <option value="1">Search Dumps</option>
-                                                            <option value="2">Search CVVs</option>
-                                                            
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br>
-                                    </div>
-                                    <div class="row d-none" id='emailOptions'>
-                                        <div class="container">
-                                            <div class="form-group">
-                                                <div id="form-email-search" class="input-group">
-                    
-                                                        <div id="email-option-dropdown" class="offset-md-1 input-group-btn">
-                                                                <label for="email-search-what"><b>Select Option</b></label>
-                                                                <select id="email-search-what" class="form-control"
-                                                                        name="email-search-what">
-                                                                    <!--<option selected="selected">Select</option>!-->
-                                                                    
-                                                                </select>
-                                                            </div>
-                                                    <div id="email-type-dropdown" class="offset-md-1 input-group-btn">
-                                                        <label for="email-search-type"><b>Search Type</b></label>
-                                                        <select id="email-search-type" class="form-control"
-                                                                name="email-search-type">
-                                                            <!--<option selected="selected">Select</option>!-->
-                                                            <option value="1">Email</option>
-                                                            <option value="2">Password</option>
-                                                            <option value="3">User Name</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br>
-                                    </div>
+{#                                    <div id="userpopup" class="row mb-2">#}
+{#                                        <div class="offset-md-4 col-lg-4">#}
+{#                                            <span class="popupp">Please enter a valid <strong>Email</strong>.</span>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div id="userpopup2" class="row mb-2">#}
+{#                                        <div class="offset-md-4 col-lg-4">#}
+{#                                            <span class="popupp">Enter just partial text of <strong>Email</strong>.</span>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="row d-none" id='bankOptions'>#}
+{#                                        <div class="container">#}
+{#                                            <div class="form-group">#}
+{#                                                <div id="form-bank-search" class="input-group">#}
+{#                    #}
+{#                                                        <div id="bank-option-dropdown" class="offset-md-1 input-group-btn">#}
+{#                                                                <label for="option-dropdown"><b>Select Option</b></label>#}
+{#                                                                <select id="option-dropdown" class="form-control"#}
+{#                                                                        name="option-dp">#}
+{#                                                                    <!--<option selected="selected">Select</option>!-->#}
+{#                                                                    <option value="1">Bin No</option>#}
+{#                                                                    <option value="2">Country</option>#}
+{#                                                                    <option value="3">Bank Name</option>#}
+{#                                                                    <option value="4">Base</option>#}
+{#                                                                </select>#}
+{#                                                            </div>#}
+{#                                                    <div id="bank-type-dropdown" class="offset-md-2 input-group-btn">#}
+{#                                                        <label for="type-dropdown"><b>Search Type</b></label>#}
+{#                                                        <select id="type-dropdown" class="form-control"#}
+{#                                                                name="type-dp">#}
+{#                                                            <!--<option selected="selected">Select</option>!-->#}
+{#                                                            <option value="1">Search Dumps</option>#}
+{#                                                            <option value="2">Search CVVs</option>#}
+{#                                                            #}
+{#                                                        </select>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <br>#}
+{#                                    </div>#}
+{#                                    <div class="row d-none" id='emailOptions'>#}
+{#                                        <div class="container">#}
+{#                                            <div class="form-group">#}
+{#                                                <div id="form-email-search" class="input-group">#}
+{#                    #}
+{#                                                        <div id="email-option-dropdown" class="offset-md-1 input-group-btn">#}
+{#                                                                <label for="email-search-what"><b>Select Option</b></label>#}
+{#                                                                <select id="email-search-what" class="form-control"#}
+{#                                                                        name="email-search-what">#}
+{#                                                                    <!--<option selected="selected">Select</option>!-->#}
+{#                                                                    #}
+{#                                                                </select>#}
+{#                                                            </div>#}
+{#                                                    <div id="email-type-dropdown" class="offset-md-1 input-group-btn">#}
+{#                                                        <label for="email-search-type"><b>Search Type</b></label>#}
+{#                                                        <select id="email-search-type" class="form-control"#}
+{#                                                                name="email-search-type">#}
+{#                                                            <!--<option selected="selected">Select</option>!-->#}
+{#                                                            <option value="1">Email</option>#}
+{#                                                            <option value="2">Password</option>#}
+{#                                                            <option value="3">User Name</option>#}
+{#                                                        </select>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <br>#}
+{#                                    </div>#}
                                     <div class="row">
                                         <div class="offset-md-4 col-lg-4">
                                             <div class="input-group">
