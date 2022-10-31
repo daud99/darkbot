@@ -165,7 +165,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    "csp.middleware.CSPMiddleware",
+    # "csp.middleware.CSPMiddleware",
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -184,7 +184,7 @@ SECURE_HSTS_PRELOAD = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 SECURE_REFERRER_POLICY = 'same-origin'
-CSP_STYLE_SRC = ["'self'", "www.w3.org", "tranchulas.com", "www.altfonts.com","purl.org","creativecommons.org", "fonts.googleapis.com", "code.jquery.com", "maxcdn.bootstrapcdn.com", "cdnjs.cloudflare.com"]
+# CSP_STYLE_SRC = ["'self'", "www.w3.org", "tranchulas.com", "www.altfonts.com","purl.org","creativecommons.org", "fonts.googleapis.com", "code.jquery.com", "maxcdn.bootstrapcdn.com", "cdnjs.cloudflare.com"]
 
 
 # Other
