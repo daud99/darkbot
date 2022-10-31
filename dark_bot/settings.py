@@ -177,7 +177,7 @@ MIDDLEWARE = [
 # ==============================================================================
 
 SECURE_BROWSER_XSS_FILTER = True
-SECURE_HSTS_SECONDS = 30
+SECURE_HSTS_SECONDS = 2592000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
