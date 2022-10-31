@@ -121,7 +121,7 @@ AUTH_USER_MODEL = 'accounts.User'
 SECRET_KEY = 'q*%r*kevzyp_s)36=ec2)2n&y8dv+745z1i+j5z!1h@s#)^!nm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -171,6 +171,18 @@ MIDDLEWARE = [
     'dark_bot.ip_restriction.IpWhitelister',
     'dark_bot.ip_restriction.QueryMiddleware'
 ]
+
+# ==============================================================================
+# ENABLING SECURITY HEADERS
+# ==============================================================================
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_HSTS_SECONDS = 30
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_REFERRER_POLICY = 'same-origin'
 
 ROOT_URLCONF = 'dark_bot.urls'
 
