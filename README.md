@@ -2,11 +2,11 @@
  
 ## UI
 
-![Alt text](https://drive.google.com/file/d/1r6ANCbia19A1j6f50r6ONvT5LfgR4fO4/view?usp=sharing)
+![Alt text](https://drive.google.com/uc?export=view&id=1r6ANCbia19A1j6f50r6ONvT5LfgR4fO4)
 
-![Alt text](https://drive.google.com/file/d/1ehhH7GMZWswFN0gf9CxR02CBYcre7sP1/view?usp=sharing)
+![Alt text](https://drive.google.com/uc?export=view&id=1ehhH7GMZWswFN0gf9CxR02CBYcre7sP1)
 
-![Alt text](https://drive.google.com/file/d/196tml80CUSyPkSj8Gdr7Z5jGh7_yeZFY/view?usp=sharing)
+![Alt text](https://drive.google.com/uc?export=view&id=196tml80CUSyPkSj8Gdr7Z5jGh7_yeZFY)
 
 ## SETTING UP THE DARKBOT
 This documentation is tested and specifically designed for debian Linux distro's!!
