@@ -2,11 +2,11 @@
  
 ## UI
 
-<img src="https://drive.google.com/uc?export=view&id=1r6ANCbia19A1j6f50r6ONvT5LfgR4fO4" alt="Alt text" width="300">
+<img src="https://drive.google.com/uc?export=view&id=1r6ANCbia19A1j6f50r6ONvT5LfgR4fO4" alt="Alt text" style="width:100%; height:auto;">
 
-<img src="https://drive.google.com/uc?export=view&id=1ehhH7GMZWswFN0gf9CxR02CBYcre7sP1" alt="Alt text" width="300">
+<img src="https://drive.google.com/uc?export=view&id=1ehhH7GMZWswFN0gf9CxR02CBYcre7sP1" alt="Alt text" style="width:100%; height:auto;">
 
-<img src="https://drive.google.com/uc?export=view&id=196tml80CUSyPkSj8Gdr7Z5jGh7_yeZFY" alt="Alt text" width="300">
+<img src="https://drive.google.com/uc?export=view&id=196tml80CUSyPkSj8Gdr7Z5jGh7_yeZFY" alt="Alt text" style="width:100%; height:auto;">
 
 
 ## SETTING UP THE DARKBOT
