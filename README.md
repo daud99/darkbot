@@ -8,9 +8,22 @@
 
 <img src="https://drive.google.com/uc?export=view&id=196tml80CUSyPkSj8Gdr7Z5jGh7_yeZFY" alt="Alt text" style="width:100%; height:auto;">
 
+## ABOUT
 
-## SETTING UP THE DARKBOT
-This documentation is tested and specifically designed for debian Linux distro's!!
+DARKBOT is an advanced threat intelligence engine designed to monitor, analyze, and categorize cyber threats from the dark web, deep web, and surface web sources. Developed as a final year BS project, DARKBOT leverages state-of-the-art web scraping techniques and machine learning algorithms to provide real-time threat detection and reporting.
+
+### Key Features
+
+Comprehensive Web Scraping: Utilizes Beautiful Soup and Celery for efficient web scraping, and employs BFS and DFS algorithms for dynamic traversal of dark web forums and marketplaces.
+Advanced Machine Learning: Implements a combination of RNN, CNN, LSTM, and Transformer models, along with NLP techniques such as BERT, to accurately extract and categorize threat data. Achieves a high accuracy rate of 92% in identifying and classifying cyber threats.
+
+Real-Time Threat Management: Integrates real-time alerting and reporting mechanisms, seamlessly connecting with existing security information and event management (SIEM) systems to provide centralized threat management and comprehensive security monitoring.
+
+### Motivation
+The untraceable nature of the dark web poses significant challenges for cybersecurity. DARKBOT aims to assist in proactive threat detection and mitigation by providing an automated solution to monitor and analyze illicit activities. By leveraging machine learning and natural language processing, DARKBOT enhances the ability to identify potential cyber threats early and accurately.
+
+
+> This documentation is tested and specifically designed for debian Linux distro's!!
 
 ## Making changes to existing code in production
 
